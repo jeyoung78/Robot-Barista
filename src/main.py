@@ -1,20 +1,43 @@
-from interaction import LiveSpeechToText
-from task_planning import CommandGeneration
-from control import Communicate
-
 # Goal now: move robot to grab a cup and move to a different location
 
-def main():
-    # Planned to be implemented in future
-    '''
-    stt = LiveSpeechToText(model_path="models/vosk-model-small-en-us-0.15")                      
-    text_order = stt.start()
-    llm = CommandGeneration()
-    command_list = llm.generate_command_list()
-    command_list = [] # ["grab cup", "pour"]
-    for command in command_list:
-        pass
-    '''
+from control import Communicate, ImageProcessing
+from perception import ImageStream
 
+def main():
+    url_image = 'images/IMG_2034.jpeg'
+    grab_cup(url_image)
+    
+def initial_alingment():
+    # Make the end effector parallel to the table
+    # Lower the robot to the cup level.
+    # Make the end effector parallel to the x axis
+    pass
+
+def grab_cup():
+    initial_alingment(url_image='images/IMG_2034.jpeg')
+    # Note that x axis from the robot control perspective is y axis from the image
+    # while y values of robot end effector and the cup align move the robot in x direction
+    '''
+    Image_stream.save_image_to_url()
+    x_robot_ee, y_robot_ee = image_processing.find_red_dot()
+    x_cup, y_cup = image_processing.find_cup()
+
+    while y_robot_ee is around y_cup:
+        move_robot_x()
+        Image_stream.save_image_to_url()
+        x_robot_ee, y_robot_ee = image_processing.find_red_dot()
+        x_cup, y_cup = image_processing.find_cup()
+
+    while x_robot_ee is around x_cup + buffer:
+        move_robot_y()
+        Image_stream.save_image_to_url()
+        x_robot_ee, y_robot_ee = image_processing.find_red_dot()
+        x_cup, y_cup = image_processing.find_cup()
+
+    close_gripper()
+    move_to_original_location()
+    '''
+    pass
+    
 if __name__ == "__main__":
     main() 
