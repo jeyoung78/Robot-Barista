@@ -1,5 +1,7 @@
 # Goal now: move robot to grab a cup and move to a different location
 
+# Monday: Implement robot code and Communicate class so that robot can be controlled from python script
+
 from control import Communicate, ImageProcessing
 from perception import ImageStream
 
@@ -13,7 +15,7 @@ def initial_alingment():
     # Make the end effector parallel to the x axis
     pass
 
-def grab_cup():
+def grab_cup(): 
     initial_alingment(url_image='images/IMG_2034.jpeg')
     # Note that x axis from the robot control perspective is y axis from the image
     # while y values of robot end effector and the cup align move the robot in x direction
