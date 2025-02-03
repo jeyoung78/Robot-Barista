@@ -12,7 +12,19 @@ class Communicate:
         self.client_sock.sendall(command.encode('utf-8'))
         
     def move_x(self, pos_dir=True):
-        pass
+        if pos_dir == True:
+            self.communicate("move_x_positive")
+        else:
+            self.communicate("move_x_negative")
 
     def move_y(self, pos_dir=True):
-        pass
+        if pos_dir == True:
+            self.communicate("move_y_positive")
+        else:
+            self.communicate("move_y_negative")
+
+    def move_z(self, pos_dir=True):
+        if pos_dir == True:
+            self.communicate("move_z_positive")
+        else:
+            self.communicate("move_z_negative")

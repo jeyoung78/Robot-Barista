@@ -7,8 +7,8 @@ def main():
     # url_image = 'images/IMG_2034.jpeg'
     # grab_cup(url_image)
     comm = Communicate()
-    comm.communicate("move_z_positive")
-
+    # comm.communicate("move_z_positive")
+    comm.move_z(False)
     
 def initial_alingment():
     # Make the end effector parallel to the table
