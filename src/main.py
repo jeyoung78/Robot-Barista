@@ -1,13 +1,14 @@
 # Goal now: move robot to grab a cup and move to a different location
-
 # Monday: Implement robot code and Communicate class so that robot can be controlled from python script
 
-from control import Communicate, ImageProcessing
-from perception import ImageStream
+from control import Communicate
 
 def main():
-    url_image = 'images/IMG_2034.jpeg'
-    grab_cup(url_image)
+    # url_image = 'images/IMG_2034.jpeg'
+    # grab_cup(url_image)
+    comm = Communicate()
+    comm.communicate("move_z_positive")
+
     
 def initial_alingment():
     # Make the end effector parallel to the table
