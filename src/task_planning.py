@@ -1,3 +1,4 @@
+import math
 import torch
 import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModelForCausalLM
@@ -38,13 +39,14 @@ class PolicyGeneration:
         with torch.no_grad():
             outputs = self.model(input_ids)
         logits = outputs.logits
+        
         # Compute log probabilities from logits
         log_probs = F.log_softmax(logits, dim=-1)  # shape: [1, seq_len, vocab_size]
         
         # Convert token IDs to tokens (strings)
         tokens = self.tokenizer.convert_ids_to_tokens(input_ids[0])
         query_tokens = self.tokenizer(query).input_ids
-        print(input_ids)
+        # print(input_ids)
         option_start_index = len(query_tokens)
 
         total_log_prob = 0.0
@@ -67,7 +69,7 @@ class PolicyGeneration:
             
             
             if verbose:
-                print(f"Token: {token_str}\ttokenid: {token_id:.4f}\tLogProb: {token_log_prob:.4f}")
+                print(f"Token: {token_str}\tTokenid: {token_id:.4f}\tLogProb: {token_log_prob:.4f}\tProb: {math.exp(token_log_prob):.4f}")
         
         return total_log_prob, tokens, token_log_probs
     
