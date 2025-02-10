@@ -7,6 +7,7 @@ class PolicyGeneration:
     def __init__(self):
         # Load your local model; you can change this to another supported model.
         self.MODEL_NAME = "EleutherAI/gpt-neo-125M"  # or "EleutherAI/gpt-neo-125M", "decapoda-research/llama-7b-hf", etc.
+        # self.MODEL_NAME = "gpt2"
         self.tokenizer = AutoTokenizer.from_pretrained(self.MODEL_NAME)
         self.model = AutoModelForCausalLM.from_pretrained(self.MODEL_NAME)
         self.model.eval()
@@ -46,7 +47,6 @@ class PolicyGeneration:
         # Convert token IDs to tokens (strings)
         tokens = self.tokenizer.convert_ids_to_tokens(input_ids[0])
         query_tokens = self.tokenizer(query).input_ids
-        # print(input_ids)
         option_start_index = len(query_tokens)
 
         total_log_prob = 0.0
