@@ -1,11 +1,40 @@
 # Communicates with the Doosan robot that is listening within the while loop
 import cv2
+import time
 import numpy as np
 import matplotlib.pyplot as plt
-from transformers import DPTImageProcessor, DPTForDepthEstimation
+# from transformers import DPTImageProcessor, DPTForDepthEstimation
 
-image_processor = DPTImageProcessor.from_pretrained("Intel/dpt-hybrid-midas")
-model = DPTForDepthEstimation.from_pretrained("Intel/dpt-hybrid-midas", low_cpu_mem_usage=True)
+# image_processor = DPTImageProcessor.from_pretrained("Intel/dpt-hybrid-midas")
+# model = DPTForDepthEstimation.from_pretrained("Intel/dpt-hybrid-midas", low_cpu_mem_usage=True)
+class CameraInterface:    
+    def __init__(self) : # -> return 값
+        self.cam2 = 0
+        self.cap = cv2.VideoCapture(self.cam2)
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 3840)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 2748)
+
+    def robot_camera_stream(self):
+        # cap = cv2.VideoCapture(0)
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 3840)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 2748)
+        cv2.namedWindow('video', cv2.WINDOW_NORMAL)
+
+        # show
+        while True:
+            ret, img = self.cap.read() #ret : 성공하면 true, 실패하면 false
+            if not ret :
+                print("can't read cap")
+                break
+            img = cv2.resize(img, (1280, 720))
+            cv2.imshow("video", img)
+            k = cv2.waitKey(1)
+            if k == ord('s') :
+                cv2.imwrite(time.strftime("%H%M%S")+'.jpg', img)
+            elif k == ord('q') :
+                break
+        
+        cv2.destroyAllWindows()
 
 class ImageProcessing:
     def __init__(self, url):
@@ -71,3 +100,8 @@ class ImageProcessing:
     def find_cup(self):
         pass
 
+if __name__ == '__main__' :
+    # grab()
+    image = CameraInterface()
+    image.robot_camera_stream()
+    
