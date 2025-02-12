@@ -7,15 +7,15 @@ from huggingface_hub import snapshot_download
 class LLMScoring:
     def __init__(self):
         # Load your local model; you can change this to another supported model.
-        self.MODEL_NAME = "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"  # or "EleutherAI/gpt-neo-125M", "decapoda-research/llama-7b-hf", etc.
-        # self.MODEL_NAME = "gpt2"
+        # self.MODEL_NAME = "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"  # or "EleutherAI/gpt-neo-125M", "decapoda-research/llama-7b-hf", etc.
+        self.MODEL_NAME = "meta-llama/Llama-3.2-1B"
         self.tokenizer = AutoTokenizer.from_pretrained(self.MODEL_NAME)
         self.model = AutoModelForCausalLM.from_pretrained(
             self.MODEL_NAME, 
             trust_remote_code=True
         )
         self.model.eval()
-
+        '''
         self.options = [
             " Go to drawer.",
             " Open the drawer.",
@@ -23,9 +23,15 @@ class LLMScoring:
             " Close the drawer.",
             " Pick up the rice chip.",
             " Bring it to you.", 
-            " Put down the rice chips.",
-            " Done." 
+            " Put down the rice chips."
         ]   
+        '''
+        self.options = [
+            " Find a sponge.",
+            " Pick up the sponge.",
+            " Bring the sponge to you."
+        ]   
+        
 
     def score_prompt(self, query: str, option: str, option_start: str="\n", verbose: bool=False):
         """
