@@ -8,7 +8,7 @@ class LLMScoring:
     def __init__(self):
         # Load your local model; you can change this to another supported model.
         # self.MODEL_NAME = "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"  # or "EleutherAI/gpt-neo-125M", "decapoda-research/llama-7b-hf", etc.
-        self.MODEL_NAME = "meta-llama/Llama-3.2-1B"
+        self.MODEL_NAME = "deepseek-ai/DeepSeek-R1-Distill-Qwen-32B"
         self.tokenizer = AutoTokenizer.from_pretrained(self.MODEL_NAME)
         self.model = AutoModelForCausalLM.from_pretrained(
             self.MODEL_NAME, 
@@ -114,9 +114,3 @@ class LLMScoring:
             if verbose:
                 print(f"Option: {option}\nTotal Log Probability: {score:.4f}\n{'-'*40}")
         return scores
-    
-    def download_model(self):
-        model_name = "deepseek-ai/DeepSeek-V3"
-        downloaded_files = snapshot_download(repo_id=model_name, revision="v3")
-
-        print("Downloaded files are located at:", downloaded_files)
