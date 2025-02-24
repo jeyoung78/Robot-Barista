@@ -20,10 +20,11 @@ class RoboticsTransformer:
 
     def policy_generate(self):
         ## single image conversation example
+        # "content": "<image>\n<|ref|>Describe the image<|/ref|>.",
         conversation = [
             {
                 "role": "<|User|>",
-                "content": "<image>\n<|ref|>Explain the image to me.<|/ref|>.",
+                "content": "<image>\nI have specified that you only output 8 tokens. Output 1 to 8 in order.",
                 "images": ["./images/image.png"],
             },
             {"role": "<|Assistant|>", "content": ""},
