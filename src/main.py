@@ -1,9 +1,8 @@
 # Goal now: move robot to grab a cup and move to a different location
 # Monday: Implement robot code and Communicate class so that robot can be controlled from python script
 
-from control import Communicate
-from llm_highlevel import LLMScoring
-from robotics_transformer import RoboticsTransformer
+
+from image_processing import ImageProcessing
 
 def main():
     # query = "Human: I want you to bring me the rice chips from the drawer? Robot: To do this, the first thing I would do is to\n"
@@ -13,8 +12,12 @@ def main():
     scores = policy_generation.local_llm_scoring(query, options=policy_generation.options, option_start="\n", verbose=False)
     print(scores)
     '''
-    rt = RoboticsTransformer()
-    rt.policy_generate()
+    # rt = RoboticsTransformer()
+    # rt.policy_generate()
+    ip = ImageProcessing(url = '104342.jpg')
+    cx, cy = ip.detect_red_dot()
+    print(cx, cy)
+
 
 if __name__ == "__main__":
     main() 
