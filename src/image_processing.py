@@ -14,6 +14,15 @@ class CameraInterface:
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 3840)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 2748)
 
+    def capture_iamge(self):
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 3840)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 2748)
+        ret, img = self.cap.read()
+        img = cv2.resize(img, (1280, 720))
+        cv2.imwrite(time.strftime("%H%M%S")+'.jpg', img)
+
+        return
+
     def robot_camera_stream(self):
         # cap = cv2.VideoCapture(0)
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 3840)
@@ -37,7 +46,7 @@ class CameraInterface:
         cv2.destroyAllWindows()
 
 class ImageProcessing:
-    def __init__(self, url):
+    def __init__(self, url='101615.jpg'):
         self.lower_red1 = np.array([0, 120, 150])
         self.upper_red1 = np.array([10, 255, 255])
         self.lower_red2 = np.array([170, 120, 150])
@@ -77,12 +86,12 @@ class ImageProcessing:
                 # print(cx, cy)
                 radius = int(radius)
                 if 0.8 < (w / h) < 1.2:  # Ensure width and height are similar (circular)
-                    cv2.circle(output, (int(cx), int(cy)), radius, (255, 0, 0), 2)
+                    cv2.circle(output, (int(cx), int(cy)), radius,(0, 128, 0), thickness=20)
         
-        return (cx, cy)
+        # return (cx, cy)
 
         # Show images
-        '''
+        
         plt.figure(figsize=(10,5))
         plt.subplot(1, 2, 1)
         plt.title("Original Image")
@@ -95,7 +104,8 @@ class ImageProcessing:
         plt.axis("off")
 
         plt.show()
-        '''
+
+        return cx, cy        
 
     def find_cup(self):
         pass
@@ -103,5 +113,5 @@ class ImageProcessing:
 if __name__ == '__main__' :
     # grab()
     image = CameraInterface()
-    image.robot_camera_stream()
+    image.capture_iamge()
     

@@ -2,19 +2,19 @@
 # Monday: Implement robot code and Communicate class so that robot can be controlled from python script
 
 from control import Communicate
-from llm_highlevel import RecipeGeneration
+from llm_highlevel import LLMScoring
 from robotics_transformer import RoboticsTransformer
 
 def main():
     # query = "Human: I want you to bring me the rice chips from the drawer? Robot: To do this, the first thing I would do is to\n"
-    user_instruction = "Make a caramel macchiato with a dash of cinnamon."
-    # policy_generation = LLMScoring()
-    # scores = policy_generation.local_llm_scoring(user_instruction, option_start="\n", verbose=True)
-    # print(scores)
-    # print(min(scores, key=scores.get))
-    recipe_generation = RecipeGeneration()
-    recipe_generation.generate(user_instruction)
-
+    '''
+    query = "Human: I spilled my coke, can you bring me something to clean it up? Robot: To do this, the first thing I would do is to\n"
+    policy_generation = LLMScoring()
+    scores = policy_generation.local_llm_scoring(query, options=policy_generation.options, option_start="\n", verbose=False)
+    print(scores)
+    '''
+    rt = RoboticsTransformer()
+    rt.policy_generate()
 
 if __name__ == "__main__":
     main() 
