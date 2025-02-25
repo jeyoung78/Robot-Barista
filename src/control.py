@@ -22,3 +22,7 @@ class Communicate:
     def move_z(self, pos_dir=True):
         command = "move_z_positive" if pos_dir else "move_z_negative"
         self.communicate(command)
+
+    def initial_pos(self):
+        command = "initial" 
+        self.communicate(command)

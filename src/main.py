@@ -15,33 +15,38 @@ def main():
     '''
     # rt = RoboticsTransformer()
     # rt.policy_generate()
-    url_save = '101615.jpg'
+    url_save = 'saved.jpg'
     ip = ImageProcessing(url = url_save)
-    ci = CameraInterface()
+    ci = CameraInterface(url = url_save)
     co = Communicate()
     cx, cy = 0, 0
-
-    while not (550 <= cx <= 600 and 450 <= cy <= 500):
+    # 550 <= cx <= 600 and 
+    while not (450 <= cy <= 500):
         ci.capture_iamge()
         cx, cy = ip.detect_red_dot()
         print(cx, cy)
-
-        if cx > 600:
-            co.move_y(False)
-            print('move y neg')
-
-        if cx < 550:
+        
+        if cy > 600:
             co.move_y(True)
             print('move y pos')
 
         if cy < 450:
-            co.move_x(True)
-            print('move x pos')
+            co.move_y(False)
+            print('move y neg')
+        
 
-        if cx < 550:
-            co.move_y(True)
+    while not (475 <= cx <= 525):
+        ci.capture_iamge()
+        cx, cy = ip.detect_red_dot()
+        print(cx, cy)
+        
+        if cx > 525:
+            co.move_x(False)
             print('move x neg')
 
+        if cx < 475:
+            co.move_x(True)
+            print('move x pos')
 
 if __name__ == "__main__":
     main() 
