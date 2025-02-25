@@ -17,17 +17,16 @@ class RecipeGeneration:
         self.model.eval()
 
     def generate(self, instruction):
-        prompt = f"Provide a Python list of ingredients for this beverage: {instruction}. Strictly output a valid Python list, nothing else."
+        prompt = f"""Provide a valid Python list containing only liquid, ice, or powder ingredients for this beverage: {instruction}.
+        Do not include solid ingredients, amounts, measurements, or explanations. Strictly output a **valid Python list** with ingredient names as strings.
+        Example: ["milk", "coffee", "ice", "vanilla syrup"]"""
         # Tokenize the input text
         input_ids = self.tokenizer.encode(prompt, return_tensors="pt")
 
         # Generate output (adjust parameters as needed)
         output_ids = self.model.generate(
             input_ids=input_ids,
-            pad_token_id=self.tokenizer.eos_token_id,
-            bos_token_id=self.tokenizer.bos_token_id,
-            eos_token_id=self.tokenizer.eos_token_id,
-            max_length=300,
+            max_length=150,
             temperature=0.2,
             top_p=1.0,
             top_k=1

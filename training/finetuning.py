@@ -1,45 +1,22 @@
-from transformers import AutoModelForCausalLM, AutoProcessor, GenerationConfig
-from PIL import Image
 import requests
+from PIL import Image
+from transformers import BlipProcessor, BlipForConditionalGeneration
 
-# load the processor
-processor = AutoProcessor.from_pretrained(
-    'allenai/MolmoE-1B-0924',
-    trust_remote_code=True,
-    torch_dtype='auto',
-    device_map='auto'
-)
+processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-large")
+model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-large").to("cuda")
 
-# load the model
-model = AutoModelForCausalLM.from_pretrained(
-    'allenai/MolmoE-1B-0924',
-    trust_remote_code=True,
-    torch_dtype='auto',
-    device_map='auto'
-)
+img_url = 'https://storage.googleapis.com/sfr-vision-language-research/BLIP/demo.jpg' 
+raw_image = Image.open(requests.get(img_url, stream=True).raw).convert('RGB')
 
-# process the image and text
-inputs = processor.process(
-    images=[Image.open(requests.get("https://picsum.photos/id/237/536/354", stream=True).raw)],
-    text="Describe this image."
-)
+# conditional image captioning
+text = "a photography of"
+inputs = processor(raw_image, text, return_tensors="pt").to("cuda")
 
-# move inputs to the correct device and make a batch of size 1
-inputs = {k: v.to(model.device).unsqueeze(0) for k, v in inputs.items()}
+out = model.generate(**inputs)
+print(processor.decode(out[0], skip_special_tokens=True))
 
-# generate output; maximum 200 new tokens; stop generation when <|endoftext|> is generated
-output = model.generate_from_batch(
-    inputs,
-    GenerationConfig(max_new_tokens=200, stop_strings="<|endoftext|>"),
-    tokenizer=processor.tokenizer
-)
+# unconditional image captioning
+inputs = processor(raw_image, return_tensors="pt").to("cuda")
 
-# only get generated tokens; decode them to text
-generated_tokens = output[0,inputs['input_ids'].size(1):]
-generated_text = processor.tokenizer.decode(generated_tokens, skip_special_tokens=True)
-
-# print the generated text
-print(generated_text)
-
-# >>> This photograph captures a small black puppy, likely a Labrador or a similar breed,
-#     sitting attentively on a weathered wooden deck. The deck, composed of three...
+out = model.generate(**inputs)
+print(processor.decode(out[0], skip_special_tokens=True))
