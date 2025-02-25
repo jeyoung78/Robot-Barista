@@ -22,6 +22,7 @@ vl_gpt: DeepseekVLV2ForCausalLM = AutoModelForCausalLM.from_pretrained(model_pat
 vl_gpt = vl_gpt.to(torch.bfloat16).cuda().eval()
 
 root_dir = 'images/traj_group0'
+count = 0
 # For each directory that starts with "traj" under root_dir
 for i in range(0, 100):
     traj_dir = os.path.join(root_dir, f"traj{i}/images0")
@@ -35,7 +36,9 @@ for i in range(0, 100):
                 # No files found, skip this iteration
                 print("no matching")
                 continue
-
+            count = count + 1
+            print(count)
+            '''
             img_file = img_file[0]
 
             conversation = [
@@ -82,9 +85,10 @@ for i in range(0, 100):
             answer = tokenizer.decode(outputs[0].cpu().tolist(), skip_special_tokens=True)
             results.append([img_file, answer])
             print(img_file, answer)
+            '''
 
     # Convert the list of dictionaries to a DataFrame
-    df = pd.DataFrame(results)
+    # df = pd.DataFrame(results)
     # Write the DataFrame to an Excel file
     # df.to_excel(f'exp_data/results_{i}.xlsx', index=False)
 

@@ -17,21 +17,7 @@ class RecipeGeneration:
         self.model.eval()
 
     def generate(self, instruction):
-        prompt = f"""
-            You are a robotic assistant for a cafe that prepares a wide variety of drinks.
-            Your task is to generate a detailed action plan—a sequence of actions—to fulfill the user’s high-level drink-making request.
-            Your response MUST be formatted as a numbered list only. Each step should start with a number followed by a period (e.g., "1.") and sentences MUST start with put. Do not include any additional text or commentary outside the list.
-            For example:
-            Instruction: Make a cappuccino.
-            Response:
-            1. Prepare cup
-            2. Pour espresso
-            3. Add milk
-            4. Stir
-            5. Serve drink
-            6. Done
-            Now, for this command: "{instruction}", generate the action plan in the exact numbered list format described above.
-            """
+        prompt = f"Provide a Python list of ingredients for this beverage: {instruction}. Strictly output a valid Python list, nothing else."
         # Tokenize the input text
         input_ids = self.tokenizer.encode(prompt, return_tensors="pt")
 
@@ -41,12 +27,15 @@ class RecipeGeneration:
             pad_token_id=self.tokenizer.eos_token_id,
             bos_token_id=self.tokenizer.bos_token_id,
             eos_token_id=self.tokenizer.eos_token_id,
-            max_length=300
+            max_length=300,
+            temperature=0.2,
+            top_p=1.0,
+            top_k=1
             # max_new_tokens=512,
             # do_sample=False,
         )
 
-        generated_text = self.tokenizer.decode(output_ids[0], skip_special_tokens=True)
+        generated_text = self.tokenizer.decode(output_ids[0], skip_special_tokens=True).strip()
         print(generated_text)
 
         return generated_text
