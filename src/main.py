@@ -1,15 +1,15 @@
 # Goal now: move robot to grab a cup and move to a different location
 # Monday: Implement robot code and Communicate class so that robot can be controlled from python script
 
-# from image_processing import ImageProcessing, CameraInterface
-# from control import Communicate
-from llm_highlevel import RecipeGeneration
+from image_processing import ImageProcessing, CameraInterface
+from control import Communicate
+# from llm_highlevel import RecipeGeneration
 
 def main():
     # query = "Human: I want you to bring me the rice chips from the drawer? Robot: To do this, the first thing I would do is to\n"
     
-    rg = RecipeGeneration()
-    rg.generate("caramel macchiato")
+    # rg = RecipeGeneration()
+    # rg.generate("caramel macchiato")
     '''
     query = "Human: I spilled my coke, can you bring me something to clean it up? Robot: To do this, the first thing I would do is to\n"
     policy_generation = LLMScoring()
@@ -18,7 +18,7 @@ def main():
     
     # rt = RoboticsTransformer()
     # rt.policy_generate()
-    
+    '''
     url_save = 'saved.jpg'
     ip = ImageProcessing(url = url_save)
     ci = CameraInterface(url = url_save)
@@ -53,7 +53,7 @@ def main():
             print('move x pos')
     
     co.communicate("alignment_complete")
-    '''
+    
 
 if __name__ == "__main__":
     main() 
