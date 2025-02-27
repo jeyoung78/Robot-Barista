@@ -114,3 +114,5 @@ outputs = vl_gpt.language.generate(
 answer = tokenizer.decode(outputs[0].cpu().tolist(), skip_special_tokens=True)
 print(f"{prepare_inputs['sft_format'][0]}", answer)
 '''
+
+# 오늘: 논문 읽기, SayCan Planning 초기형, finetuning 준비. 
