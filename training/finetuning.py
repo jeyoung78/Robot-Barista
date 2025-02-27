@@ -10,5 +10,5 @@ response = client.models.generate_content(
     model="gemini-2.0-flash",
     contents=["What is paper cup's relative location from the center of the image? Answer in two words. first word should be one of right, left, center, and the second word should be one of up, down, and center", image])
 
-
+# sadfsa
 print(response.text)
