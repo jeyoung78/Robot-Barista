@@ -2,7 +2,7 @@ from google import genai
 from google.genai.types import HttpOptions, Part
 import PIL.Image
 
-client = genai.Client(api_key="AIzaSyDY0QuJXHlODt2bJCTCrY2NbhGxw703h6U")
+client = genai.Client(api_key="")
 
 image = PIL.Image.open('saved.jpg')
 
