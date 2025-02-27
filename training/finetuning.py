@@ -10,7 +10,7 @@ sys.path.append(src_path)
 from image_processing import ImageProcessing, CameraInterface
 from control import Communicate
 
-client = genai.Client(api_key="AIzaSyDY0QuJXHlODt2bJCTCrY2NbhGxw703h6U")
+client = genai.Client(api_key="")
 
 
 words = ['', '']
