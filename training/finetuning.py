@@ -1,22 +1,14 @@
-import requests
-from PIL import Image
-from transformers import BlipProcessor, BlipForConditionalGeneration
+from google import genai
+from google.genai.types import HttpOptions, Part
+import PIL.Image
 
-processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-large")
-model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-large").to("cuda")
+client = genai.Client(api_key="AIzaSyDY0QuJXHlODt2bJCTCrY2NbhGxw703h6U")
 
-img_url = './images/traj_group0/traj0/images0/im_0.jpg' 
-raw_image = Image.open(img_url).convert('RGB')
+image = PIL.Image.open('saved.jpg')
 
-# conditional image captioning
-text = "The location of the robot gripper is"
-inputs = processor(raw_image, text, return_tensors="pt").to("cuda")
+response = client.models.generate_content(
+    model="gemini-2.0-flash",
+    contents=["What is paper cup's relative location from the center of the image? Answer in two words. first word should be one of right, left, center, and the second word should be one of up, down, and center", image])
 
-out = model.generate(**inputs)
-print(processor.decode(out[0], skip_special_tokens=True))
 
-# unconditional image captioning
-inputs = processor(raw_image, return_tensors="pt").to("cuda")
-
-out = model.generate(**inputs)
-print(processor.decode(out[0], skip_special_tokens=True))
+print(response.text)
