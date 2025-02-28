@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 # from transformers import DPTImageProcessor, DPTForDepthEstimation
 
 # image_processor = DPTImageProcessor.from_pretrained("Intel/dpt-hybrid-midas")
-# model = DPTForDepthEstimation.from_pretrained("Intel/dpt-hybrid-midas", low_cpu_mem_usage=True)
 class CameraInterface:    
     def __init__(self, url) : # -> return 값
         self.cam2 = 0

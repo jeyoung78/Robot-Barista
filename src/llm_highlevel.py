@@ -45,10 +45,10 @@ class RecipeGeneration():
 
         return my_array
 
-rg = RecipeGeneration("caramel macchiato")
-ingredients = rg.generate()
-for ingredient in ingredients:
-    print(ingredient)
+# rg = RecipeGeneration("caramel macchiato")
+# ingredients = rg.generate()
+# for ingredient in ingredients:
+#     print(ingredient)
 '''
 import math
 import torch

@@ -1,9 +1,11 @@
 # Goal now: move robot to grab a cup and move to a different location
 # Monday: Implement robot code and Communicate class so that robot can be controlled from python script
+import pyttsx3
+import time
 
 from image_processing import ImageProcessing, CameraInterface
 from control import Communicate
-# from llm_highlevel import RecipeGeneration
+from llm_highlevel import RecipeGeneration
 
 def main():
     # query = "Human: I want you to bring me the rice chips from the drawer? Robot: To do this, the first thing I would do is to\n"
@@ -51,9 +53,34 @@ def main():
         if cx < 475:
             co.move_x(True)
             print('move x pos')
+            
+    rg = RecipeGeneration("caramel macchiato")
+    ingredients = rg.generate()
+
+    target_word = "proceed"
+
+    engine = pyttsx3.init()
+    voices = engine.getProperty("voices")
+    engine.setProperty("voice", voices[1].id)
     
-    co.communicate("alignment_complete")
+    for ingredient in ingredients:
+        print(ingredient)
+        engine.say("pour " + ingredient)
+        engine.runAndWait()
+        while True:
+            user_input = input("Type a word: ").strip()
+            if user_input.lower() == target_word.lower():
+                print("Proceeding...")
+                break
+            else:
+                pass
+
+        co.communicate("pour")
+        time.sleep(15)
     
+    print("complete!")
+    engine.say("Complete!")
+    engine.runAndWait()
 
 if __name__ == "__main__":
     main() 
