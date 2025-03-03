@@ -35,49 +35,36 @@ first word should be one of right, left, stop, and the second word should be one
 Make sure to stop if the robot is aligned with the cup.
 """
 
-while words[1] != 'stop':
+
+while True:
     ci.capture_iamge()
     print('captured image!')
-    image = PIL.Image.open('saved.jpg')
-
+    image = PIL.Image.open(url_save)
+    
     response = client.models.generate_content(
         model="gemini-2.0-flash-thinking-exp-01-21",
         contents=[prompt, image])
-    
     words = response.text.split()
-
     print(words)
-
-    if words[1] == 'forward':
-        co.move_y(True)
-        print('move y pos')
-
-    if words[1] == 'backward':
-        co.move_y(False)
-        print('move y neg')
-        
-
-while words[0] != 'stop':
-    ci.capture_iamge()
-    print('captured image!')
-    image = PIL.Image.open('saved.jpg')
-
-    response = client.models.generate_content(
-        model="gemini-2.0-flash-thinking-exp-01-21",
-        contents=[prompt, image])
     
-    words = response.text.split()
-
-    print(words)
-
-    if words[0] == 'right':
-        co.move_x(False)
-        print('move x neg')
-
-    if words[0] == 'left':
-        co.move_x(True)
-        print('move x pos')
+    if words[0] != 'stop':
+        if words[0] == 'right':
+            co.move_x(False)
+            print('move x neg')
+        elif words[0] == 'left':
+            co.move_x(True)
+            print('move x pos')
     
+    if words[1] != 'stop':
+        if words[1] == 'forward':
+            co.move_y(True)
+            print('move y pos')
+        elif words[1] == 'backward':
+            co.move_y(False)
+            print('move y neg')
+    
+    if words[0] == 'stop' and words[1] == 'stop':
+        break
+
 co.communicate("alignment_complete")
-
 print(response.text)
