@@ -26,3 +26,6 @@ class Communicate:
     def initial_pos(self):
         command = "initial" 
         self.communicate(command)
+
+comm = Communicate()
+comm.move_y(True)

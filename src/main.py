@@ -2,10 +2,14 @@
 # Monday: Implement robot code and Communicate class so that robot can be controlled from python script
 import pyttsx3
 import time
+import PIL.Image
 
+from google import genai
 from image_processing import ImageProcessing, CameraInterface
 from control import Communicate
 from llm_highlevel import RecipeGeneration
+
+client = genai.Client(api_key="")
 
 def main():
     # query = "Human: I want you to bring me the rice chips from the drawer? Robot: To do this, the first thing I would do is to\n"
@@ -21,6 +25,7 @@ def main():
     # rt = RoboticsTransformer()
     # rt.policy_generate()
     '''
+
     url_save = 'saved.jpg'
     ip = ImageProcessing(url = url_save)
     ci = CameraInterface(url = url_save)
@@ -33,12 +38,12 @@ def main():
         print(cx, cy)
         
         if cy > 500:
-            co.move_y(True)
-            print('move y pos')
-
-        if cy < 450:
             co.move_y(False)
             print('move y neg')
+
+        if cy < 450:
+            co.move_y(True)
+            print('move y pos')
         
 
     while not (475 <= cx <= 525):
@@ -53,15 +58,15 @@ def main():
         if cx < 475:
             co.move_x(True)
             print('move x pos')
-            
-    rg = RecipeGeneration("caramel macchiato")
+
+    rg = RecipeGeneration("whiskey sour")
     ingredients = rg.generate()
 
     target_word = "proceed"
 
     engine = pyttsx3.init()
     voices = engine.getProperty("voices")
-    engine.setProperty("voice", voices[1].id)
+    engine.setProperty("voice", voices[0].id)
     
     for ingredient in ingredients:
         print(ingredient)

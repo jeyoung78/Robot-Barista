@@ -48,11 +48,11 @@ while words[1] != 'stop':
 
     print(words)
 
-    if words[1] == 'backward':
+    if words[1] == 'forward':
         co.move_y(True)
         print('move y pos')
 
-    if words[1] == 'forward':
+    if words[1] == 'backward':
         co.move_y(False)
         print('move y neg')
         
@@ -63,7 +63,7 @@ while words[0] != 'stop':
     image = PIL.Image.open('saved.jpg')
 
     response = client.models.generate_content(
-        model="gemini-2.0-flash",
+        model="gemini-2.0-flash-thinking-exp-01-21",
         contents=[prompt, image])
     
     words = response.text.split()
