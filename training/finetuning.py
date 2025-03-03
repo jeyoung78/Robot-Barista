@@ -47,21 +47,26 @@ while True:
     words = response.text.split()
     print(words)
     
-    if words[0] != 'stop':
-        if words[0] == 'right':
+    if words[0] != 'stop' or words[1] != 'stop':
+        if words[0] == 'right'and words[1] == 'forward':
             co.move_x(False)
-            print('move x neg')
-        elif words[0] == 'left':
-            co.move_x(True)
-            print('move x pos')
-    
-    if words[1] != 'stop':
-        if words[1] == 'forward':
             co.move_y(True)
-            print('move y pos')
-        elif words[1] == 'backward':
+            print('move x neg and y pos')
+
+        elif words[0] == 'left' and words[1] == 'forward':
+            co.move_x(True)
+            co.move_y(True)
+            print('move x pos and y pos')
+
+        elif words[0] == 'right' and words[1] == 'backward':
+            co.move_x(False)
             co.move_y(False)
-            print('move y neg')
+            print('move x neg and y neg')
+
+        elif words[0] == 'left' and words[1] == 'backward':
+            co.move_x(True)
+            co.move_y(False)
+            print('move x pos and y neg')
     
     if words[0] == 'stop' and words[1] == 'stop':
         break
