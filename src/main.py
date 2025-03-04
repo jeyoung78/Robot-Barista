@@ -72,7 +72,7 @@ def main():
         print(ingredient)
         engine.say("pour " + ingredient)
         engine.runAndWait()
-        co.prepare(Ture)
+        co.prepare(True)
         
         while True:
             user_input = input("Type a word: ").strip()
