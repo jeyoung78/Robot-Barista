@@ -9,7 +9,7 @@ from image_processing import ImageProcessing, CameraInterface
 from control import Communicate
 from llm_highlevel import RecipeGeneration
 
-client = genai.Client(api_key="")
+client = genai.Client(api_key="AIzaSyAbZpHttVawCw_I-K68XQgHPlKQZ4XXSQg")
 
 def main():
     # query = "Human: I want you to bring me the rice chips from the drawer? Robot: To do this, the first thing I would do is to\n"
@@ -70,9 +70,10 @@ def main():
     
     for ingredient in ingredients:
         print(ingredient)
+        co.prepare(True)
         engine.say("pour " + ingredient)
         engine.runAndWait()
-        co.prepare(True)
+        
         
         while True:
             user_input = input("Type a word: ").strip()
@@ -83,7 +84,7 @@ def main():
                 pass
 
         co.communicate("pour")
-        time.sleep(15)
+        time.sleep(20)
     
     print("complete!")
     engine.say("Complete!")

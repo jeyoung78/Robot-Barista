@@ -5,7 +5,7 @@ import ast
 
 class RecipeGeneration():
     def __init__(self, beverage):
-        self.api_key = ""
+        self.api_key = "AIzaSyAbZpHttVawCw_I-K68XQgHPlKQZ4XXSQg"
         genai.configure(api_key=self.api_key)
 
         self.beverage = beverage
