@@ -51,6 +51,8 @@ class ImageProcessing:
         self.upper_red1 = np.array([10, 255, 255])
         self.lower_red2 = np.array([170, 120, 150])
         self.upper_red2 = np.array([180, 255, 255])
+        self.upper_white = np.array([255, 255, 255])
+        self.lower_white = np.array([0, 0, 200])
 
         self.url = url
 
@@ -65,10 +67,11 @@ class ImageProcessing:
         # Create masks for both red ranges
         mask1 = cv2.inRange(hsv, self.lower_red1, self.upper_red1)
         mask2 = cv2.inRange(hsv, self.lower_red2, self.upper_red2)
+        mask3 = cv2.inRange(hsv, self.lower_white, self.upper_white)
 
         # Combine masks
-        mask = cv2.bitwise_or(mask1, mask2)
-
+        # mask = cv2.bitwise_or(mask1, mask2)
+        mask = mask3
         # Find contours of red areas
         contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
