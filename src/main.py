@@ -66,12 +66,14 @@ def main():
 
     engine = pyttsx3.init()
     voices = engine.getProperty("voices")
-    engine.setProperty("voice", voices[0].id)
+    engine.setProperty("voice", voices[1].id)
     
     for ingredient in ingredients:
         print(ingredient)
         engine.say("pour " + ingredient)
         engine.runAndWait()
+        co.prepare(Ture)
+        
         while True:
             user_input = input("Type a word: ").strip()
             if user_input.lower() == target_word.lower():
