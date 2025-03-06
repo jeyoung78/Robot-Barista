@@ -30,8 +30,7 @@ def main():
     ip = ImageProcessing(url = url_save)
     ci = CameraInterface(url = url_save)
     co = Communicate()
-
-    # cx, cy = 0, 0
+    cx, cy = 0, 0
     # 550 <= cx <= 600 and 
     while not (450 <= cy <= 500):
         ci.capture_iamge()
