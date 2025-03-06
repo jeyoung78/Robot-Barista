@@ -9,7 +9,7 @@ from image_processing import ImageProcessing, CameraInterface
 from control import Communicate
 from llm_highlevel import RecipeGeneration
 from vlm_yolos import CupDetector
-
+from circle import detect_circle
 client = genai.Client(api_key="AIzaSyAbZpHttVawCw_I-K68XQgHPlKQZ4XXSQg")
 
 def main():
@@ -28,10 +28,6 @@ def main():
     '''
 
     url_save = 'saved.jpg'
-    # ip = ImageProcessing(url = url_save)
-    
-    detector = CupDetector(image_path = url_save)
-    # detector ~ 수정한 부분
     ci = CameraInterface(url = url_save)
     co = Communicate()
 
@@ -39,45 +35,46 @@ def main():
     #수정한 부분
 
     # cx, cy = 0, 0
-    # 550 <= cx <= 600 and 
-    while not (450 <= cy <= 500):
-        ci.capture_iamge()
-        # cx, cy = ip.detect_red_dot()
-        cup_found, cx, cy = detector.detect_cup(display=False)
-        if not cup_found:
-            print("Cup not detected. Retrying...")
+     # y축 정렬: 검출된 원의 중심 y 좌표가 [450, 500] 픽셀 범위에 들어올 때까지 조정
+    while True:
+        ci.capture_image()  # 이미지 캡처
+        found, cx, cy, radius = detect_circle(url_save, display=False)
+        if not found or cy is None:
+            print("원(동그라미) 검출 실패. 다시 시도합니다.")
             time.sleep(1)
             continue
-        #수정한 부분
-        print(cx, cy)
-        
-        if cy > 500:
-            co.move_y(False)
-            print('move y neg')
 
-        if cy < 450:
-            co.move_y(True)
-            print('move y pos')
-        
+        print(f"Detected circle: center=({cx}, {cy}), radius={radius}")
+        if 450 <= cy <= 500:
+            print("Y-axis aligned.")
+            break
+        elif cy > 500:
+            co.move_y(False)  # y축 음수 방향 이동 (아래쪽)
+            print("Moving y negative.")
+        elif cy < 450:
+            co.move_y(True)   # y축 양수 방향 이동 (위쪽)
+            print("Moving y positive.")
+        time.sleep(1)
 
-    while not (475 <= cx <= 525):
-        ci.capture_iamge()
-        # cx, cy = ip.detect_red_dot()
-        cup_found, cx, cy = detector.detect_cup(display=False)
-        if not cup_found:
-            print("Cup not detected. Retrying...")
+    while True:
+        ci.capture_image()
+        found, cx, cy, radius = detect_circle(url_save, display=False)
+        if not found or cx is None:
+            print("원(동그라미) 검출 실패. 다시 시도합니다.")
             time.sleep(1)
             continue
-        #수정한 부분
-        print(cx, cy)
-        
-        if cx > 525:
-            co.move_x(False)
-            print('move x neg')
 
-        if cx < 475:
-            co.move_x(True)
-            print('move x pos')
+        print(f"Detected circle: center=({cx}, {cy}), radius={radius}")
+        if 475 <= cx <= 525:
+            print("X-axis aligned.")
+            break
+        elif cx > 525:
+            co.move_x(False)  # x축 음수 방향 이동 (왼쪽)
+            print("Moving x negative.")
+        elif cx < 475:
+            co.move_x(True)   # x축 양수 방향 이동 (오른쪽)
+            print("Moving x positive.")
+        time.sleep(1)
 
     rg = RecipeGeneration("whiskey sour")
     ingredients = rg.generate()
