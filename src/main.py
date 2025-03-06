@@ -8,7 +8,6 @@ from google import genai
 from image_processing import ImageProcessing, CameraInterface
 from control import Communicate
 from llm_highlevel import RecipeGeneration
-from vlm_yolos import CupDetector
 from circle import detect_circle
 client = genai.Client(api_key="AIzaSyAbZpHttVawCw_I-K68XQgHPlKQZ4XXSQg")
 
@@ -31,13 +30,10 @@ def main():
     ci = CameraInterface(url = url_save)
     co = Communicate()
 
-    cup_found, cx, cy = False, None, None
-    #수정한 부분
-
     # cx, cy = 0, 0
      # y축 정렬: 검출된 원의 중심 y 좌표가 [450, 500] 픽셀 범위에 들어올 때까지 조정
     while True:
-        ci.capture_image()  # 이미지 캡처
+        ci.capture_iamge()  # 이미지 캡처
         found, cx, cy, radius = detect_circle(url_save, display=False)
         if not found or cy is None:
             print("원(동그라미) 검출 실패. 다시 시도합니다.")
@@ -57,7 +53,7 @@ def main():
         time.sleep(1)
 
     while True:
-        ci.capture_image()
+        ci.capture_iamge()
         found, cx, cy, radius = detect_circle(url_save, display=False)
         if not found or cx is None:
             print("원(동그라미) 검출 실패. 다시 시도합니다.")
