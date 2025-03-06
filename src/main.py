@@ -8,7 +8,6 @@ from google import genai
 from image_processing import ImageProcessing, CameraInterface
 from control import Communicate
 from llm_highlevel import RecipeGeneration
-from vlm_yolos import CupDetector
 
 client = genai.Client(api_key="AIzaSyAbZpHttVawCw_I-K68XQgHPlKQZ4XXSQg")
 
@@ -28,27 +27,15 @@ def main():
     '''
 
     url_save = 'saved.jpg'
-    # ip = ImageProcessing(url = url_save)
-    
-    detector = CupDetector(image_path = url_save)
-    # detector ~ 수정한 부분
+    ip = ImageProcessing(url = url_save)
     ci = CameraInterface(url = url_save)
     co = Communicate()
-
-    cup_found, cx, cy = False, None, None
-    #수정한 부분
 
     # cx, cy = 0, 0
     # 550 <= cx <= 600 and 
     while not (450 <= cy <= 500):
         ci.capture_iamge()
-        # cx, cy = ip.detect_red_dot()
-        cup_found, cx, cy = detector.detect_cup(display=False)
-        if not cup_found:
-            print("Cup not detected. Retrying...")
-            time.sleep(1)
-            continue
-        #수정한 부분
+        cx, cy = ip.detect_red_dot()
         print(cx, cy)
         
         if cy > 500:
@@ -62,13 +49,7 @@ def main():
 
     while not (475 <= cx <= 525):
         ci.capture_iamge()
-        # cx, cy = ip.detect_red_dot()
-        cup_found, cx, cy = detector.detect_cup(display=False)
-        if not cup_found:
-            print("Cup not detected. Retrying...")
-            time.sleep(1)
-            continue
-        #수정한 부분
+        cx, cy = ip.detect_red_dot()
         print(cx, cy)
         
         if cx > 525:
