@@ -30,25 +30,23 @@ def main():
     ci = CameraInterface(url = url_save)
     co = Communicate()
 
-    # cx, cy = 0, 0
-     # y축 정렬: 검출된 원의 중심 y 좌표가 [450, 500] 픽셀 범위에 들어올 때까지 조정
     while True:
-        ci.capture_iamge()  # 이미지 캡처
+        ci.capture_iamge()
         found, cx, cy, radius = detect_circle(url_save, display=False)
         if not found or cy is None:
-            print("원(동그라미) 검출 실패. 다시 시도합니다.")
+            print("cannot detect cup... retry...")
             time.sleep(1)
             continue
 
-        print(f"Detected circle: center=({cx}, {cy}), radius={radius}")
+        print(f"Detected circle: center=({cx}, {cy})")
         if 450 <= cy <= 500:
             print("Y-axis aligned.")
             break
         elif cy > 500:
-            co.move_y(False)  # y축 음수 방향 이동 (아래쪽)
+            co.move_y(False)
             print("Moving y negative.")
         elif cy < 450:
-            co.move_y(True)   # y축 양수 방향 이동 (위쪽)
+            co.move_y(True)
             print("Moving y positive.")
         time.sleep(1)
 
@@ -56,19 +54,19 @@ def main():
         ci.capture_iamge()
         found, cx, cy, radius = detect_circle(url_save, display=False)
         if not found or cx is None:
-            print("원(동그라미) 검출 실패. 다시 시도합니다.")
+            print("cannot detect cup... retry...")
             time.sleep(1)
             continue
 
-        print(f"Detected circle: center=({cx}, {cy}), radius={radius}")
+        print(f"Detected circle: center=({cx}, {cy})")
         if 475 <= cx <= 525:
             print("X-axis aligned.")
             break
         elif cx > 525:
-            co.move_x(False)  # x축 음수 방향 이동 (왼쪽)
+            co.move_x(False)
             print("Moving x negative.")
         elif cx < 475:
-            co.move_x(True)   # x축 양수 방향 이동 (오른쪽)
+            co.move_x(True)
             print("Moving x positive.")
         time.sleep(1)
 
