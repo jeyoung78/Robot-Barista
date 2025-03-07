@@ -82,7 +82,8 @@ def main():
     for ingredient in ingredients:
         print(ingredient)
         co.prepare(True)
-        engine.say("pour " + ingredient)
+        ingredient_cleaned = ingredient.replace("_", " ")
+        engine.say("pour " + ingredient_cleaned)
         engine.runAndWait()
         
         
