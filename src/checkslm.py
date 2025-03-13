@@ -1,30 +1,82 @@
-from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
+import openai
 
-# flan-t5-small 모델 초기화
-model_name = "google/flan-t5-small"
-tokenizer = AutoTokenizer.from_pretrained(model_name)
-model = AutoModelForSeq2SeqLM.from_pretrained(model_name)
+class DrinkCheck:
+    def __init__(self, beverage):
+        self.api_key = "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"  # 실제 API 키로 교체하세요.
+        openai.api_key = self.api_key
 
-class drink_check():
+        self.beverage = beverage
+        # 프롬프트 구성: 예시를 제거하고 간결하게 작성합니다.
+        self.prompt = (
+            "Below are examples of extracting a beverage name from a request. "
+            "If the beverage is not clearly defined, output \"none\".\n\n"
+            "Request: make me a latte\n"
+            "Answer: latte\n\n"
+            "Request: give me water\n"
+            "Answer: water\n\n"
+            "Request: give me a cafe latte\n"
+            "Answer: cafe latte\n\n"
+            "Request: some sweet beverage\n"
+            "Answer: none\n\n"
+            f"Request: {self.beverage}\n"
+            "Answer:"
+        )
+        # 사용할 모델
+        self.model = "babbage-002"
+
+    def generate(self):
+        try:
+            response = openai.Completion.create(
+                engine=self.model,
+                prompt=self.prompt,
+                max_tokens=10,      # 음료 이름 정도로 충분한 길이
+                temperature=0.0,    # 결정론적 출력
+                top_p=1,
+                frequency_penalty=0,
+                presence_penalty=0,
+                stop=["\n"]
+            )
+            answer = response.choices[0].text.strip()
+            return answer
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            return None
+
+if __name__ == "__main__":
+    user_request = input("Enter your request: ")
+    checker = DrinkCheck(user_request)
+    beverage = checker.generate()
+    print("Extracted beverage:", beverage)
+
+
+'''
+class DrinkCheck:
     def __init__(self, request):
         self.request = request
         self.prompt = f"""
-        Provide a valid recipe for the following request: {self.request}.
-        If the request contains a beverage, output the beverage recipe in English.
-        If no beverage is present in the request, output "none".
-        """
+        find the Beverage for the following request: {self.request}.
+        If the request contains a Beverage, output is the Beverage name.
+        If no Beverage in the request, output "none".
+        Example: For the request "latte", the correct output is "latte".
+        Example: For the request "make me water", the correct output is "water".
+        Example: For the request "give me a cafe latte", the correct output is "cafe latte".
+        Example: For the request "give me sweet thing", the correct output is "none".
+"""
     def generate(self):
-        input_ids = tokenizer(self.prompt, return_tensors="pt").input_ids
-        outputs = model.generate(input_ids, max_new_tokens=20)
+        # 토크나이즈 시 padding 활성화 -> attention_mask 생성
+        inputs = tokenizer(self.prompt, return_tensors="pt", padding=True)
+        input_ids = inputs.input_ids
+        attention_mask = inputs.attention_mask
+        outputs = model.generate(input_ids, attention_mask=attention_mask, max_new_tokens=100)
         result = tokenizer.decode(outputs[0], skip_special_tokens=True)
         return result.strip()
 
-    
 if __name__ == "__main__":
     user_request = input("Enter your request: ")
-    checker = drink_check(user_request)
+    checker = DrinkCheck(user_request)
     beverage = checker.generate()
     print("Extracted beverage:", beverage)
+'''
 
 """
 # 내부 SLM을 사용해 레시피를 생성하는 클래스 (예시)
