@@ -2,7 +2,7 @@ import openai
 
 class DrinkCheck:
     def __init__(self, beverage):
-        self.api_key = "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"  # 실제 API 키로 교체하세요.
+        self.api_key = ""
         openai.api_key = self.api_key
 
         self.beverage = beverage
@@ -10,8 +10,8 @@ class DrinkCheck:
         self.prompt = (
             "Below are examples of extracting a beverage name from a request. "
             "If the beverage is not clearly defined, output \"none\".\n\n"
-            "Request: make me a latte\n"
-            "Answer: latte\n\n"
+            "Request: make me a Macchiato\n"
+            "Answer: Macchiato\n\n"
             "Request: give me water\n"
             "Answer: water\n\n"
             "Request: give me a cafe latte\n"
