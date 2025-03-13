@@ -2,11 +2,10 @@ import openai
 
 class DrinkCheck:
     def __init__(self, beverage):
-        self.api_key = ""
+        self.api_key = "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"
         openai.api_key = self.api_key
 
         self.beverage = beverage
-        # 프롬프트 구성: 예시를 제거하고 간결하게 작성합니다.
         self.prompt = (
             "Below are examples of extracting a beverage name from a request. "
             "If the beverage is not clearly defined, output \"none\".\n\n"
@@ -42,35 +41,7 @@ class DrinkCheck:
             print(f"An error occurred: {e}")
             return None
 
-if __name__ == "__main__":
-    user_request = input("Enter your request: ")
-    checker = DrinkCheck(user_request)
-    beverage = checker.generate()
-    print("Extracted beverage:", beverage)
-
-
 '''
-class DrinkCheck:
-    def __init__(self, request):
-        self.request = request
-        self.prompt = f"""
-        find the Beverage for the following request: {self.request}.
-        If the request contains a Beverage, output is the Beverage name.
-        If no Beverage in the request, output "none".
-        Example: For the request "latte", the correct output is "latte".
-        Example: For the request "make me water", the correct output is "water".
-        Example: For the request "give me a cafe latte", the correct output is "cafe latte".
-        Example: For the request "give me sweet thing", the correct output is "none".
-"""
-    def generate(self):
-        # 토크나이즈 시 padding 활성화 -> attention_mask 생성
-        inputs = tokenizer(self.prompt, return_tensors="pt", padding=True)
-        input_ids = inputs.input_ids
-        attention_mask = inputs.attention_mask
-        outputs = model.generate(input_ids, attention_mask=attention_mask, max_new_tokens=100)
-        result = tokenizer.decode(outputs[0], skip_special_tokens=True)
-        return result.strip()
-
 if __name__ == "__main__":
     user_request = input("Enter your request: ")
     checker = DrinkCheck(user_request)
