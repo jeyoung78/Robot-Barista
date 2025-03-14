@@ -23,10 +23,6 @@ Example:
 Request: "Cafe Latte"
 Answer: ["espresso", "steamed_milk"]
 
-Example:
-Request: "Some sweet beverage"
-Answer: []
-
 Now, based on the request below, output the Python list.
 Request: {self.beverage}
 Answer:
@@ -41,7 +37,7 @@ Answer:
                 engine=self.model,
                 prompt=self.prompt,
                 max_tokens=100,       # 충분한 토큰 수 설정 (필요한 만큼 조절)
-                temperature=0.0,      # 결정론적 출력을 위해 0으로 설정
+                temperature=0.6,      # 결정론적 출력을 위해 0으로 설정
                 top_p=1,
                 frequency_penalty=0,
                 presence_penalty=0,
@@ -69,13 +65,14 @@ Answer:
 
 
 def main():
-    beverage_input = input("Enter your beverage: ")
-    recipe_gen = slmRecipeGeneration(beverage_input)
-    ingredients = recipe_gen.generate()
-    if ingredients is not None:
-        print("Final ingredients list:", ingredients)
-    else:
-        print("Failed to generate a valid ingredients list.")
+        beverage = input("Enter your beverage: ")
+        recipe_gen = slmRecipeGeneration(beverage)
+        ingredients = recipe_gen.generate()
+        
+        if ingredients is not None:
+            print("Extracted ingredients list:", ingredients)
+        else:
+            print("Failed to generate a valid ingredients list.")
 
 if __name__ == "__main__":
-    main()
+        main()
