@@ -30,7 +30,7 @@ def main():
                 print("Proceeding...")
                 break
             else:
-                pass
+                print("Please type 'proceed' to continue.")
         time.sleep(5)
     
     print("complete!")

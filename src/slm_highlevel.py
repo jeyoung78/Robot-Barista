@@ -16,12 +16,12 @@ Do not include solid ingredients, amounts, measurements, or any explanations.
 Strictly output only a valid Python list with ingredient names as strings—nothing more than a Python array.
 
 Example:
-Request: "Macchiato"
-Answer: ["espresso", "steamed_milk"]
+Request: "Cappuccino"
+Answer: ['ice', 'espresso','milk']
 
 Example:
-Request: "Cafe Latte"
-Answer: ["espresso", "steamed_milk"]
+Request: "chocolate latte"
+Answer: ["chocolate_syrup", "espresso", "milk", "ice"]
 
 Now, based on the request below, output the Python list.
 Request: {self.beverage}
@@ -50,14 +50,13 @@ Answer:
 
 # 올바르게 각 줄을 처리하도록 수정
         lines = generated_text.splitlines()
-        filtered_lines = [line for line in lines if not line.startswith("```")]
-        raw_string = "\n".join(filtered_lines).strip()
+        raw_string = "\n".join(lines).strip()
         if not raw_string.startswith('['):
             print("Output is not a valid Python list.")
             return None
         try:
             my_array = ast.literal_eval(raw_string)
-            print("Parsed array:", my_array)
+            print("sLM Parsed array:", my_array)
             return my_array
         except Exception as e:
             print(f"Error parsing the generated text as a Python list: {e}")
