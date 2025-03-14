@@ -44,7 +44,6 @@ Answer:
                 stop=["\n"]          # 개행 문자가 나오면 생성을 중단
             )
             generated_text = response.choices[0].text.strip()
-            print(generated_text)
         except Exception as e:
             print(f"An error occurred: {e}")
 
@@ -56,7 +55,6 @@ Answer:
             return None
         try:
             my_array = ast.literal_eval(raw_string)
-            print("sLM Parsed array:", my_array)
             return my_array
         except Exception as e:
             print(f"Error parsing the generated text as a Python list: {e}")
