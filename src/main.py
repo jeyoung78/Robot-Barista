@@ -1,16 +1,9 @@
-# Goal now: move robot to grab a cup and move to a different location
-# Monday: Implement robot code and Communicate class so that robot can be controlled from python script
 import pyttsx3
 import time
-import PIL.Image
 
-from google import genai
 from image_processing import ImageProcessing, CameraInterface
 from control import Communicate
-from llm_highlevel import llmRecipeGeneration
-from slm_highlevel import slmRecipeGeneration
-from checkslm import DrinkCheck
-from circle import detect_circle
+from task_planning import slmRecipeGeneration, llmRecipeGeneration, DrinkCheck
 
 def main():
     url_save = 'saved.jpg'
@@ -19,7 +12,7 @@ def main():
 
     while True:
         ci.capture_iamge()
-        found, cx, cy, radius = detect_circle(url_save, display=False)
+        found, cx, cy, radius = ImageProcessing.detect_circle(url_save, display=False)
         if not found or cy is None:
             print("cannot detect cup... retry...")
             time.sleep(1)
@@ -39,7 +32,7 @@ def main():
 
     while True:
         ci.capture_iamge()
-        found, cx, cy, radius = detect_circle(url_save, display=False)
+        found, cx, cy, radius = ImageProcessing.detect_circle(url_save, display=False)
         if not found or cx is None:
             print("cannot detect cup... retry...")
             time.sleep(1)
@@ -56,42 +49,72 @@ def main():
             co.move_x(True)
             print("Moving x positive.")
         time.sleep(1)
-
+    
     user_request = input("Enter your request: ")
     checker = DrinkCheck(user_request)
     beverage = checker.generate()
-
-    if beverage.lower() == "none":
-        rgllm = llmRecipeGeneration(user_request)
-        ingredients = rgllm.generate()
     
+    if beverage.lower() == "none":
+        satisfied = False
+        current_request = user_request  
+        while not satisfied:
+            rgllm = llmRecipeGeneration(current_request)
+            recipe_result = rgllm.generate()
+            if recipe_result is None:
+                print("Failed to generate beverage. Please try again.")
+                current_request = input("Enter a new beverage request: ")
+                continue
+
+            beverage_name, ingredients = recipe_result
+            
+            # ingredients가 None인 경우 재생성을 시도
+            if ingredients is None:
+                print("Failed to generate ingredients for the beverage. Let's try again.")
+                current_request = input("Enter a new beverage request: ")
+                continue
+
+            print("Recommended beverage name:", beverage_name)
+            user_choice = input("Are you satisfied with this beverage name? (yes/no): ")
+            if user_choice.lower() in ['yes', 'y']:
+                satisfied = True
+            else:
+                print("Let's try generating a new beverage name.")
+                current_request = input("Enter a new beverage description: ")
+        
     else:
         rgslm = slmRecipeGeneration(beverage)
         ingredients = rgslm.generate()
+        # ingredients가 None이면 새로운 음료 입력을 받아 다시 생성
+        while ingredients is None:
+            print("Failed to generate ingredients for the beverage. Please try again.")
+            beverage = input("Enter a new beverage: ")
+            rgslm = slmRecipeGeneration(beverage)
+            ingredients = rgslm.generate()
+
+    print("Beverage ingredients list:", ingredients)
 
     target_word = "proceed"
 
     engine = pyttsx3.init()
     voices = engine.getProperty("voices")
     engine.setProperty("voice", voices[1].id)
-    
+
     for ingredient in ingredients:
         print(ingredient)
         co.prepare(True)
         ingredient_cleaned = ingredient.replace("_", " ")
         engine.say("pour " + ingredient_cleaned)
         engine.runAndWait()
-        
-        
+
         while True:
-            user_input = input("Type a word: ").strip()
+            user_input = input("After adding the ingredients, type 'proceed' : ").strip()
             if user_input.lower() == target_word.lower():
                 print("Proceeding...")
                 break
             else:
                 print("Please type 'proceed' to continue.")
 
-        co.communicate("pour")
+        co.communicate("pour")        
         time.sleep(20)
     
     print("complete!")

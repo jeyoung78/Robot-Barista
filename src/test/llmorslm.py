@@ -1,9 +1,5 @@
 import time
-import PIL.Image
-from llm_highlevel import llmRecipeGeneration
-from slm_highlevel import slmRecipeGeneration
-import google.generativeai as genai
-from checkslm import DrinkCheck
+from task_planning import slmRecipeGeneration, llmRecipeGeneration, DrinkCheck
 
 def main():
     user_request = input("Enter your request: ")
