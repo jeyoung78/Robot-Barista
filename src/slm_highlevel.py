@@ -1,3 +1,5 @@
+
+'''
 import openai
 import ast
 
@@ -73,3 +75,82 @@ def main():
 
 if __name__ == "__main__":
         main()
+'''
+
+import ast
+import torch
+from transformers import AutoTokenizer, AutoModelForCausalLM
+
+class slmRecipeGeneration:
+    def __init__(self, beverage):
+        self.beverage = beverage
+        self.prompt = f"""
+You are to output a valid Python list containing only ingredient names as strings.
+The output must strictly follow this format: ["ingredient1", "ingredient2", ...]
+Do not include any additional characters, symbols, or explanations.
+Examples:
+Request: "Cappuccino"
+Answer: ["ice", "espresso", "milk"]
+
+Request: "chocolate latte"
+Answer: ["chocolate_syrup", "espresso", "milk", "ice"]
+
+Now, based on the request below, output the Python list.
+Request: {self.beverage}
+Answer:
+"""
+        self.model_name = "microsoft/phi-2"
+        # 토크나이저 초기화 시 pad_token을 eos_token으로 지정합니다.
+        self.tokenizer = AutoTokenizer.from_pretrained(self.model_name, trust_remote_code=True)
+        self.tokenizer.pad_token = self.tokenizer.eos_token
+
+        self.model = AutoModelForCausalLM.from_pretrained(
+            self.model_name,
+            torch_dtype=torch.float16,
+            trust_remote_code=True
+        ).eval()
+        # CPU에서 실행하는 경우 GPU 관련 코드는 제거하세요.
+        # 만약 GPU를 사용한다면, self.model.to("cuda")를 사용합니다.
+
+    def generate(self):
+        # attention mask를 포함하여 토크나이저 호출 (기본값은 return_attention_mask=True)
+        inputs = self.tokenizer(self.prompt, return_tensors="pt")
+        
+        outputs = self.model.generate(
+            **inputs,
+            max_new_tokens=100,
+            temperature=0.6,
+            top_p=1.0,
+            do_sample=True,
+            eos_token_id=self.tokenizer.eos_token_id,
+            pad_token_id=self.tokenizer.pad_token_id
+        )
+        
+        generated_text = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
+        if "Answer:" in generated_text:
+            answer = generated_text.split("Answer:")[-1].strip()
+        else:
+            answer = generated_text.strip()
+
+        if not answer.startswith('['):
+            print("Output is not a valid Python list.")
+            return None
+        try:
+            my_array = ast.literal_eval(answer)
+            return my_array
+        except Exception as e:
+            print(f"Error parsing the generated text as a Python list: {e}")
+            return None
+
+def main():
+    beverage = input("Enter your beverage: ")
+    recipe_gen = slmRecipeGeneration(beverage)
+    ingredients = recipe_gen.generate()
+    
+    if ingredients is not None:
+        print("Extracted ingredients list:", ingredients)
+    else:
+        print("Failed to generate a valid ingredients list.")
+
+if __name__ == "__main__":
+    main()
