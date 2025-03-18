@@ -1,54 +1,16 @@
 import pyttsx3
 import time
 
-from image_processing import ImageProcessing, CameraInterface
 from control import Communicate
 from task_planning import slmRecipeGeneration, llmRecipeGeneration, DrinkCheck
+from robot_move import robot_control
 
 def main():
     url_save = 'saved.jpg'
-    ci = CameraInterface(url = url_save)
     co = Communicate()
-
-    while True:
-        ci.capture_iamge()
-        found, cx, cy, radius = ImageProcessing.detect_circle(url_save, display=False)
-        if not found or cy is None:
-            print("cannot detect cup... retry...")
-            time.sleep(1)
-            continue
-
-        print(f"Detected circle: center=({cx}, {cy})")
-        if 450 <= cy <= 500:
-            print("Y-axis aligned.")
-            break
-        elif cy > 500:
-            co.move_y(False)
-            print("Moving y negative.")
-        elif cy < 450:
-            co.move_y(True)
-            print("Moving y positive.")
-        time.sleep(1)
-
-    while True:
-        ci.capture_iamge()
-        found, cx, cy, radius = ImageProcessing.detect_circle(url_save, display=False)
-        if not found or cx is None:
-            print("cannot detect cup... retry...")
-            time.sleep(1)
-            continue
-
-        print(f"Detected circle: center=({cx}, {cy})")
-        if 475 <= cx <= 525:
-            print("X-axis aligned.")
-            break
-        elif cx > 525:
-            co.move_x(False)
-            print("Moving x negative.")
-        elif cx < 475:
-            co.move_x(True)
-            print("Moving x positive.")
-        time.sleep(1)
+    robot = robot_control(url_save)
+    robot.y_alligned()
+    robot.x_alligned()
     
     user_request = input("Enter your request: ")
     checker = DrinkCheck(user_request)
