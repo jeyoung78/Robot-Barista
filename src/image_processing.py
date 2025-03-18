@@ -3,18 +3,19 @@ import cv2
 import time
 import numpy as np
 import matplotlib.pyplot as plt
-# from transformers import DPTImageProcessor, DPTForDepthEstimation
+import pytesseract
 
-# image_processor = DPTImageProcessor.from_pretrained("Intel/dpt-hybrid-midas")
+pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+
 class CameraInterface:    
-    def __init__(self, url) : # -> return 값
+    def __init__(self, url):
         self.cam2 = 0
         self.cap = cv2.VideoCapture(self.cam2)
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 3840)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 2748)
         self.url = url
 
-    def capture_iamge(self):
+    def capture_image(self):
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 3840)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 2748)
         ret, img = self.cap.read()
@@ -23,28 +24,7 @@ class CameraInterface:
 
         return
 
-    def robot_camera_stream(self):
-        # cap = cv2.VideoCapture(0)
-        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 3840)
-        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 2748)
-        cv2.namedWindow('video', cv2.WINDOW_NORMAL)
-
-        # show
-        while True:
-            ret, img = self.cap.read() #ret : 성공하면 true, 실패하면 false
-            if not ret :
-                print("can't read cap")
-                break
-            img = cv2.resize(img, (1280, 720))
-            cv2.imshow("video", img)
-            k = cv2.waitKey(1)
-            if k == ord('s') :
-                cv2.imwrite(time.strftime("%H%M%S")+'.jpg', img)
-            elif k == ord('q') :
-                break
-        
-        cv2.destroyAllWindows()
-
+# Returns image coordinates of target objects
 class ImageProcessing:
     def __init__(self, url='saved.jpg'):
         self.lower_red1 = np.array([0, 120, 150])
@@ -57,7 +37,6 @@ class ImageProcessing:
         self.url = url
 
     def detect_circle(image_path, display=False):
-
         image = cv2.imread(image_path)
         if image is None:
             print(f"Can't load this image: {image_path}")
@@ -92,68 +71,74 @@ class ImageProcessing:
         else:
             return False, None, None, None
 
+    def find_ingredient_cup(self, image_path="saved.jpg", target_ingredient="Water"):
+        ci = CameraInterface('saved.jpg')
+        found = False
+        count = 0
+        target_x = None
 
-    def detect_red_dot(self):
-        # Read the image
-        image = cv2.imread(self.url)
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+        while not found and count < 10:
+            # ci.capture_image()
+            text_list = []
+            image = cv2.imread(image_path)
+            # Convert to grayscale
+            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            # Optional: Apply threshold
+            _, thresh = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY)
+            cv2.imwrite('processed.jpg', thresh)
+            data = pytesseract.image_to_data(thresh, config='--psm 6', output_type=pytesseract.Output.DICT)
+            print(data['text'])
+
+            for i in range(len(data['text'])):
+                if data['text'][i].lower() == target_ingredient.lower():
+                    x = data['left'][i]
+                    w = data['width'][i]
+                    centre_x = x + w // 2
+                    target_x = centre_x
+                    found = True
+
+            count = count + 1
+
+        print(target_x)
         
-        # Convert to HSV color space
-        hsv = cv2.cvtColor(image, cv2.COLOR_RGB2HSV)
+        if target_x == None:
+            return 
         
-        # Create masks for both red ranges
-        mask1 = cv2.inRange(hsv, self.lower_red1, self.upper_red1)
-        mask2 = cv2.inRange(hsv, self.lower_red2, self.upper_red2)
-        mask3 = cv2.inRange(hsv, self.lower_white, self.upper_white)
+        gray_blurred = cv2.GaussianBlur(gray, (9, 9), 2)
 
-        # Combine masks
-        # mask = cv2.bitwise_or(mask1, mask2)
-        mask = mask3
-        # Find contours of red areas
-        contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        # Hough Circle Transform 적용
+        circles = cv2.HoughCircles(
+            gray_blurred,
+            cv2.HOUGH_GRADIENT,
+            dp=1.2,
+            minDist=50,
+            param1=50,
+            param2=30,
+            minRadius=120,
+            maxRadius=150
+        )
+        
+        print(circles)
+        display = True
 
-        # Draw contours
-        output = image.copy()
-        # print(len(contours))
-        for contour in contours:
-            area = cv2.contourArea(contour)
+        if circles is not None:
+            circles = circles[0].astype(np.float32)
+            best_circle = min(circles, key=lambda circle: abs(circle[0] - target_x))
+            cx, cy, radius = int(best_circle[0]), int(best_circle[1]), int(best_circle[2])
+            print("Closest circle center (x, y):", cx, cy, "with radius:", radius)
             
-            if 100 < area:  # Adjust for small dots, removing large areas
-                # x, y, w, h = cv2.boundingRect(contour)
+            if display:
+                # Draw the circle center.
+                cv2.circle(image, (cx, cy), 2, (0, 0, 255), 3)
+                # Draw the circle outline.
+                cv2.circle(image, (cx, cy), radius, (0, 255, 0), 2)
+                cv2.imshow("Detected Circle", image)
+                cv2.waitKey(0)
+                cv2.destroyAllWindows()
+            
+            return cx, cy
 
-                # Ensure it's roughly circular
-                (cx, cy), radius = cv2.minEnclosingCircle(contour)
-                # print(cx, cy)
-                # radius = int(radius)
-                # if 0.8 < (w / h) < 1.2:  # Ensure width and height are similar (circular)
-                #     cv2.circle(output, (int(cx), int(cy)), radius,(0, 128, 0), thickness=20)
-        
-        # return (cx, cy)
-
-        # Show images
-        '''
-        plt.figure(figsize=(10,5))
-        plt.subplot(1, 2, 1)
-        plt.title("Original Image")
-        plt.imshow(image)
-        plt.axis("off")
-
-        plt.subplot(1, 2, 2)
-        plt.title("Detected Red Dot")
-        plt.imshow(output)
-        plt.axis("off")
-
-        plt.show()
-        '''
-        return cx, cy        
-
-    def find_cup(self):
-        pass
 
 if __name__ == '__main__' :
-    # grab()
-    image = CameraInterface('saved.jpg')
-    image.capture_iamge()
     ip = ImageProcessing('saved.jpg')
-    cx, cy = ip.detect_red_dot()
-    print(cx, cy)
+    data = ip.find_ingredient_cup(target_ingredient="syrup")
