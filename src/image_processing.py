@@ -14,7 +14,7 @@ class CameraInterface:
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 2748)
         self.url = url
 
-    def capture_iamge(self):
+    def capture_image(self):
         self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 3840)
         self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 2748)
         ret, img = self.cap.read()

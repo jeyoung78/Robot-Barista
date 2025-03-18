@@ -10,7 +10,7 @@ class Communicate:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_sock:
             client_sock.connect((self.robot_ip, self.robot_port))
             client_sock.sendall(command.encode('utf-8'))
-
+    
     def move_x(self, pos_dir=True):
         command = "move_x_positive" if pos_dir else "move_x_negative"
         self.communicate(command)

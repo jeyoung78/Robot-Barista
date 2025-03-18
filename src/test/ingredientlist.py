@@ -29,7 +29,7 @@ def main():
         ci.capture_iamge()
         image = cv2.imread(url_save)
         if image is None:
-            print("cannot load image... retry...")  
+            print("cannot load image... retry...")
             time.sleep(1)
             continue
 
@@ -49,7 +49,15 @@ def main():
                 y = data['top'][i]
                 w = data['width'][i]
                 h = data['height'][i]
+                # 빨간색 사각형 그리기
                 cv2.rectangle(image, (x, y), (x+w, y+h), (0, 0, 255), 2)
+                
+                # 중심 좌표 계산
+                center_x = x + w // 2
+                center_y = y + h // 2
+                # 중심에 초록색 원 표시
+                cv2.circle(image, (center_x, center_y), 3, (0, 255, 0), -1)
+                print(f"Text box {i} center: ({center_x}, {center_y})")
 
         if found_text:
             cv2.imshow("Detected Text", image)
