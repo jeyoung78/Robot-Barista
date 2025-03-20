@@ -51,24 +51,23 @@ class slmRecipeGeneration:
 
         self.beverage = beverage
         self.prompt = f"""
-        Below are examples of extracting a valid Python list containing only liquid ingredients and ice for a beverage, in the order they need to be poured.
-        Skip any ingredients that are not liquid or ice.
-        If syrup is needed, include the word "syrup" (for example, if vanilla syrup is required, output "vanilla_syrup").
-        Do not include solid ingredients, amounts, measurements, or any explanations.
-        Strictly output only a valid Python list with ingredient names as strings—nothing more than a Python array.
+Robot: Hi there, I'm a robot operating in an office cafe.
+Robot: You can ask me to make various drinks and I'll tell you the sequence of actions I would take to prepare them.
 
-        Example:
-        Request: "Cappuccino"
-        Answer: ['ice', 'espresso','milk']
+Human: How would you make Cappuccino?
+Robot: 1. espresso, 2. milk, 3. ice, 4. done.
 
-        Example:
-        Request: "chocolate latte"
-        Answer: ["chocolate_syrup", "espresso", "milk", "ice"]
+Human: How would you make Vanilla Latte?
+Robot: 1. vanilla syrup, 2. espresso, 3. milk, 4. ice,  5. done.
 
-        Now, based on the request below, output the Python list.
-        Request: {self.beverage}
-        Answer:
-        """
+Human: How would you make Americano?
+Robot: 1. ice, 2. water, 3. espresso, 4. done.
+
+Human: How would you make a Caramel Macchiato?
+Robot: 1. vanilla syrup, 2. milk, 3. espresso, 4. ice, 5. caramel syrup 6. done.
+
+Human: How would you make {self.beverage}?
+Robot: """
 
         self.model = "babbage-002"
 
@@ -88,6 +87,7 @@ class slmRecipeGeneration:
         except Exception as e:
             print(f"An error occurred: {e}")
 
+        print("Generated text:", generated_text)
         lines = generated_text.splitlines()
         raw_string = "\n".join(lines).strip()
         if not raw_string.startswith('['):
@@ -188,7 +188,7 @@ class llmRecipeGeneration:
         return recommended_beverage_name, beverage_ingredients
 
 # Example usage case: slmRecipeGeneration
-'''
+
 def main():
         beverage = input("Enter your beverage: ")
         recipe_gen = slmRecipeGeneration(beverage)
@@ -198,7 +198,7 @@ def main():
             print("Extracted ingredients list:", ingredients)
         else:
             print("Failed to generate a valid ingredients list.")
-'''
+
 
 # Example usage: llmRecipeGeneration
 '''
