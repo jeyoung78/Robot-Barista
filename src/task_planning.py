@@ -1,6 +1,7 @@
 import openai
 import ast
 import re
+import tiktoken
 
 class DrinkCheck:
     def __init__(self, beverage):
@@ -133,7 +134,6 @@ class llmRecipeGeneration:
         Request: {self.beverage}
         Answer:
         """
-        # 사용할 모델 이름 (채팅 모델)
         self.model = "gpt-4o"
 
     def generate(self):
@@ -184,37 +184,91 @@ class llmRecipeGeneration:
             print(f"Error parsing the ingredients list: {e}")
             return None
 
-        # 필요한 경우, 음료 이름 부분은 이후에 사용하지 않도록 저장 후 삭제 가능함
         return recommended_beverage_name, beverage_ingredients
 
-# Example usage case: slmRecipeGeneration
-'''
-def main():
-        beverage = input("Enter your beverage: ")
-        recipe_gen = slmRecipeGeneration(beverage)
-        ingredients = recipe_gen.generate()
-        
-        if ingredients is not None:
-            print("Extracted ingredients list:", ingredients)
-        else:
-            print("Failed to generate a valid ingredients list.")
-'''
+class Scoring:
+    def __init__(self):
+        self.api_key = "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"
+        openai.api_key = self.api_key
+        self.MODEL_NAME = "davinci-002"
+        self.options = [
+            "milk",
+            "water",
+            "caramel",
+            "ice",
+            "done"
+        ]
 
-# Example usage: llmRecipeGeneration
-'''
-def main():
-    beverage_input = input("Enter your beverage: ")
-    recipe_gen = llmRecipeGeneration(beverage_input)
-    result = recipe_gen.generate()
+    def score_prompt(self, query: str, option: str, option_start: str="\n", verbose: bool=False):
+        prompt_options = query + "\nNext step:" + option
+        response = openai.Completion.create(
+            model=self.MODEL_NAME,
+            prompt=prompt_options,
+            max_tokens=0,  
+            echo=True,
+            logprobs=1,
+            temperature=0.5
+        )
+        tokens = response["choices"][0]["logprobs"]["tokens"]
+        token_logprobs = response["choices"][0]["logprobs"]["token_logprobs"]
+
+        encoding = tiktoken.encoding_for_model(self.MODEL_NAME)
+        query_token_ids = encoding.encode(query)
+        query_token_count = len(query_token_ids)
+
+        option_logprobs = token_logprobs[query_token_count:]
+        total_log_prob = sum(option_logprobs)
+
+        return total_log_prob, tokens, token_logprobs
+
+    def local_llm_scoring(self, query: str, options: list, option_start: str="\n", verbose: bool=False):
+        scores = {}
+        for option in options:
+            score, tokens, token_logprobs = self.score_prompt(query, option, option_start, verbose)
+            scores[option] = score
+        return scores
     
-    if result is not None:
-        recommended_beverage_name, beverage_ingredients = result
-        print("\nFinal Results:")
-        print("Recommended beverage name:", recommended_beverage_name)
-        print("Beverage ingredients list:", beverage_ingredients)
-    else:
-        print("Failed to generate a valid beverage and ingredients list.")
-'''
+    def parse_robot_line_until_done(self, text):
+        if "Robot:" in text:
+            text = text.split("Robot:", 1)[-1].strip()
+        parts = re.split(r'\d+\.\s*', text)
+        ingredients = []
+        for part in parts:
+            cleaned = part.strip().rstrip('.').strip()
+            if not cleaned:
+                continue
+            if cleaned.lower() == 'done':
+                break
+            ingredients.append(cleaned)
+        
+        return ingredients
+    
+    def extract_last_line(self, text):
+        lines = [line for line in text.splitlines() if line.strip()]
+        return lines[-1]
+    
+    def generate_prompt(self, beverage: str, verbose: bool = False) -> str:
+        count = 2
+        base_prompt = f'In what order should the ingredients be poured in to make {beverage}? 1. espresso'
 
-if __name__ == "__main__":
-    main()
+        remaining_options = self.options.copy()
+        chosen_steps = ['espresso']
+        current_prompt = base_prompt
+        while remaining_options:
+            current_prompt = current_prompt + ' ' + str(count) + '. '
+            scores = self.local_llm_scoring(current_prompt, remaining_options, option_start="\n", verbose=verbose)
+            if not scores:
+                break
+            best_option = max(scores, key=scores.get)
+            best_score = scores[best_option]
+            print(best_option)
+            if best_option == 'done':
+                break
+            print(f"Option '{best_option.strip()}' added with score: {best_score:.4f}")
+
+            current_prompt = current_prompt + best_option
+            count = count + 1 
+            remaining_options.remove(best_option)
+            chosen_steps.append(best_option)
+
+        return chosen_steps

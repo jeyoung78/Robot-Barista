@@ -3,97 +3,43 @@ import time
 
 from image_processing import ImageProcessing, CameraInterface
 from control import Communicate
-from task_planning import slmRecipeGeneration, llmRecipeGeneration, DrinkCheck
+from task_planning import Scoring, llmRecipeGeneration
+
+beverage = 'capuccino'
+
+co = Communicate()
+url_save = 'saved.jpg'
+ci = CameraInterface(url = url_save)
+ip = ImageProcessing('saved.jpg')
+llm_gen = llmRecipeGeneration(beverage)
+
+scoring = Scoring()
+
+global_target_x = 500
+global_target_y = 480
+global_margin = 20
+
+llm = False
 
 def main():
-    url_save = 'saved.jpg'
-    ci = CameraInterface(url = url_save)
-    co = Communicate()
-
-    while True:
-        ci.capture_iamge()
-        found, cx, cy, radius = ImageProcessing.detect_circle(url_save, display=False)
-        if not found or cy is None:
-            print("cannot detect cup... retry...")
-            time.sleep(1)
-            continue
-
-        print(f"Detected circle: center=({cx}, {cy})")
-        if 450 <= cy <= 500:
-            print("Y-axis aligned.")
-            break
-        elif cy > 500:
-            co.move_y(False)
-            print("Moving y negative.")
-        elif cy < 450:
-            co.move_y(True)
-            print("Moving y positive.")
-        time.sleep(1)
-
-    while True:
-        ci.capture_iamge()
-        found, cx, cy, radius = ImageProcessing.detect_circle(url_save, display=False)
-        if not found or cx is None:
-            print("cannot detect cup... retry...")
-            time.sleep(1)
-            continue
-
-        print(f"Detected circle: center=({cx}, {cy})")
-        if 475 <= cx <= 525:
-            print("X-axis aligned.")
-            break
-        elif cx > 525:
-            co.move_x(False)
-            print("Moving x negative.")
-        elif cx < 475:
-            co.move_x(True)
-            print("Moving x positive.")
-        time.sleep(1)
-    
-    user_request = input("Enter your request: ")
-    checker = DrinkCheck(user_request)
-    beverage = checker.generate()
-    
-    if beverage.lower() == "none":
-        satisfied = False
-        current_request = user_request  
-        while not satisfied:
-            rgllm = llmRecipeGeneration(current_request)
-            recipe_result = rgllm.generate()
-            if recipe_result is None:
-                print("Failed to generate beverage. Please try again.")
-                current_request = input("Enter a new beverage request: ")
-                continue
-
-            beverage_name, ingredients = recipe_result
-            
-            # ingredients가 None인 경우 재생성을 시도
-            if ingredients is None:
-                print("Failed to generate ingredients for the beverage. Let's try again.")
-                current_request = input("Enter a new beverage request: ")
-                continue
-
-            print("Recommended beverage name:", beverage_name)
-            user_choice = input("Are you satisfied with this beverage name? (yes/no): ")
-            if user_choice.lower() in ['yes', 'y']:
-                satisfied = True
-            else:
-                print("Let's try generating a new beverage name.")
-                current_request = input("Enter a new beverage description: ")
-        
+    if llm:
+        ingredients = llm_gen.generate()
     else:
-        rgslm = slmRecipeGeneration(beverage)
-        ingredients = rgslm.generate()
-        # ingredients가 None이면 새로운 음료 입력을 받아 다시 생성
-        while ingredients is None:
-            print("Failed to generate ingredients for the beverage. Please try again.")
-            beverage = input("Enter a new beverage: ")
-            rgslm = slmRecipeGeneration(beverage)
-            ingredients = rgslm.generate()
-
+        ingredients = scoring.generate_prompt(beverage)
+    
     print("Beverage ingredients list:", ingredients)
 
-    target_word = "proceed"
+    while True:
+        ci.capture_image()
+        found, cx, cy, radius = ip.detect_circle()
+        alignment = move(cx, cy)
+        if alignment:
+            break
+    
+    # Save current position of the target cup
+    co.communicate("save")
+
+    
 
     engine = pyttsx3.init()
     voices = engine.getProperty("voices")
@@ -102,24 +48,53 @@ def main():
     for ingredient in ingredients:
         print(ingredient)
         co.prepare(True)
-        ingredient_cleaned = ingredient.replace("_", " ")
-        engine.say("pour " + ingredient_cleaned)
-        engine.runAndWait()
-
+        
         while True:
-            user_input = input("After adding the ingredients, type 'proceed' : ").strip()
-            if user_input.lower() == target_word.lower():
-                print("Proceeding...")
+            ci.capture_image()
+            cx, cy = ip.find_ingredient_cup(ingredient)
+            alignment = move(cx, cy)
+            if alignment:
                 break
-            else:
-                print("Please type 'proceed' to continue.")
-
+        
+        engine.say("pouring " + ingredient)
+        engine.runAndWait()
         co.communicate("pour")        
-        time.sleep(20)
+        time.sleep(25)
     
     print("complete!")
     engine.say("Complete!")
     engine.runAndWait()
+
+def move(cx: int, cy: int, target_x=global_target_x, target_y=global_target_y, margin=global_margin):
+    alignment_x = False
+    alignment_y = False
+
+    if (target_x - margin) <= cx <= (target_x + margin):
+        print("x-axis aligned.")
+        alignment_x = True
+    elif cx >= (target_x + margin):
+        co.move_x(False)
+        print("Moving x negative.")
+    elif cx < (target_x - margin):
+        co.move_x(True)
+        print("Moving x positive.")
+    
+    
+    if alignment_x:    
+        if (target_y - margin) <= cy <= (target_x + margin):
+            print("y-axis aligned.")
+            alignment_y = True
+        elif cy > (target_x + margin):
+            co.move_y(False)
+            print("Moving y negative.")
+        elif cy < (target_x - margin):
+            co.move_y(True)
+            print("Moving y positive.")
+
+    if alignment_x and alignment_y:
+        return True
+    else:
+        return False
 
 if __name__ == "__main__":
     main()
