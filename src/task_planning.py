@@ -2,6 +2,11 @@ import openai
 import ast
 import re
 import tiktoken
+import torch
+
+import torch.nn.functional as F
+from transformers import GPT2LMHeadModel, GPT2Tokenizer
+
 
 class DrinkCheck:
     def __init__(self, beverage):
@@ -186,9 +191,9 @@ class llmRecipeGeneration:
 
         return recommended_beverage_name, beverage_ingredients
 
-class Scoring:
+class Scoring_API:
     def __init__(self):
-        self.api_key = "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"
+        self.api_key = ""
         openai.api_key = self.api_key
         self.MODEL_NAME = "davinci-002"
         self.options = [

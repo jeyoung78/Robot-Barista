@@ -16,76 +16,7 @@ from datasets import Dataset
 from google import genai
 from google.genai.types import HttpOptions, Part
 
-client = genai.Client(api_key="AIzaSyAbZpHttVawCw_I-K68XQgHPlKQZ4XXSQg")
-
-prompt = """
-The goal: Produce a user request for a coffee order in a cafe. The request can be:
-1. A specific drink order (e.g., “I want caramel macchiato”).
-2. A modified drink order (e.g., “Can I have a latte with extra shot?”).
-3. A vague order (e.g., “I’m not sure what I want”).
-
-Example 1
-The user request scenario is 'Specific Drink Order':
-Output: I want caramel macchiato.
-
-Example 2
-The user request scenario is 'Specific Drink Order':
-Output: Could I have a iced latte?
-
-Example 3
-The user request scenario is 'Specific Drink Order':
-Output: Give me a cappuccino.
-
-Example 4
-The user request scenario is 'Modified Drink Order':
-Output: I'd like a mocha with half the syrup.
-
-Example 5
-The user request scenario is 'Modified Drink Order':
-Output: Can I have a latte with an extra shot?
-
-Example 6
-The user request scenario is 'Vague Order':
-Output: I'm not sure what to get. Maybe something sweet?
-
-Example 7
-The user request scenario is 'Vague Order':
-Output: I need something very caffetinated.
-
-You do not need to keep the format in the examples. As long as it is a customer ordering drinks, it's good. Return only the output. Don't include flat white. Choose menu as if you're in cafe. 
-"""
-
-def generate_single_prompt():
-    response = client.models.generate_content(
-        model="gemini-2.0-flash-thinking-exp-01-21",
-        contents=[prompt])
-    words = response.text.split()
-    sentence = " ".join(words)
-    print(sentence)
-    time.sleep(2)
-
-for i in range(0, 100):
-    generate_single_prompt()
-
-'''
-def generate_teacher_response(prompt):
-    pass
-
-num_pairs = 500
-distillation_data = []
-
-for i in range(num_pairs):
-    print(f"Processing pair {i+1}/{num_pairs}...")
-    prompt = generate_single_prompt()
-    teacher_output = generate_teacher_response(prompt)
-    # Format as a conversation for the training example
-    combined_text = f"<recipe_generation> {prompt}: {teacher_output}"
-    print(combined_text)
-    distillation_data.append({"text": combined_text})
-
-with open("distillation_dataset_iterative.json", "w") as f:
-    json.dump(distillation_data, f, indent=4)
-
+# Setup tokenizer and model as before
 tokenizer = GPT2Tokenizer.from_pretrained("gpt2-medium")
 tokenizer.pad_token = tokenizer.eos_token
 model = GPT2LMHeadModel.from_pretrained("gpt2-medium")
@@ -98,24 +29,46 @@ print(f"Added {num_added_tokens} token(s): {special_token}")
 # Resize the model's token embeddings to accommodate the new token
 model.resize_token_embeddings(len(tokenizer))
 
-def tokenize_function(examples):
-    return tokenizer(
-        examples["text"], 
-        truncation=True, 
-        padding="max_length", 
-        max_length=128
-    )
+def tokenize_function(example):
+    combined = f"{special_token} {example['prompt']} {special_token} {example['response']}"
+    tokenized = tokenizer(combined, truncation=True, padding="max_length", max_length=128)
 
+    special_token_id = tokenizer.convert_tokens_to_ids(special_token)
+    input_ids = tokenized["input_ids"]
+
+    try:
+        first_index = input_ids.index(special_token_id)
+        # Look for the next occurrence after first_index
+        second_index = input_ids.index(special_token_id, first_index + 1)
+    except ValueError:
+        # If not found, default to using the whole sequence for loss.
+        tokenized["labels"] = input_ids.copy()
+        return tokenized
+
+    labels = [-100] * (second_index + 1) + input_ids[second_index + 1:]
+    labels = labels[:len(input_ids)]
+    tokenized["labels"] = labels
+
+    return tokenized
+
+# 1. Load your saved JSON file into a Python list of dictionaries
+with open("data_cleaned.json", "r") as f:
+    distillation_data = json.load(f)
+
+# Create the dataset from the list of dictionaries
 dataset = Dataset.from_list(distillation_data)
-tokenized_dataset = dataset.map(tokenize_function, batched=True)
+tokenized_dataset = dataset.map(tokenize_function, batched=False)
 
+print(dataset[2])
+
+# Use the default data collator for language modeling
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
 training_args = TrainingArguments(
     output_dir="./gpt2_distilled",
     overwrite_output_dir=True,
-    num_train_epochs=3,
-    per_device_train_batch_size=2,
+    num_train_epochs=6,
+    per_device_train_batch_size=4,
     save_steps=500,
     save_total_limit=2,
     logging_steps=100,
@@ -127,9 +80,9 @@ trainer = Trainer(
     train_dataset=tokenized_dataset,
     data_collator=data_collator,
 )
+print("Per-device train batch size:", trainer.args.per_device_train_batch_size)
 
 trainer.train()
 
 model.save_pretrained("./gpt2_distilled")
 tokenizer.save_pretrained("./gpt2_distilled")
-'''
