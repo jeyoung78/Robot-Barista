@@ -39,8 +39,6 @@ def main():
     # Save current position of the target cup
     co.communicate("save")
 
-    
-
     engine = pyttsx3.init()
     voices = engine.getProperty("voices")
     engine.setProperty("voice", voices[1].id)
