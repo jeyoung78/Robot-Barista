@@ -2,14 +2,14 @@ from transformers import GPT2LMHeadModel, GPT2Tokenizer
 import torch
 
 # 1. Load the fine-tuned model and tokenizer
-model_path = "./gpt2_distilled"
+model_path = "./gpt2_recipe_generation"
 tokenizer = GPT2Tokenizer.from_pretrained(model_path)
 model = GPT2LMHeadModel.from_pretrained(model_path)
 
 # 2. Prepare your prompt
 #    If you used a special token (e.g., <recipe_generation>) during training, 
 #    make sure to include it here as part of your prompt format.
-prompt_text = "<recipe_generation> Can I get an iced caramel macchiato with extra espresso shot? <recipe_generation>"
+prompt_text = "<recipe_generation> Can I have caramel macchiato? <recipe_generation>"
 
 # 3. Tokenize the prompt
 input_ids = tokenizer(prompt_text, return_tensors="pt").input_ids
@@ -27,4 +27,9 @@ with torch.no_grad():
 
 # 5. Decode and print the model's output
 output_text = tokenizer.decode(generated_ids[0], skip_special_tokens=True)
-print("Model Output:", output_text)
+first_done_index = output_text.find("Done")
+if first_done_index != -1:
+    # Include only up to and including the first "Done"
+    output = output_text[:first_done_index + len("Done")]
+# print("Model Output:", output_text)
+print("Model Output:", output)

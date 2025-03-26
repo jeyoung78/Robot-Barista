@@ -65,7 +65,7 @@ print(dataset[2])
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
 training_args = TrainingArguments(
-    output_dir="./gpt2_distilled",
+    output_dir="./gpt2_recipe_generation",
     overwrite_output_dir=True,
     num_train_epochs=6,
     per_device_train_batch_size=4,
@@ -84,5 +84,5 @@ print("Per-device train batch size:", trainer.args.per_device_train_batch_size)
 
 trainer.train()
 
-model.save_pretrained("./gpt2_distilled")
-tokenizer.save_pretrained("./gpt2_distilled")
+model.save_pretrained("./gpt2_recipe_generation")
+tokenizer.save_pretrained("./gpt2_recipe_generation")

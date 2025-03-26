@@ -49,7 +49,7 @@ def generate_single_prompt():
         Output: Can I have a iced americano with an extra shot of espresso?
 
         You do not need to keep the format in the examples. As long as it is a customer ordering drinks, it's good. Return only the output. Don't include flat white, regular coffee, brewed coffee, vanilla latte, or hot chocolate. 
-        Order only americano, cappuccino, macchiato, mocha, frappuccino, and cold brew drinks. 
+        Order only americano. 
         Do not modify drink by replacing milk with oatmilk or soy milk. 
     """
     response = client.models.generate_content(
@@ -110,7 +110,7 @@ def generate_teacher_response(prompt):
     time.sleep(5)
     return sentence
 
-num_pairs = 0
+num_pairs = 30
 distillation_data = []
 
 # Load existing data if file exists
