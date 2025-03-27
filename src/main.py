@@ -3,30 +3,25 @@ import time
 
 from image_processing import ImageProcessing, CameraInterface
 from control import Communicate
-from task_planning import Scoring, llmRecipeGeneration
+from task_planning import Scoring
 
-beverage = 'capuccino'
 
 co = Communicate()
 url_save = 'saved.jpg'
 ci = CameraInterface(url = url_save)
 ip = ImageProcessing('saved.jpg')
-llm_gen = llmRecipeGeneration(beverage)
 
-scoring = Scoring()
+scoring = Scoring("./gpt2_recipe_generation")
 
 global_target_x = 500
 global_target_y = 480
 global_margin = 20
 
-llm = False
-
 def main():
-    if llm:
-        ingredients = llm_gen.generate()
-    else:
-        ingredients = scoring.generate_prompt(beverage)
+    prompt = "Can I have caramel macchiato?"
+    updated_prompt, ingredients = scoring.generate(prompt)
     
+    print(updated_prompt)
     print("Beverage ingredients list:", ingredients)
 
     while True:

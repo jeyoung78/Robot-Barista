@@ -6,274 +6,102 @@ import torch
 
 import torch.nn.functional as F
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
+from transformers import GPT2LMHeadModel, GPT2Tokenizer
+import torch
+import time
 
-
-class DrinkCheck:
-    def __init__(self, beverage):
-        self.api_key = "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"
-        openai.api_key = self.api_key
-
-        self.beverage = beverage
-        self.prompt = (
-            "Below are examples of extracting a beverage name from a request. "
-            "If the beverage is not clearly defined, output \"none\".\n\n"
-            "Request: make me a Macchiato\n"
-            "Answer: Macchiato\n\n"
-            "Request: give me water\n"
-            "Answer: water\n\n"
-            "Request: give me a cafe latte\n"
-            "Answer: cafe latte\n\n"
-            "Request: some sweet beverage\n"
-            "Answer: none\n\n"
-            f"Request: {self.beverage}\n"
-            "Answer:"
-        )
-        # 사용할 모델
-        self.model = "babbage-002"
-
-    def generate(self):
-        try:
-            response = openai.Completion.create(
-                engine=self.model,
-                prompt=self.prompt,
-                max_tokens=10,      # 음료 이름 정도로 충분한 길이
-                temperature=0.5,    # 결정론적 출력
-                top_p=1,
-                frequency_penalty=0,
-                presence_penalty=0,
-                stop=["\n"]
-            )
-            answer = response.choices[0].text.strip()
-            return answer
-        except Exception as e:
-            print(f"An error occurred: {e}")
-            return None
-
-class slmRecipeGeneration:
-    def __init__(self, beverage):
-        # OpenAI API 키 설정 (실제 API 키로 교체하세요)
-        self.api_key = "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"
-        openai.api_key = self.api_key
-
-        self.beverage = beverage
-        self.prompt = f"""
-        Below are examples of extracting a valid Python list containing only liquid ingredients and ice for a beverage, in the order they need to be poured.
-        Skip any ingredients that are not liquid or ice.
-        If syrup is needed, include the word "syrup" (for example, if vanilla syrup is required, output "vanilla_syrup").
-        Do not include solid ingredients, amounts, measurements, or any explanations.
-        Strictly output only a valid Python list with ingredient names as strings—nothing more than a Python array.
-
-        Example:
-        Request: "Cappuccino"
-        Answer: ['ice', 'espresso','milk']
-
-        Example:
-        Request: "chocolate latte"
-        Answer: ["chocolate_syrup", "espresso", "milk", "ice"]
-
-        Now, based on the request below, output the Python list.
-        Request: {self.beverage}
-        Answer:
+class Scoring:
+    def __init__(self, model_path="./gpt2_recipe_generation"):
         """
-
-        self.model = "babbage-002"
-
-    def generate(self):
-        try:
-            response = openai.Completion.create(
-                engine=self.model,
-                prompt=self.prompt,
-                max_tokens=100,       # 충분한 토큰 수 설정 (필요한 만큼 조절)
-                temperature=0.6,      # 결정론적 출력을 위해 0으로 설정
-                top_p=1,
-                frequency_penalty=0,
-                presence_penalty=0,
-                stop=["\n"]          # 개행 문자가 나오면 생성을 중단
-            )
-            generated_text = response.choices[0].text.strip()
-        except Exception as e:
-            print(f"An error occurred: {e}")
-
-        lines = generated_text.splitlines()
-        raw_string = "\n".join(lines).strip()
-        if not raw_string.startswith('['):
-            print("Output is not a valid Python list.")
-            return None
-        try:
-            my_array = ast.literal_eval(raw_string)
-            return my_array
-        except Exception as e:
-            print(f"Error parsing the generated text as a Python list: {e}")
-            return None
-
-class llmRecipeGeneration:
-    def __init__(self, beverage):
-        # OpenAI API 키 설정 (실제 API 키로 교체하세요)
-        self.api_key = "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"
-        openai.api_key = self.api_key
-
-        self.beverage = beverage
-        self.prompt = f"""
-        Below are examples of extracting a valid output with two parts:
-        1. The first line must contain the beverage name, prefixed with "Beverage Name:".
-        2. The subsequent line(s) must contain only a valid Python list with liquid ingredients and ice for that beverage, in the exact order they should be poured.
-        If the provided beverage name is ambiguous or generic (for example, "some salty caffeine"), please determine a specific beverage that satisfies the request and output its proper name in the first line.
-        Skip any ingredients that are not liquid or ice.
-        If a syrup is needed, include the word "syrup" (for example, if vanilla syrup is required, output "vanilla_syrup").
-        Do not include any solid ingredients, amounts, measurements, or explanations.
-        Strictly output only the two parts as described below.
-
-        Example:
-        Request: "Cappuccino"
-        Answer:
-        Beverage Name: Cappuccino
-        ['ice', 'espresso', 'milk']
-
-        Example:
-        Request: "chocolate latte"
-        Answer:
-        Beverage Name: chocolate latte
-        ["chocolate_syrup", "espresso", "milk", "ice"]
-
-        Now, based on the request below, output in the same format.
-        Request: {self.beverage}
-        Answer:
+        Initializes Scoring by loading the fine-tuned GPT2 model and tokenizer.
         """
-        self.model = "gpt-4o"
-
-    def generate(self):
-        try:
-            response = openai.ChatCompletion.create(
-                model=self.model,
-                messages=[
-                    {"role": "user", "content": self.prompt}
-                ],
-                max_tokens=150,
-                temperature=0.9,
-                top_p=1,
-                frequency_penalty=0,
-                presence_penalty=0,
-            )
-            generated_text = response.choices[0].message['content'].strip()
-        except Exception as e:
-            print(f"An error occurred: {e}")
-            return None
-
-        # 코드 블록 제거 (예: ```python, ```)
-        generated_text = re.sub(r"```python", "", generated_text)
-        generated_text = re.sub(r"```", "", generated_text)
-        generated_text = generated_text.strip()
-
-        # 응답을 줄 단위로 분리
-        lines = generated_text.splitlines()
-        if len(lines) < 2:
-            print("Output does not have enough lines.")
-            return None
-
-        # 첫 번째 줄에서 음료 이름 추출
-        beverage_line = lines[0].strip()
-        if not beverage_line.lower().startswith("beverage name:"):
-            print("The first line does not start with 'Beverage Name:'.")
-            return None
-        recommended_beverage_name = beverage_line[len("Beverage Name:"):].strip()
-
-        # 나머지 줄들을 합쳐서 리스트 형태의 문자열로 만듦
-        list_string = "\n".join(lines[1:]).strip()
-        if not list_string.startswith('['):
-            print("Ingredients list not found or not valid.")
-            return None
-
-        try:
-            beverage_ingredients = ast.literal_eval(list_string)
-        except Exception as e:
-            print(f"Error parsing the ingredients list: {e}")
-            return None
-
-        return recommended_beverage_name, beverage_ingredients
-
-class Scoring_API:
-    def __init__(self):
-        self.api_key = ""
-        openai.api_key = self.api_key
-        self.MODEL_NAME = "davinci-002"
-        self.options = [
-            "milk",
-            "water",
-            "caramel",
-            "ice",
-            "done"
-        ]
-
-    def score_prompt(self, query: str, option: str, option_start: str="\n", verbose: bool=False):
-        prompt_options = query + "\nNext step:" + option
-        response = openai.Completion.create(
-            model=self.MODEL_NAME,
-            prompt=prompt_options,
-            max_tokens=0,  
-            echo=True,
-            logprobs=1,
-            temperature=0.5
-        )
-        tokens = response["choices"][0]["logprobs"]["tokens"]
-        token_logprobs = response["choices"][0]["logprobs"]["token_logprobs"]
-
-        encoding = tiktoken.encoding_for_model(self.MODEL_NAME)
-        query_token_ids = encoding.encode(query)
-        query_token_count = len(query_token_ids)
-
-        option_logprobs = token_logprobs[query_token_count:]
-        total_log_prob = sum(option_logprobs)
-
-        return total_log_prob, tokens, token_logprobs
-
-    def local_llm_scoring(self, query: str, options: list, option_start: str="\n", verbose: bool=False):
-        scores = {}
-        for option in options:
-            score, tokens, token_logprobs = self.score_prompt(query, option, option_start, verbose)
-            scores[option] = score
-        return scores
-    
-    def parse_robot_line_until_done(self, text):
-        if "Robot:" in text:
-            text = text.split("Robot:", 1)[-1].strip()
-        parts = re.split(r'\d+\.\s*', text)
-        ingredients = []
-        for part in parts:
-            cleaned = part.strip().rstrip('.').strip()
-            if not cleaned:
-                continue
-            if cleaned.lower() == 'done':
-                break
-            ingredients.append(cleaned)
+        self.model_path = model_path
+        self.tokenizer = GPT2Tokenizer.from_pretrained(self.model_path)
+        self.model = GPT2LMHeadModel.from_pretrained(self.model_path)
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model.to(self.device)
         
-        return ingredients
-    
-    def extract_last_line(self, text):
-        lines = [line for line in text.splitlines() if line.strip()]
-        return lines[-1]
-    
-    def generate_prompt(self, beverage: str, verbose: bool = False) -> str:
+        # Define the allowed options for generation
+        self.options = ["Esp", "Ste", "Milk", "Car", "Sy", "Done"]
+        self.full_options = ["Espresso", "Steamed Milk", "Milk", "Caramel Syrup", "Done"]
+        self.allowed_token_ids = [self.tokenizer.encode(opt, add_prefix_space=True)[0] for opt in self.options]
+
+    def generate(self, prompt_text):
+        prompt_text = f"<recipe_generation> {prompt_text} <recipe_generation> 1. "
+        generated_sequence = self.tokenizer.encode(prompt_text, return_tensors="pt").to(self.device)
+        updated_prompt = prompt_text
+        toggle = True
+        curr = ""
         count = 2
-        base_prompt = f'In what order should the ingredients be poured in to make {beverage}? 1. espresso'
 
-        remaining_options = self.options.copy()
-        chosen_steps = ['espresso']
-        current_prompt = base_prompt
-        while remaining_options:
-            current_prompt = current_prompt + ' ' + str(count) + '. '
-            scores = self.local_llm_scoring(current_prompt, remaining_options, option_start="\n", verbose=verbose)
-            if not scores:
-                break
-            best_option = max(scores, key=scores.get)
-            best_score = scores[best_option]
-            print(best_option)
-            if best_option == 'done':
-                break
-            print(f"Option '{best_option.strip()}' added with score: {best_score:.4f}")
+        while "Done" not in updated_prompt:
+            if toggle:
+                # Generate logits for the next token and restrict to allowed tokens.
+                outputs = self.model(generated_sequence)
+                next_token_logits = outputs.logits[:, -1, :]
+                filtered_logits = next_token_logits.clone()
+                
+                # Mask all tokens except allowed tokens.
+                mask = torch.ones_like(filtered_logits, dtype=torch.bool)
+                for token_id in self.allowed_token_ids:
+                    mask[:, token_id] = False
+                filtered_logits[mask] = -float("Inf")
+                
+                # If all candidates are masked, fallback to original logits.
+                if torch.all(torch.isinf(filtered_logits)):
+                    selected_token_id = torch.argmax(next_token_logits, dim=-1).unsqueeze(0)
+                else:
+                    selected_token_id = torch.argmax(filtered_logits, dim=-1).unsqueeze(0)
+                    
+                generated_sequence = torch.cat((generated_sequence, selected_token_id.to(self.device)), dim=1)
+                updated_prompt = self.tokenizer.decode(generated_sequence[0], skip_special_tokens=True)
+                print(updated_prompt)
+                print(f"Chosen Token: {self.tokenizer.decode(selected_token_id[0])}")
+                print("-" * 50)
+                toggle = False
+                
+            else:
+                outputs = self.model(generated_sequence)
+                next_token_logits = outputs.logits[:, -1, :]
+                probabilities = torch.softmax(next_token_logits, dim=-1)
+                topk_values, topk_indices = torch.topk(next_token_logits, k=6, dim=-1)
+                topk_tokens = [self.tokenizer.decode(idx.item()) for idx in topk_indices[0]]
+                
+                selected_token_id = topk_indices[0][0].unsqueeze(0).unsqueeze(0)
+                curr += self.tokenizer.decode(selected_token_id.squeeze())
+                generated_sequence = torch.cat((generated_sequence, selected_token_id.to(self.device)), dim=1)
+                updated_prompt = self.tokenizer.decode(generated_sequence[0], skip_special_tokens=True)
+                
+                print(updated_prompt)
+                print(f"Chosen Token: {self.tokenizer.decode(selected_token_id[0])}")
+                print("-" * 50)
+                
+                time.sleep(0.2)
+                if curr in self.full_options:
+                    # word_to_add = "Ġ{count}.Ġ"
 
-            current_prompt = current_prompt + best_option
-            count = count + 1 
-            remaining_options.remove(best_option)
-            chosen_steps.append(best_option)
+                    # Encode the word to get the token IDs (this may return more than one token)
+                    # word_ids = self.tokenizer.encode(word_to_add, return_tensors="pt")
 
-        return chosen_steps
+                    # Optionally, ensure word_ids is on the same device as generated_sequence:
+                    # word_ids = word_ids.to(generated_sequence.device)
+                    # count = count + 1
+                    curr = ""
+                    toggle = True
+        
+        pattern = r'\d+\.\s*([A-Za-z ]+)'
+
+        # Extract all matches.
+        matches = re.findall(pattern, updated_prompt)
+
+        # Clean up the matches by stripping whitespace and converting to lowercase.
+        array = [match.strip().lower() for match in matches]
+
+        return updated_prompt, array
+
+# Example usage:
+if __name__ == "__main__":
+    scoring = Scoring()
+    final_prompt = scoring.generate("Can I have Caramel Macchiato?")
+    print("Final updated prompt:")
+    print(final_prompt)
