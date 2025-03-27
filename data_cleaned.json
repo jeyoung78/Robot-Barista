@@ -1,0 +1,1318 @@
+[
+    {
+        "prompt": "Iced Americano.",
+        "response": "1. Espresso 2. Water 3. Ice 4. Done"
+    },
+    {
+        "prompt": "Can I get an iced americano?",
+        "response": "1. Espresso 2. Water 3. Ice 4. Done"
+    },
+    {
+        "prompt": "Can I get an iced mocha?",
+        "response": "1. Espresso 2. Cold Milk 3. Chocolate Syrup 4. Ice 5. Done"
+    },
+    {
+        "prompt": "Iced Vanilla Latte",
+        "response": "1. Espresso 2. Cold Milk 3. Vanilla Syrup 4. Ice 5. Done"
+    },
+    {
+        "prompt": "Can I get a chai latte?",
+        "response": "1. Chai Tea 2. Steamed Milk 3. Done"
+    },
+    {
+        "prompt": "Can I get an iced caramel latte?",
+        "response": "1. Espresso 2. Cold Milk 3. Caramel Syrup 4. Ice 5. Done"
+    },
+    {
+        "prompt": "Can I get a large iced latte?",
+        "response": "1. Espresso 2. Cold Milk 3. Ice 4. Done"
+    },
+    {
+        "prompt": "Could I get an iced Americano?",
+        "response": "1. Espresso 2. Cold Water 3. Ice 4. Done"
+    },
+    {
+        "prompt": "Can I get a vanilla latte?",
+        "response": "1. Espresso 2. Steamed Milk 3. Vanilla Syrup 4. Done"
+    },
+    {
+        "prompt": "Could I get a chai latte?",
+        "response": "1. Chai Concentrate 2. Steamed Milk 3. Done"
+    },
+    {
+        "prompt": "Could I get an iced caramel latte with almond milk?",
+        "response": "1. Espresso 2. Almond Milk 3. Caramel Syrup 4. Ice 5. Done"
+    },
+    {
+        "prompt": "Could I get an iced vanilla latte with oat milk?",
+        "response": "1. Espresso 2. Oat Milk 3. Vanilla Syrup 4. Done"
+    },
+    {
+        "prompt": "Could I get a mocha?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Done"
+    },
+    {
+        "prompt": "I'll take an Americano.",
+        "response": "1. Espresso 2. Hot Water 3. Done"
+    },
+    {
+        "prompt": "Could I get an iced americano?",
+        "response": "1. Espresso 2. Cold Water 3. Ice 4. Done"
+    },
+    {
+        "prompt": "Can I get an espresso?",
+        "response": "1. Espresso 2. Done"
+    },
+    {
+        "prompt": "Could I get a vanilla latte, please?",
+        "response": "1. Espresso 2. Steamed Milk 3. Vanilla Syrup 4. Done"
+    },
+    {
+        "prompt": "Could I get an americano, please?",
+        "response": "1. Espresso 2. Hot Water 3. Done"
+    },
+    {
+        "prompt": "Can I get a vanilla latte with almond milk instead of regular milk?",
+        "response": "1. Espresso 2. Steamed Almond Milk 3. Vanilla Syrup 4. Done"
+    },
+    {
+        "prompt": "Can I get a cappuccino with almond milk?",
+        "response": "1. Espresso 2. Steamed Almond Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Could I get an iced caramel latte?",
+        "response": "1. Espresso 2. Steamed Milk 3. Caramel Syrup 4. Done"
+    },
+    {
+        "prompt": "Can I get a latte with soy milk?",
+        "response": "1. Espresso 2. Steamed Soy Milk 3. Done"
+    },
+    {
+        "prompt": "Can I get an iced coffee with oat milk?",
+        "response": "1. Brewed Coffee 2. Ice 3. Oat Milk 4. Done"
+    },
+    {
+        "prompt": "Iced mocha, please.",
+        "response": "1. Espresso 2. Milk 3. Chocolate Syrup 4. Ice 5. Done"
+    },
+    {
+        "prompt": "Could I get an iced caramel latte?",
+        "response": "1. Espresso 2. Milk 3. Caramel Syrup 4. Ice 5. Done"
+    },
+    {
+        "prompt": "I'll have a vanilla latte.",
+        "response": "1. Espresso 2. Steamed Milk 3. Vanilla Syrup 4. Done"
+    },
+    {
+        "prompt": "Could I get a large iced coffee with vanilla?",
+        "response": "1. Brewed Coffee 2. Ice 3. Vanilla 4. Done"
+    },
+    {
+        "prompt": "Can I have a mocha?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Done"
+    },
+    {
+        "prompt": "Could I get an iced vanilla latte with oat milk?",
+        "response": "1. Espresso 2. Oat Milk 3. Vanilla Syrup 4. Ice 5. Done"
+    },
+    {
+        "prompt": "I'll have a chai latte. Could I get an iced coffee with vanilla syrup and almond milk? What kind of iced drinks do you have?",
+        "response": "1. Chai Concentrate 2. Regular Milk 3. Coffee 4. Ice 5. Vanilla Syrup 6. Almond Milk 7. Done"
+    },
+    {
+        "prompt": "Can I get a vanilla latte with oat milk?",
+        "response": "1. Espresso 2. Steamed Oat Milk 3. Vanilla Syrup 4. Done"
+    },
+    {
+        "prompt": "Could I get a vanilla latte with oat milk?",
+        "response": "1. Espresso 2. Steamed Oat Milk 3. Vanilla Syrup 4. Done"
+    },
+    {
+        "prompt": "Can I get a latte with almond milk?",
+        "response": "1. Espresso 2. Steamed Almond Milk 3. Done"
+    },
+    {
+        "prompt": "Could I get an Americano?",
+        "response": "1. Espresso 2. Hot Water 3. Done"
+    },
+    {
+        "prompt": "Could I get a dirty chai latte?",
+        "response": "1. Espresso 2. Chai Concentrate 3. Milk 4. Done"
+    },
+    {
+        "prompt": "I'll take a mocha.",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Done"
+    },
+    {
+        "prompt": "Could I have a vanilla iced latte?",
+        "response": "1. Espresso 2. Milk 3. Vanilla Syrup 4. Ice 5. Done"
+    },
+    {
+        "prompt": "Could I get a vanilla latte?",
+        "response": "1. Espresso 2. Steamed Milk 3. Vanilla Syrup 4. Done"
+    },
+    {
+        "prompt": "Can I get a hazelnut latte with almond milk?",
+        "response": "1. Espresso 2. Steamed Almond Milk 3. Hazelnut Syrup 4. Done"
+    },
+    {
+        "prompt": "I'll take an iced mocha please.",
+        "response": "1. Espresso 2. Milk 3. Chocolate Syrup 4. Ice 5. Done"
+    },
+    {
+        "prompt": "Can I get a large iced chai latte?",
+        "response": "1. Chai Concentrate 2. Milk 3. Ice 4. Done"
+    },
+    {
+        "prompt": "I'll have an Americano.",
+        "response": "1. Espresso 2. Hot Water 3. Done"
+    },
+    {
+        "prompt": "Can I get a vanilla latte, please?",
+        "response": "1. Espresso 2. Steamed Milk 3. Vanilla Syrup 4. Done"
+    },
+    {
+        "prompt": "I'd like a vanilla latte, please.",
+        "response": "1. Espresso 2. Steamed Milk 3. Vanilla Syrup 4. Done"
+    },
+    {
+        "prompt": "Could I get a vanilla latte?",
+        "response": "1. Espresso 2. Steamed Milk 3. Vanilla Syrup 4. Done"
+    },
+    {
+        "prompt": "Iced Americano.",
+        "response": "1. Espresso 2. Water 3. Ice 4. Done"
+    },
+    {
+        "prompt": "Could I get a vanilla latte?",
+        "response": "1. Espresso 2. Steamed Milk 3. Vanilla Syrup 4. Done"
+    },
+    {
+        "prompt": "Can I get an Americano, please?",
+        "response": "1. Espresso 2. Hot Water 3. Done"
+    },
+    {
+        "prompt": "Could I get a hazelnut latte?",
+        "response": "1. Espresso 2. Steamed Milk 3. Hazelnut Syrup 4. Done"
+    },
+    {
+        "prompt": "Could I have a mocha with less sugar?",
+        "response": "1. Espresso 2. Milk 3. Chocolate Syrup 4. Done"
+    },
+    {
+        "prompt": "Could I get an iced chai latte?",
+        "response": "1. Chai Concentrate 2. Milk 3. Ice 4. Done"
+    },
+    {
+        "prompt": "I'll take a cold brew.",
+        "response": "1. Coffee Grounds 2. Water 3. Done"
+    },
+    {
+        "prompt": "Could I get an iced vanilla latte?",
+        "response": "1. Espresso 2. Milk 3. Vanilla Syrup 4. Done"
+    },
+    {
+        "prompt": "Could I get a vanilla latte?",
+        "response": "1. Espresso 2. Steamed Milk 3. Vanilla Syrup 4. Done"
+    },
+    {
+        "prompt": "Could I get an iced caramel latte?",
+        "response": "1. Espresso 2. Milk 3. Caramel Syrup 4. Ice 5. Done"
+    },
+    {
+        "prompt": "Could I get an iced mocha?",
+        "response": "1. Espresso 2. Cold Milk 3. Chocolate Syrup 4. Done"
+    },
+    {
+        "prompt": "Can I get a latte with oat milk?",
+        "response": "1. Espresso 2. Steamed Oat Milk 3. Done"
+    },
+    {
+        "prompt": "Could I get a vanilla latte?",
+        "response": "1. Espresso 2. Steamed Milk 3. Vanilla Syrup 4. Done"
+    },
+    {
+        "prompt": "Could I get a vanilla latte?",
+        "response": "1. Espresso 2. Steamed Milk 3. Vanilla Syrup 4. Done"
+    },
+    {
+        "prompt": "Can I get an Americano, please?",
+        "response": "1. Espresso 2. Hot Water 3. Done"
+    },
+    {
+        "prompt": "Can I get an iced caramel macchiato?",
+        "response": "1. Espresso 2. Milk 3. Vanilla Syrup 4. Caramel Syrup 5. Done"
+    },
+    {
+        "prompt": "Can I have a latte with oat milk?",
+        "response": "1. Espresso 2. Steamed Oat Milk 3. Done"
+    },
+    {
+        "prompt": "Could I get an iced caramel latte with oat milk?",
+        "response": "1. Espresso 2. Steamed Oat Milk 3. Caramel Syrup 4. Done"
+    },
+    {
+        "prompt": "Could I get a dirty chai latte?",
+        "response": "1. Espresso 2. Chai 3. Steamed Milk 4. Done"
+    },
+    {
+        "prompt": "Can I get an Americano?",
+        "response": "1. Espresso 2. Hot Water 3. Done"
+    },
+    {
+        "prompt": "Could I get a chai latte?",
+        "response": "1. Chai Concentrate 2. Steamed Milk 3. Done"
+    },
+    {
+        "prompt": "Could I get an iced americano?",
+        "response": "1. Espresso 2. Water 3. Ice 4. Done"
+    },
+    {
+        "prompt": "Can I get a dirty chai?",
+        "response": "1. Espresso 2. Chai Concentrate 3. Steamed Milk 4. Done"
+    },
+    {
+        "prompt": "Could I get a vanilla latte, please?",
+        "response": "1. Espresso 2. Steamed Milk 3. Vanilla Syrup 4. Done"
+    },
+    {
+        "prompt": "Could I get a vanilla macchiato?",
+        "response": "1. Espresso 2. Steamed Milk 3. Vanilla Syrup 4. Done"
+    },
+    {
+        "prompt": "Can I get an iced Americano?",
+        "response": "1. Espresso 2. Water 3. Ice 4. Done"
+    },
+    {
+        "prompt": "Could I get a dirty chai latte?",
+        "response": "1. Espresso 2. Chai Tea Concentrate 3. Steamed Milk 4. Done"
+    },
+    {
+        "prompt": "Could I get a chai latte?",
+        "response": "1. Chai Concentrate 2. Steamed Milk 3. Done"
+    },
+    {
+        "prompt": "Could I get an iced americano?",
+        "response": "1. Espresso 2. Cold Water 3. Ice 4. Done"
+    },
+    {
+        "prompt": "Could I get an iced caramel latte with oat milk?",
+        "response": "1. Espresso 2. Oat Milk 3. Caramel Syrup 4. Ice 5. Done"
+    },
+    {
+        "prompt": "Can I get a vanilla latte?",
+        "response": "1. Espresso 2. Steamed Milk 3. Vanilla Syrup 4. Done"
+    },
+    {
+        "prompt": "I'd like a latte with oat milk, please.",
+        "response": "1. Espresso 2. Steamed Oat Milk 3. Done"
+    },
+    {
+        "prompt": "I'll take a large iced caramel latte.",
+        "response": "1. Espresso 2. Cold Milk 3. Caramel Syrup 4. Done"
+    },
+    {
+        "prompt": "Can I get an iced mocha with oat milk?",
+        "response": "1. Espresso 2. Oat Milk 3. Chocolate Syrup 4. Ice 5. Done"
+    },
+    {
+        "prompt": "Could I get a vanilla latte with oat milk?",
+        "response": "1. Espresso 2. Steamed Oat Milk 3. Vanilla Syrup 4. Done"
+    },
+    {
+        "prompt": "Could I get a iced caramel latte, please?",
+        "response": "1. Espresso 2. Milk 3. Caramel Syrup 4. Ice 5. Done"
+    },
+    {
+        "prompt": "Could I get a vanilla latte with oat milk?",
+        "response": "1. Espresso 2. Steamed Oat Milk 3. Vanilla Syrup 4. Done"
+    },
+    {
+        "prompt": "Could I get an iced caramel latte?",
+        "response": "1. Espresso 2. Cold Milk 3. Caramel Syrup 4. Ice 5. Done"
+    },
+    {
+        "prompt": "Could I get an iced vanilla latte?",
+        "response": "1. Espresso 2. Milk 3. Vanilla Syrup 4. Ice 5. Done"
+    },
+    {
+        "prompt": "I would like a pumpkin spice latte.",
+        "response": "1. Espresso 2. Steamed Milk 3. Pumpkin Spice Syrup 4. Done"
+    },
+    {
+        "prompt": "Could I get an iced americano?",
+        "response": "1. Espresso 2. Water 3. Ice 4. Done"
+    },
+    {
+        "prompt": "I'll take an iced americano.",
+        "response": "1. Espresso 2. Cold Water 3. Ice 4. Done"
+    },
+    {
+        "prompt": "Could I get an Americano?",
+        "response": "1. Espresso 2. Hot Water 3. Done"
+    },
+    {
+        "prompt": "Can I get a vanilla latte with soy milk?",
+        "response": "1. Espresso 2. Steamed Soy Milk 3. Vanilla Syrup 4. Done"
+    },
+    {
+        "prompt": "Can I get an espresso?",
+        "response": "1. Espresso 2. Done"
+    },
+    {
+        "prompt": "Could I get a iced vanilla latte?",
+        "response": "1. Espresso 2. Steamed Milk 3. Vanilla Syrup 4. Done"
+    },
+    {
+        "prompt": "Could I get something cold?",
+        "response": "1. Brewed Coffee 2. Ice 3. Done"
+    },
+    {
+        "prompt": "I'll take a grande iced caramel macchiato, please.",
+        "response": "1. Vanilla Syrup 2. Ice 3. Milk 4. Espresso 5. Caramel Syrup 6. Done"
+    },
+    {
+        "prompt": "Could I get an iced caramel macchiato?",
+        "response": "1. Espresso 2. Milk 3. Caramel Syrup 4. Ice 5. Done"
+    },
+    {
+        "prompt": "Could I get a mocha?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Done"
+    },
+    {
+        "prompt": "Iced Caramel Macchiato.",
+        "response": "1. Vanilla Syrup 2. Milk 3. Espresso 4. Caramel Syrup 5. Done"
+    },
+    {
+        "prompt": "I'll have an iced caramel macchiato, please.",
+        "response": "1. Espresso 2. Milk 3. Caramel Syrup 4. Done"
+    },
+    {
+        "prompt": "Can I get an Americano?",
+        "response": "1. Espresso 2. Hot Water 3. Done"
+    },
+    {
+        "prompt": "Can I get an americano?",
+        "response": "1. Espresso 2. Hot Water 3. Done"
+    },
+    {
+        "prompt": "Could I get a cold brew?",
+        "response": "1. Coffee 2. Water 3. Done"
+    },
+    {
+        "prompt": "I would like an iced coffee.",
+        "response": "1. Brewed Coffee 2. Ice 3. Done"
+    },
+    {
+        "prompt": "Could I get an iced caramel latte? Could I get a mocha but make it with almond milk? What do you recommend? I'm in the mood for something refreshing.",
+        "response": "1. Espresso 2. Milk 3. Almond Milk 4. Caramel Syrup 5. Chocolate Syrup 6. Brewed Coffee 7. Ice 8. Done"
+    },
+    {
+        "prompt": "Can I get an iced caramel macchiato?",
+        "response": "1. Espresso 2. Cold Milk 3. Caramel Syrup 4. Done"
+    },
+    {
+        "prompt": "Can I get a mocha?",
+        "response": "1. Espresso 2. Milk 3. Chocolate Syrup 4. Done"
+    },
+    {
+        "prompt": "Iced Mocha",
+        "response": "1. Espresso 2. Cold Milk 3. Chocolate Syrup 4. Ice 5. Done"
+    },
+    {
+        "prompt": "Iced Americano, please.",
+        "response": "1. Espresso 2. Water 3. Ice 4. Done"
+    },
+    {
+        "prompt": "I will take a mocha.",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Done"
+    },
+    {
+        "prompt": "Can I have an Americano, please?",
+        "response": "1. Espresso 2. Hot Water 3. Done"
+    },
+    {
+        "prompt": "Can I get a mocha with oat milk?",
+        "response": "1. Espresso 2. Steamed Oat Milk 3. Chocolate Syrup 4. Done"
+    },
+    {
+        "prompt": "Can I get an iced latte with oat milk?",
+        "response": "1. Espresso 2. Oat Milk 3. Ice 4. Done"
+    },
+    {
+        "prompt": "Could I get an Americano?",
+        "response": "1. Espresso 2. Hot Water 3. Done"
+    },
+    {
+        "prompt": "I'd like a mocha with almond milk.",
+        "response": "1. Espresso 2. Steamed Almond Milk 3. Chocolate Syrup 4. Done"
+    },
+    {
+        "prompt": "Could I have a mocha, but make it with white chocolate?",
+        "response": "1. Espresso 2. Steamed Milk 3. White Chocolate Syrup 4. Done"
+    },
+    {
+        "prompt": "I'll have a cold brew.",
+        "response": "1. Coffee Grounds 2. Cold Water 3. Done"
+    },
+    {
+        "prompt": "Can I get a cappuccino with almond milk?",
+        "response": "1. Espresso 2. Steamed Almond Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I get a frappuccino?",
+        "response": "1. Coffee 2. Milk 3. Ice 4. Simple Syrup 5. Done"
+    },
+    {
+        "prompt": "Can I get a cold brew?",
+        "response": "1. Cold Brew Coffee 2. Done"
+    },
+    {
+        "prompt": "I'll have a mocha with almond milk.",
+        "response": "1. Espresso 2. Steamed Almond Milk 3. Chocolate Syrup 4. Done"
+    },
+    {
+        "prompt": "Can I get a frappuccino?",
+        "response": "1. Coffee 2. Milk 3. Ice 4. Sweetener 5. Done"
+    },
+    {
+        "prompt": "I'll take a frappuccino.",
+        "response": "1. Coffee 2. Milk 3. Ice 4. Sweet Syrup 5. Done"
+    },
+    {
+        "prompt": "Can I get a Frappuccino with less ice?",
+        "response": "1. Coffee 2. Milk 3. Ice 4. Frappuccino Base 5. Done"
+    },
+    {
+        "prompt": "Can I get an iced americano?",
+        "response": "1. Espresso 2. Water 3. Done"
+    },
+    {
+        "prompt": "Could I get an iced americano?",
+        "response": "1. Espresso 2. Cold Water 3. Ice 4. Done"
+    },
+    {
+        "prompt": "I'll have a cappuccino.",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I get a macchiato, but make it iced?",
+        "response": "1. Espresso 2. Cold Milk 3. Ice 4. Done"
+    },
+    {
+        "prompt": "Could I get an iced americano?",
+        "response": "1. Espresso 2. Water 3. Ice 4. Done"
+    },
+    {
+        "prompt": "Could I get a frappuccino?",
+        "response": "1. Coffee 2. Milk 3. Ice 4. Done"
+    },
+    {
+        "prompt": "Can I get a mocha?",
+        "response": "1. Espresso 2. Milk 3. Chocolate Syrup 4. Done"
+    },
+    {
+        "prompt": "I'll take a cappuccino, please.",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Could I get a mocha, but with almond milk instead of regular milk?",
+        "response": "1. Espresso 2. Steamed Almond Milk 3. Chocolate Syrup 4. Done"
+    },
+    {
+        "prompt": "Can I have a cold brew with vanilla syrup?",
+        "response": "1. Cold Brew Coffee 2. Vanilla Syrup 3. Done"
+    },
+    {
+        "prompt": "Could I get a cold brew with almond milk?",
+        "response": "1. Cold Brew 2. Almond Milk 3. Done"
+    },
+    {
+        "prompt": "Can I have a mocha, but make it iced?",
+        "response": "1. Espresso 2. Milk 3. Chocolate Syrup 4. Ice 5. Done"
+    },
+    {
+        "prompt": "Could I have a mocha with whipped cream?",
+        "response": "1. Espresso 2. Milk 3. Chocolate Syrup 4. Whipped Cream 5. Done"
+    },
+    {
+        "prompt": "Can I get a cold brew?",
+        "response": "1. Coffee 2. Water 3. Done"
+    },
+    {
+        "prompt": "Could I get a cold brew?",
+        "response": "1. Cold Brew Coffee 2. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with almond milk?",
+        "response": "1. Espresso 2. Steamed Almond Milk 3. Chocolate Syrup 4. Done"
+    },
+    {
+        "prompt": "Can I have a iced americano with an extra shot?",
+        "response": "1. Espresso 2. Espresso 3. Water 4. Ice 5. Done"
+    },
+    {
+        "prompt": "I'd like a mocha please.",
+        "response": "1. Espresso 2. Milk 3. Chocolate Syrup 4. Done"
+    },
+    {
+        "prompt": "Could I get a macchiato?",
+        "response": "1. Espresso 2. Foamed Milk 3. Done"
+    },
+    {
+        "prompt": "Can I get a mocha?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Done"
+    },
+    {
+        "prompt": "Can I have a iced macchiato?",
+        "response": "1. Espresso 2. Milk 3. Caramel Syrup 4. Done"
+    },
+    {
+        "prompt": "Can I get a macchiato?",
+        "response": "1. Espresso 2. Foam 3. Done"
+    },
+    {
+        "prompt": "Can I have a macchiato with hazelnut syrup?",
+        "response": "1. Espresso 2. Foamed Milk 3. Hazelnut Syrup 4. Done"
+    },
+    {
+        "prompt": "Can I get a cappuccino with an extra shot of espresso?",
+        "response": "1. Espresso 2. Espresso 3. Steamed Milk 4. Foam 5. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with almond milk?",
+        "response": "1. Espresso 2. Steamed Almond Milk 3. Chocolate Syrup 4. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with an extra shot of espresso?",
+        "response": "1. Espresso 2. Espresso 3. Steamed Milk 4. Chocolate Syrup 5. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with whipped cream?",
+        "response": "1. Espresso 2. Milk 3. Chocolate Syrup 4. Whipped Cream 5. Done"
+    },
+    {
+        "prompt": "Could I have a cold brew?",
+        "response": "1. Cold Brew 2. Done"
+    },
+    {
+        "prompt": "Can I have a cappuccino with oat milk?",
+        "response": "1. Espresso 2. Steamed Oat Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I get a mocha with whipped cream?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Whipped Cream 5. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with no whipped cream?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Done"
+    },
+    {
+        "prompt": "Could I have a cappuccino with an extra shot of espresso?",
+        "response": "1. Espresso 2. Espresso 3. Steamed Milk 4. Foam 5. Done"
+    },
+    {
+        "prompt": "Can I have a cappuccino with an extra shot?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Can I have a cappuccino please?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Could I get a mocha?",
+        "response": "1. Espresso 2. Chocolate Syrup 3. Steamed Milk 4. Done"
+    },
+    {
+        "prompt": "I'll have a cappuccino with an extra shot.",
+        "response": "1. Espresso 2. Espresso 3. Steamed Milk 4. Foam 5. Done"
+    },
+    {
+        "prompt": "Could I have an iced americano?",
+        "response": "1. Espresso 2. Water 3. Ice 4. Done"
+    },
+    {
+        "prompt": "Can I have a iced cappuccino?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I have a cappuccino with extra chocolate?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Chocolate Syrup 5. Done"
+    },
+    {
+        "prompt": "Can I have a frappuccino with extra caramel drizzle?",
+        "response": "1. Coffee 2. Milk 3. Ice 4. Caramel Syrup 5. Caramel Drizzle 6. Caramel Drizzle 7. Done"
+    },
+    {
+        "prompt": "Can I have an iced americano with an extra shot of espresso?",
+        "response": "1. Espresso 2. Espresso 3. Done"
+    },
+    {
+        "prompt": "Can I have a iced americano with an extra shot of espresso?",
+        "response": "1. Espresso 2. Water 3. Ice 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Could I have a mocha, please?",
+        "response": "1. Espresso 2. Chocolate Syrup 3. Steamed Milk 4. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with an extra shot of espresso?",
+        "response": "1. Espresso 2. Chocolate Syrup 3. Steamed Milk 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Could I have a cold brew?",
+        "response": "1. Cold Brew Coffee 2. Done"
+    },
+    {
+        "prompt": "Could I have a iced mocha, please?",
+        "response": "1. Espresso 2. Chocolate Syrup 3. Milk 4. Ice 5. Done"
+    },
+    {
+        "prompt": "Can I have a frappuccino with extra caramel?",
+        "response": "1. Espresso 2. Steamed Milk 3. Ice 4. Frappuccino base 5. Caramel Syrup 6. Done"
+    },
+    {
+        "prompt": "Can I have a cappuccino with an extra shot?",
+        "response": "1. Espresso 2. Espresso 3. Steamed Milk 4. Foam 5. Done"
+    },
+    {
+        "prompt": "I'm not sure what I want.",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I get a cappuccino?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Could I have a cappuccino with an extra shot of espresso?",
+        "response": "1. Espresso 2. Espresso 3. Steamed Milk 4. Foam 5. Done"
+    },
+    {
+        "prompt": "Can I get a frappuccino?",
+        "response": "1. Coffee 2. Milk 3. Frappuccino Base 4. Syrup 5. Done"
+    },
+    {
+        "prompt": "Could I get a macchiato?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Could I get a mocha?",
+        "response": "1. Espresso 2. Chocolate Syrup 3. Steamed Milk 4. Done"
+    },
+    {
+        "prompt": "Can I get a cappuccino with an extra shot?",
+        "response": "1. Espresso 2. Espresso 3. Steamed Milk 4. Foam 5. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with whipped cream?",
+        "response": "1. Espresso 2. Chocolate Syrup 3. Steamed Milk 4. Whipped Cream 5. Done"
+    },
+    {
+        "prompt": "Can I have a cappuccino with an extra shot of espresso?",
+        "response": "1. Espresso 2. Espresso 3. Steamed Milk 4. Foam 5. Done"
+    },
+    {
+        "prompt": "Can I have a frappuccino with an extra shot of espresso?",
+        "response": "1. Espresso 2. Milk 3. Ice 4. Frappe Base 5. Espresso 6. Done"
+    },
+    {
+        "prompt": "Can I have a mocha?",
+        "response": "1. Espresso 2. Chocolate Syrup 3. Steamed Milk 4. Done"
+    },
+    {
+        "prompt": "Can I have a frappuccino with an extra shot of coffee?",
+        "response": "1. Coffee 2. Milk 3. Ice 4. Sweetener 5. Coffee 6. Done"
+    },
+    {
+        "prompt": "Could I have a cold brew?",
+        "response": "1. Cold Brew Coffee 2. Done"
+    },
+    {
+        "prompt": "Can I have a frappuccino with an extra shot?",
+        "response": "1. Coffee 2. Milk 3. Ice 4. Frappuccino base 5. Espresso 6. Done"
+    },
+    {
+        "prompt": "Can I have an iced cold brew with an extra shot of espresso?",
+        "response": "1. Cold Brew 2. Ice 3. Espresso 4. Done"
+    },
+    {
+        "prompt": "Can I have a cappuccino?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I have a frappuccino with extra mocha?",
+        "response": "1. Coffee 2. Milk 3. Ice 4. Mocha Syrup 5. Mocha Syrup 6. Done"
+    },
+    {
+        "prompt": "Can I get a cappuccino?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with an extra shot?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Can I have an iced mocha with an extra shot of espresso?",
+        "response": "1. Espresso 2. Chocolate Syrup 3. Milk 4. Ice 5. Espresso 6. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with extra chocolate?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Chocolate Syrup 5. Done"
+    },
+    {
+        "prompt": "Can I get a cappuccino?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I have an iced americano with an extra shot of espresso?",
+        "response": "1. Espresso 2. Water 3. Ice 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Can I have a cappuccino with extra shot of espresso?",
+        "response": "1. Espresso 2. Espresso 3. Steamed Milk 4. Foam 5. Done"
+    },
+    {
+        "prompt": "Can I have an iced mocha with an extra shot?",
+        "response": "1. Espresso 2. Espresso 3. Steamed Milk 4. Chocolate Syrup 5. Ice 6. Done"
+    },
+    {
+        "prompt": "Can I have a iced mocha with extra chocolate?",
+        "response": "1. Espresso 2. Chocolate Syrup 3. Milk 4. Chocolate Syrup 5. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with extra chocolate?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Chocolate Syrup 5. Done"
+    },
+    {
+        "prompt": "Can I have a mocha frappuccino with extra mocha?",
+        "response": "1. Espresso 2. Steamed Milk 3. Mocha Syrup 4. Mocha Syrup 5. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with extra whipped cream?",
+        "response": "1. Espresso 2. Chocolate Syrup 3. Steamed Milk 4. Whipped Cream 5. Whipped Cream 6. Done"
+    },
+    {
+        "prompt": "Could I have a cold brew?",
+        "response": "1. Cold Brew Coffee 2. Ice 3. Done"
+    },
+    {
+        "prompt": "Can I have a iced mocha with an extra shot of espresso?",
+        "response": "1. Espresso 2. Espresso 3. Chocolate Syrup 4. Milk 5. Ice 6. Done"
+    },
+    {
+        "prompt": "Can I have a iced americano with an extra shot?",
+        "response": "1. Espresso 2. Water 3. Ice 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Could I get a cold brew?",
+        "response": "1. Cold Brew Coffee 2. Water 3. Done"
+    },
+    {
+        "prompt": "Can I have a frappuccino?",
+        "response": "1. Coffee 2. Milk 3. Ice 4. Sweetener 5. Done"
+    },
+    {
+        "prompt": "Can I have a cappuccino with an extra shot of espresso?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Could I have a mocha with extra mocha sauce?",
+        "response": "1. Espresso 2. Steamed Milk 3. Mocha Sauce 4. Mocha Sauce 5. Done"
+    },
+    {
+        "prompt": "Can I have a cappuccino with an extra shot of espresso?",
+        "response": "1. Espresso 2. Espresso 3. Steamed Milk 4. Foam 5. Done"
+    },
+    {
+        "prompt": "Can I have an iced cappuccino?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I have a cappuccino with an extra shot of espresso?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Can I have a iced mocha with an extra shot of espresso?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Could I have a cappuccino, please?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Could I get a mocha with extra chocolate powder?",
+        "response": "1. Espresso 2. Chocolate Powder 3. Steamed Milk 4. Chocolate Powder 5. Done"
+    },
+    {
+        "prompt": "Can I get a cappuccino with an extra shot of espresso?",
+        "response": "1. Espresso 2. Espresso 3. Steamed Milk 4. Foam 5. Done"
+    },
+    {
+        "prompt": "I'd like a mocha, please.",
+        "response": "1. Espresso 2. Chocolate Syrup 3. Steamed Milk 4. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with an extra shot of espresso?",
+        "response": "1. Espresso 2. Espresso 3. Steamed Milk 4. Chocolate Syrup 5. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with extra chocolate powder?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Powder 4. Chocolate Powder 5. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with extra whipped cream?",
+        "response": "1. Espresso 2. Chocolate Syrup 3. Steamed Milk 4. Whipped Cream 5. Whipped Cream 6. Done"
+    },
+    {
+        "prompt": "Can I get a mocha?",
+        "response": "1. Espresso 2. Chocolate Syrup 3. Steamed Milk 4. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with extra caramel?",
+        "response": "1. Espresso 2. Chocolate Syrup 3. Steamed Milk 4. Caramel Syrup 5. Done"
+    },
+    {
+        "prompt": "Can I have an iced cappuccino with an extra shot of espresso?",
+        "response": "1. Espresso 2. Espresso 3. Steamed Milk 4. Foam 5. Done"
+    },
+    {
+        "prompt": "Can I get a macchiato?",
+        "response": "1. Espresso 2. Foamed Milk 3. Done"
+    },
+    {
+        "prompt": "Can I have a frappuccino with extra caramel?",
+        "response": "1. Coffee 2. Milk 3. Ice 4. Caramel Syrup 5. Caramel Syrup 6. Done"
+    },
+    {
+        "prompt": "Can I get a frappuccino with an extra shot of espresso?",
+        "response": "1. Frappuccino Base 2. Espresso 3. Milk 4. Ice 5. Espresso 6. Done"
+    },
+    {
+        "prompt": "Can I have a cappuccino with an extra shot of espresso?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Can I have a cappuccino with an extra shot of espresso?",
+        "response": "1. Espresso 2. Espresso 3. Steamed Milk 4. Foam 5. Done"
+    },
+    {
+        "prompt": "Can I have an iced mocha?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Ice 5. Done"
+    },
+    {
+        "prompt": "I want a macchiato.",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I have an iced mocha?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Done"
+    },
+    {
+        "prompt": "Can I have an iced cappuccino?",
+        "response": "1. Espresso 2. Cold Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I have a cappuccino with an extra shot of espresso?",
+        "response": "1. Espresso 2. Espresso 3. Steamed Milk 4. Foam 5. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with extra chocolate?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Chocolate Syrup 5. Done"
+    },
+    {
+        "prompt": "I'd like a cappuccino.",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with extra chocolate?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Chocolate Syrup 5. Done"
+    },
+    {
+        "prompt": "Can I have a mocha frappuccino with an extra shot of espresso?",
+        "response": "1. Coffee 2. Milk 3. Ice 4. Mocha Syrup 5. Whipped Cream 6. Espresso 7. Done"
+    },
+    {
+        "prompt": "Can I get an iced cappuccino?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Ice 5. Done"
+    },
+    {
+        "prompt": "Can I have a cold brew with an extra shot of espresso?",
+        "response": "1. Cold Brew 2. Espresso 3. Done"
+    },
+    {
+        "prompt": "Can I get a mocha with an extra shot of espresso?",
+        "response": "1. Espresso 2. Chocolate Syrup 3. Steamed Milk 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Can I have a iced mocha with extra chocolate?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Ice 5. Chocolate Syrup 6. Done"
+    },
+    {
+        "prompt": "Can I have a cappuccino with an extra shot of espresso?",
+        "response": "1. Espresso 2. Espresso 3. Steamed Milk 4. Foam 5. Done"
+    },
+    {
+        "prompt": "Can I have a frappuccino with an extra shot of espresso?",
+        "response": "1. Coffee 2. Milk 3. Ice 4. Syrup 5. Espresso 6. Done"
+    },
+    {
+        "prompt": "Can I have a macchiato with an extra shot of espresso?",
+        "response": "1. Espresso 2. Foamed Milk 3. Espresso 4. Done"
+    },
+    {
+        "prompt": "Can I have a iced mocha with extra chocolate?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Chocolate Syrup 5. Done"
+    },
+    {
+        "prompt": "Can I have a cappuccino with an extra shot of espresso?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "I want an iced mocha with extra chocolate.",
+        "response": "1. Espresso 2. Chocolate Syrup 3. Milk 4. Chocolate Syrup 5. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with an extra shot of espresso?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with extra chocolate syrup?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Chocolate Syrup 5. Done"
+    },
+    {
+        "prompt": "Can I have an iced americano with an extra shot of espresso?",
+        "response": "1. Espresso 2. Cold Water 3. Espresso 4. Done"
+    },
+    {
+        "prompt": "Can I have an iced americano with an extra shot of espresso?",
+        "response": "1. Espresso 2. Cold Water 3. Ice 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Could I have a cappuccino?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I have a iced cappuccino?",
+        "response": "1. Espresso 2. Cold Milk 3. Ice 4. Foam 5. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with an extra shot of espresso?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Can I have an iced mocha with an extra shot?",
+        "response": "1. Espresso 2. Espresso 3. Chocolate Syrup 4. Milk 5. Ice 6. Done"
+    },
+    {
+        "prompt": "I'd like a cappuccino.",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I have a iced americano with an extra shot of espresso?",
+        "response": "1. Espresso 2. Espresso 3. Water 4. Ice 5. Done"
+    },
+    {
+        "prompt": "Can I have a iced mocha with an extra shot of espresso?",
+        "response": "1. Espresso 2. Chocolate Syrup 3. Milk 4. Ice 5. Espresso 6. Done"
+    },
+    {
+        "prompt": "Can I have a iced americano with an extra shot of espresso?",
+        "response": "1. Espresso 2. Cold Water 3. Ice 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Can I have a iced macchiato with extra caramel?",
+        "response": "1. Espresso 2. Milk 3. Ice 4. Caramel Syrup 5. Caramel Syrup 6. Done"
+    },
+    {
+        "prompt": "Can I have an iced americano with an extra shot of espresso?",
+        "response": "1. Espresso 2. Water 3. Espresso 4. Done"
+    },
+    {
+        "prompt": "I'd like a cappuccino, please.",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I have a cappuccino with an extra shot of espresso?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Can I get a cold brew?",
+        "response": "1. Coffee grounds 2. Cold water 3. Done"
+    },
+    {
+        "prompt": "Can I get a cappuccino?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I have a macchiato with an extra shot of espresso?",
+        "response": "1. Espresso 2. Espresso 3. Foamed Milk 4. Done"
+    },
+    {
+        "prompt": "Could I get a cappuccino, please?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "I'll take a cappuccino.",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with whipped cream?",
+        "response": "1. Espresso 2. Chocolate Syrup 3. Steamed Milk 4. Whipped Cream 5. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with an extra shot of espresso?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Can I have an iced americano with an extra shot of espresso?",
+        "response": "1. Espresso 2. Espresso 3. Water 4. Ice 5. Done"
+    },
+    {
+        "prompt": "Can I have a iced americano?",
+        "response": "1. Espresso 2. Water 3. Ice 4. Done"
+    },
+    {
+        "prompt": "Can I have an iced americano with an extra shot of espresso?",
+        "response": "1. Espresso 2. Water 3. Ice 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Can I have a iced americano with an extra shot of espresso?",
+        "response": "1. Espresso 2. Water 3. Ice 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Can I have an iced americano?",
+        "response": "1. Espresso 2. Cold Water 3. Done"
+    },
+    {
+        "prompt": "Can I have an iced americano with an extra shot of espresso?",
+        "response": "1. Espresso 2. Water 3. Ice 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Can I have an iced americano?",
+        "response": "1. Espresso 2. Cold Water 3. Done"
+    },
+    {
+        "prompt": "Can I have an iced americano with an extra shot of espresso?",
+        "response": "1. Espresso 2. Water 3. Ice 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Can I have an americano with an extra shot?",
+        "response": "1. Espresso 2. Hot Water 3. Espresso 4. Done"
+    },
+    {
+        "prompt": "Could I have an americano?",
+        "response": "1. Espresso 2. Hot Water 3. Done"
+    },
+    {
+        "prompt": "Can I have an iced cappuccino with an extra shot of espresso?",
+        "response": "1. Espresso 2. Espresso 3. Cold Milk 4. Foam 5. Done"
+    },
+    {
+        "prompt": "Hmm, what about an iced americano?",
+        "response": "1. Espresso 2. Cold Water 3. Done"
+    },
+    {
+        "prompt": "Can I have an iced cappuccino with an extra shot of espresso?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with an extra shot of espresso?",
+        "response": "1. Espresso 2. Espresso 3. Steamed Milk 4. Chocolate Syrup 5. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with extra chocolate?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Chocolate Syrup 5. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with whipped cream?",
+        "response": "1. Espresso 2. Chocolate Syrup 3. Steamed Milk 4. Whipped Cream 5. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with an extra shot of espresso?",
+        "response": "1. Espresso 2. Espresso 3. Chocolate Syrup 4. Steamed Milk 5. Done"
+    },
+    {
+        "prompt": "Can I have a cappuccino with an extra shot?",
+        "response": "1. Espresso 2. Espresso 3. Steamed Milk 4. Foam 5. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with an extra shot of espresso?",
+        "response": "1. Espresso 2. Chocolate Syrup 3. Steamed Milk 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with extra chocolate?",
+        "response": "1. Espresso 2. Chocolate Syrup 3. Steamed Milk 4. Chocolate Syrup 5. Done"
+    },
+    {
+        "prompt": "Can I have an iced cappuccino with an extra shot?",
+        "response": "1. Espresso 2. Milk 3. Foam 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Could I have a cold brew?",
+        "response": "1. Cold Brew 2. Done"
+    },
+    {
+        "prompt": "I\u2019m not sure what I want.",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I have a mocha?",
+        "response": "1. Espresso 2. Chocolate Syrup 3. Steamed Milk 4. Done"
+    },
+    {
+        "prompt": "Can I have an iced cappuccino?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I have a iced frappuccino with extra caramel?",
+        "response": "1. Frappuccino Roast 2. Milk 3. Ice 4. Frappuccino Base 5. Caramel Syrup 6. Done"
+    },
+    {
+        "prompt": "Could I have a mocha with whipped cream?",
+        "response": "1. Espresso 2. Chocolate Syrup 3. Steamed Milk 4. Whipped Cream 5. Done"
+    },
+    {
+        "prompt": "Can I have an iced americano?",
+        "response": "1. Espresso 2. Cold Water 3. Ice 4. Done"
+    },
+    {
+        "prompt": "Can I have an iced americano with an extra shot of espresso?",
+        "response": "1. Espresso 2. Cold Water 3. Espresso 4. Done"
+    },
+    {
+        "prompt": "Could I have an iced americano?",
+        "response": "1. Espresso 2. Water 3. Done"
+    },
+    {
+        "prompt": "Can I have an iced americano with an extra shot?",
+        "response": "1. Espresso 2. Espresso 3. Cold Water 4. Ice 5. Done"
+    },
+    {
+        "prompt": "Could I get an iced americano?",
+        "response": "1. Espresso 2. Cold Water 3. Ice 4. Done"
+    },
+    {
+        "prompt": "Can I have an iced americano?",
+        "response": "1. Espresso 2. Water 3. Done"
+    },
+    {
+        "prompt": "Can I have a iced americano with an extra shot of espresso?",
+        "response": "1. Espresso 2. Cold Water 3. Espresso 4. Done"
+    },
+    {
+        "prompt": "Can I have an iced americano?",
+        "response": "1. Espresso 2. Water 3. Ice 4. Done"
+    },
+    {
+        "prompt": "Could I have a iced americano?",
+        "response": "1. Espresso 2. Cold Water 3. Ice 4. Done"
+    },
+    {
+        "prompt": "Can I have an americano?",
+        "response": "1. Espresso 2. Hot Water 3. Done"
+    },
+    {
+        "prompt": "Can I have an iced americano with an extra shot of espresso?",
+        "response": "1. Espresso 2. Water 3. Ice 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Could I have an iced americano?",
+        "response": "1. Espresso 2. Water 3. Ice 4. Done"
+    },
+    {
+        "prompt": "Could I have a iced americano?",
+        "response": "1. Espresso 2. Cold Water 3. Ice 4. Done"
+    },
+    {
+        "prompt": "Can I have a macchiato with an extra shot?",
+        "response": "1. Espresso 2. Steamed Milk 3. Espresso 4. Done"
+    },
+    {
+        "prompt": "Can I have a cappuccino with an extra shot of espresso?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Can I have a cappuccino?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Could I have a macchiato?",
+        "response": "1. Steamed Milk 2. Espresso 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with extra chocolate?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Chocolate Syrup 5. Done"
+    },
+    {
+        "prompt": "Can I have a iced frappuccino with extra caramel?",
+        "response": "1. Coffee 2. Milk 3. Ice 4. Frappuccino Base Syrup 5. Caramel Syrup 6. Caramel Syrup 7. Done"
+    },
+    {
+        "prompt": "Can I have a cappuccino?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I have a cold brew with an extra shot of espresso?",
+        "response": "1. Cold Brew 2. Espresso 3. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with extra chocolate?",
+        "response": "1. Espresso 2. Steamed Milk 3. Chocolate Syrup 4. Chocolate Syrup 5. Done"
+    },
+    {
+        "prompt": "I'd like a cappuccino please.",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I have a mocha with an extra shot of espresso?",
+        "response": "1. Espresso 2. Espresso 3. Steamed Milk 4. Chocolate Syrup 5. Done"
+    },
+    {
+        "prompt": "Can I get a cappuccino?",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I have an iced mocha?",
+        "response": "1. Espresso 2. Milk 3. Chocolate Syrup 4. Ice 5. Done"
+    },
+    {
+        "prompt": "I'm not sure what I want.",
+        "response": "1. Espresso 2. Steamed Milk 3. Foam 4. Done"
+    },
+    {
+        "prompt": "Can I have a cold brew with extra sweetener?",
+        "response": "1. Cold Brew Coffee 2. Sweetener 3. Done"
+    },
+    {
+        "prompt": "Can I have a macchiato with an extra shot?",
+        "response": "1. Espresso 2. Steamed Milk 3. Espresso 4. Done"
+    },
+    {
+        "prompt": "Can I have an iced americano with an extra shot of espresso?",
+        "response": "1. Espresso 2. Espresso 3. Water 4. Ice 5. Done"
+    },
+    {
+        "prompt": "Can I have an iced americano with an extra shot of espresso?",
+        "response": "1. Espresso 2. Water 3. Ice 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Can I have a iced americano with an extra shot of espresso?",
+        "response": "1. Espresso 2. Water 3. Ice 4. Espresso 5. Done"
+    },
+    {
+        "prompt": "Could I get a frappuccino with extra caramel?",
+        "response": "1. Coffee 2. Milk 3. Ice 4. Caramel Syrup 5. Caramel Syrup 6. Done"
+    },
+    {
+        "prompt": "Could I get a cold brew?",
+        "response": "1. Cold Brew Coffee 2. Done"
+    },
+    {
+        "prompt": "Americano with an extra shot.",
+        "response": "1. Espresso 2. Hot Water 3. Espresso 4. Done"
+    },
+    {
+        "prompt": "Can I have an iced americano with an extra shot of espresso?",
+        "response": "1. Espresso 2. Cold Water 3. Espresso 4. Done"
+    }
+]
