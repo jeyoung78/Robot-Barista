@@ -52,7 +52,7 @@ def tokenize_function(example):
     return tokenized
 
 # 1. Load your saved JSON file into a Python list of dictionaries
-with open("data_cleaned.json", "r") as f:
+with open("data_collection.json", "r") as f:
     distillation_data = json.load(f)
 
 # Create the dataset from the list of dictionaries
@@ -65,9 +65,9 @@ print(dataset[2])
 data_collator = DataCollatorForLanguageModeling(tokenizer=tokenizer, mlm=False)
 
 training_args = TrainingArguments(
-    output_dir="./gpt2_recipe_generation",
+    output_dir="./gpt2_recipe",
     overwrite_output_dir=True,
-    num_train_epochs=6,
+    num_train_epochs=4,
     per_device_train_batch_size=4,
     save_steps=500,
     save_total_limit=2,
@@ -84,5 +84,5 @@ print("Per-device train batch size:", trainer.args.per_device_train_batch_size)
 
 trainer.train()
 
-model.save_pretrained("./gpt2_recipe_generation")
-tokenizer.save_pretrained("./gpt2_recipe_generation")
+model.save_pretrained("./gpt2_recipe")
+tokenizer.save_pretrained("./gpt2_recipe")

@@ -2,12 +2,12 @@ import torch
 from transformers import GPT2LMHeadModel, GPT2Tokenizer
 
 # Load the model and tokenizer.
-tokenizer = GPT2Tokenizer.from_pretrained("./gpt2_recipe_generation")
-model = GPT2LMHeadModel.from_pretrained("./gpt2_recipe_generation")
+tokenizer = GPT2Tokenizer.from_pretrained("./gpt2_recipe")
+model = GPT2LMHeadModel.from_pretrained("./gpt2_recipe")
 model.eval()
 
 # Define your input prompt.
-prompt = ""
+prompt = "Can I have vanilla latte with extra shotof espresso please?"
 input_ids = tokenizer.encode(prompt, return_tensors='pt')
 
 # Generate text while returning scores.
@@ -25,7 +25,7 @@ output = model.generate(
 generated_ids = output.sequences[0]
 generated_text = tokenizer.decode(generated_ids, skip_special_tokens=True)
 print("Generated Text:", generated_text)
-
+'''
 # Iterate over each step's score and the corresponding token.
 for step, (logits, token_id) in enumerate(zip(output.scores, generated_ids[1:]), start=1):
     # Convert logits to probabilities.
@@ -45,3 +45,4 @@ for step, (logits, token_id) in enumerate(zip(output.scores, generated_ids[1:]),
     
     print(f"Step {step} token chosen from distribution (argmax): {chosen_token_from_dist}")
     print(f"Step {step} actual chosen token: {actual_chosen_token}\n")
+'''
