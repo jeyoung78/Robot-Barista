@@ -40,7 +40,8 @@ class Scoring:
         past_key_calues = None 
         count = 1
         curr = ''
-        
+        temp = ''
+        arr = []
         while True:
             outputs = self.model(generated_sequence)
             next_token_logits = outputs.logits[:, -1, :]
@@ -59,29 +60,37 @@ class Scoring:
                     selected_token_id = selected_token_id.to(generated_sequence.device)
                     generated_sequence = torch.cat((generated_sequence, selected_token_id), dim=1)
                     updated_prompt = self.tokenizer.decode(generated_sequence[0], skip_special_tokens=True)
-                    # print(updated_prompt.replace("Ġ", " "))
+                    
                     
                     if topk_token.strip() == 'Done':
-                        return 
+                        arr.append("Done")
+                        return updated_prompt.replace("Ġ", " "), arr
 
                     curr += topk_token.strip()
-                    print(f"curr: {topk_token}")
+                    
                     if curr.strip() in self.full_options:   
                         count += 1
                         formatted_str = f"Ġ{count}."
                         encoded_ids = self.tokenizer.encode(formatted_str, add_special_tokens=False)
                         token_tensor = torch.tensor(encoded_ids, dtype=torch.long).unsqueeze(0).to(generated_sequence.device)
                         generated_sequence = torch.cat((generated_sequence, token_tensor), dim=1)
-                        curr = ""
                         
+                        temp += topk_token.strip()
+                        arr.append(temp)
+
+                        curr = ""
+                        temp = ""
+                    else:
+                        temp += topk_token.strip() + " "
+                    
                     break
 
                 index = index + 1
 
-            time.sleep(0.25)
 
 if __name__ == "__main__":
     scoring = Scoring()
-    final_prompt = scoring.generate("I want iced Americano.")
+    final_prompt, arr = scoring.generate("I want iced Americano.")
     print("Final updated prompt:")
     print(final_prompt)
+    print(arr)
