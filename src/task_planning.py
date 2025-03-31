@@ -34,30 +34,6 @@ class Scoring:
         except ValueError:
             return False
 
-    def top_k_top_p_filtering(self, logits, top_k=50, top_p=0.95):
-        values, _ = torch.topk(logits, top_k)
-        kth_value = values[:, -1].unsqueeze(1)
-        logits = torch.where(logits < kth_value, torch.full_like(logits, float('-inf')), logits)
-
-        sorted_logits, sorted_indices = torch.sort(logits, descending=True, dim=-1)
-        probs = F.softmax(sorted_logits, dim=-1)
-        cumulative_probs = torch.cumsum(probs, dim=-1)
-        sorted_indices_to_remove = cumulative_probs > top_p
-        sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
-        sorted_indices_to_remove[..., 0] = 0
-        indices_to_remove = sorted_indices_to_remove.scatter(1, sorted_indices, sorted_indices_to_remove)
-        logits = logits.masked_fill(indices_to_remove, float('-inf'))
-    
-        return logits
-    
-    def allowed_tokens_filtering(self, logits, allowed_token_ids):
-        mask = torch.zeros_like(logits, dtype=torch.bool)
-        mask[:, allowed_token_ids] = True
-        # Set logits for all tokens not allowed to -infinity.
-        filtered_logits = logits.masked_fill(~mask, -float('inf'))
-        return filtered_logits
-
-
     def generate(self, prompt_text):
         prompt_text = f"<recipe_generation> {prompt_text} <recipe_generation> 1."
         generated_sequence = self.tokenizer.encode(prompt_text, return_tensors="pt").to(self.device)
@@ -102,7 +78,6 @@ class Scoring:
 
                 index = index + 1
 
-            
             time.sleep(0.25)
 
 if __name__ == "__main__":
