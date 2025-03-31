@@ -7,9 +7,9 @@ model = GPT2LMHeadModel.from_pretrained("./gpt2_recipe")
 model.eval()
 
 # Define your input prompt.
-prompt = "Can I have vanilla latte with extra shotof espresso please?"
+prompt = "<recipe_generation> Can I have caramel macchiato with extra shot of espresso please? <recipe_generation>"
 input_ids = tokenizer.encode(prompt, return_tensors='pt')
-
+'''
 # Generate text while returning scores.
 output = model.generate(
     input_ids,
@@ -25,24 +25,67 @@ output = model.generate(
 generated_ids = output.sequences[0]
 generated_text = tokenizer.decode(generated_ids, skip_special_tokens=True)
 print("Generated Text:", generated_text)
+
+generated = input_ids
+past_key_values = None
 '''
-# Iterate over each step's score and the corresponding token.
-for step, (logits, token_id) in enumerate(zip(output.scores, generated_ids[1:]), start=1):
-    # Convert logits to probabilities.
-    probabilities = torch.softmax(logits, dim=-1)
-    # Determine the index of the chosen token from the distribution.
-    # Note: For sampling, this is just an approximation; the chosen token is recorded in `generated_ids`.
-    chosen_token_idx = torch.argmax(probabilities, dim=-1)
+import torch
+import torch.nn.functional as F
+
+def top_k_top_p_filtering(logits, top_k=50, top_p=0.95):
+    # Top-k filtering: keep only the top k tokens with the highest logit values.
+    if top_k > 0:
+        values, _ = torch.topk(logits, top_k)
+        kth_value = values[:, -1].unsqueeze(1)
+        logits = torch.where(logits < kth_value, torch.full_like(logits, float('-inf')), logits)
     
-    # Decode the tokens.
-    chosen_token_from_dist = tokenizer.decode(chosen_token_idx)
-    actual_chosen_token = tokenizer.decode(token_id.unsqueeze(0))
+    # Top-p (nucleus) filtering: keep tokens with cumulative probability up to top_p.
+    if top_p > 0.0:
+        sorted_logits, sorted_indices = torch.sort(logits, descending=True, dim=-1)
+        probs = F.softmax(sorted_logits, dim=-1)
+        cumulative_probs = torch.cumsum(probs, dim=-1)
+        # Remove tokens with cumulative probability above the threshold.
+        sorted_indices_to_remove = cumulative_probs > top_p
+        # Shift the indices to include the first token above the threshold.
+        sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
+        sorted_indices_to_remove[..., 0] = 0
+        # Scatter sorted tensors back to original indexing.
+        indices_to_remove = sorted_indices_to_remove.scatter(1, sorted_indices, sorted_indices_to_remove)
+        logits = logits.masked_fill(indices_to_remove, float('-inf'))
     
-    print(f"Step {step} probability distribution (non-zero entries shown):")
-    non_zero_indices = (probabilities > 0).nonzero(as_tuple=True)[1]
-    for idx in non_zero_indices:
-        print(f"  Token: {tokenizer.decode(idx.unsqueeze(0))}, Probability: {probabilities[0, idx].item():.4f}")
+    return logits
+
+
+generated = input_ids  
+past_key_values = None 
+
+for _ in range(100):
+    # Forward pass; utilize past_key_values to speed up computation if available.
+    outputs = model(generated, past_key_values=past_key_values, return_dict=True)
     
-    print(f"Step {step} token chosen from distribution (argmax): {chosen_token_from_dist}")
-    print(f"Step {step} actual chosen token: {actual_chosen_token}\n")
-'''
+    # Update past_key_values and extract logits for the last generated token.
+    logits = outputs.logits
+    past_key_values = outputs.past_key_values
+    next_token_logits = logits[:, -1, :]
+    
+    # Apply top-k and top-p filtering to the logits.
+    filtered_logits = top_k_top_p_filtering(next_token_logits, top_k=50, top_p=0.95)
+    
+    # Convert filtered logits to probabilities.
+    probabilities = F.softmax(filtered_logits, dim=-1)
+    
+    # Sample the next token (modify sampling strategy if needed).
+    next_token = torch.multinomial(probabilities, num_samples=1)
+    
+    # Append the token to the generated sequence.
+    generated = torch.cat((generated, next_token), dim=1)
+    
+    # Decode and print the token immediately.
+    token_str = tokenizer.decode(next_token[0])
+    print(token_str, end='', flush=True)
+    
+    # Optionally, break the loop if the EOS token is generated.
+    if next_token.item() == model.config.eos_token_id:
+        break
+
+print()  # New line after generation.

@@ -11,7 +11,7 @@ import torch
 import time
 
 class Scoring:
-    def __init__(self, model_path="./gpt2_recipe_generation"):
+    def __init__(self, model_path="./gpt2_recipe"):
         """
         Initializes Scoring by loading the fine-tuned GPT2 model and tokenizer.
         """
@@ -22,86 +22,91 @@ class Scoring:
         self.model.to(self.device)
         
         # Define the allowed options for generation
-        self.options = ["Esp", "Ste", "Milk", "Car", "Sy", "Done"]
-        self.full_options = ["Espresso", "Steamed Milk", "Milk", "Caramel Syrup", "Done"]
+        self.options = ['Place', 'Cup', 'Pour', 'Water', 'Ice', 'Esp', 'resso', 'Serve', "Bever", 'age', 'Done']
+        self.full_options = ['PlaceCup', "PourWater", "PourIce", "PourEspresso", "ServeBeverage", "Done"]
         self.allowed_token_ids = [self.tokenizer.encode(opt, add_prefix_space=True)[0] for opt in self.options]
+        print(self.allowed_token_ids)
+
+    def is_number(self, s):
+        try:
+            float(s)
+            return True
+        except ValueError:
+            return False
+
+    def top_k_top_p_filtering(self, logits, top_k=50, top_p=0.95):
+        values, _ = torch.topk(logits, top_k)
+        kth_value = values[:, -1].unsqueeze(1)
+        logits = torch.where(logits < kth_value, torch.full_like(logits, float('-inf')), logits)
+
+        sorted_logits, sorted_indices = torch.sort(logits, descending=True, dim=-1)
+        probs = F.softmax(sorted_logits, dim=-1)
+        cumulative_probs = torch.cumsum(probs, dim=-1)
+        sorted_indices_to_remove = cumulative_probs > top_p
+        sorted_indices_to_remove[..., 1:] = sorted_indices_to_remove[..., :-1].clone()
+        sorted_indices_to_remove[..., 0] = 0
+        indices_to_remove = sorted_indices_to_remove.scatter(1, sorted_indices, sorted_indices_to_remove)
+        logits = logits.masked_fill(indices_to_remove, float('-inf'))
+    
+        return logits
+    
+    def allowed_tokens_filtering(self, logits, allowed_token_ids):
+        mask = torch.zeros_like(logits, dtype=torch.bool)
+        mask[:, allowed_token_ids] = True
+        # Set logits for all tokens not allowed to -infinity.
+        filtered_logits = logits.masked_fill(~mask, -float('inf'))
+        return filtered_logits
+
 
     def generate(self, prompt_text):
-        prompt_text = f"<recipe_generation> {prompt_text} <recipe_generation> 1. "
+        prompt_text = f"<recipe_generation> {prompt_text} <recipe_generation> 1."
         generated_sequence = self.tokenizer.encode(prompt_text, return_tensors="pt").to(self.device)
-        updated_prompt = prompt_text
-        toggle = True
-        curr = ""
-        count = 2
-
-        while "Done" not in updated_prompt:
-            if toggle:
-                # Generate logits for the next token and restrict to allowed tokens.
-                outputs = self.model(generated_sequence)
-                next_token_logits = outputs.logits[:, -1, :]
-                filtered_logits = next_token_logits.clone()
-                
-                # Mask all tokens except allowed tokens.
-                mask = torch.ones_like(filtered_logits, dtype=torch.bool)
-                for token_id in self.allowed_token_ids:
-                    mask[:, token_id] = False
-                filtered_logits[mask] = -float("Inf")
-                
-                # If all candidates are masked, fallback to original logits.
-                if torch.all(torch.isinf(filtered_logits)):
-                    selected_token_id = torch.argmax(next_token_logits, dim=-1).unsqueeze(0)
-                else:
-                    selected_token_id = torch.argmax(filtered_logits, dim=-1).unsqueeze(0)
-                    
-                generated_sequence = torch.cat((generated_sequence, selected_token_id.to(self.device)), dim=1)
-                updated_prompt = self.tokenizer.decode(generated_sequence[0], skip_special_tokens=True)
-                print(updated_prompt)
-                print(f"Chosen Token: {self.tokenizer.decode(selected_token_id[0])}")
-                print("-" * 50)
-                toggle = False
-                
-            else:
-                outputs = self.model(generated_sequence)
-                next_token_logits = outputs.logits[:, -1, :]
-                probabilities = torch.softmax(next_token_logits, dim=-1)
-                topk_values, topk_indices = torch.topk(next_token_logits, k=6, dim=-1)
-                topk_tokens = [self.tokenizer.decode(idx.item()) for idx in topk_indices[0]]
-                
-                selected_token_id = topk_indices[0][0].unsqueeze(0).unsqueeze(0)
-                curr += self.tokenizer.decode(selected_token_id.squeeze())
-                generated_sequence = torch.cat((generated_sequence, selected_token_id.to(self.device)), dim=1)
-                updated_prompt = self.tokenizer.decode(generated_sequence[0], skip_special_tokens=True)
-                
-                print(updated_prompt)
-                print(f"Chosen Token: {self.tokenizer.decode(selected_token_id[0])}")
-                print("-" * 50)
-                
-                time.sleep(0.2)
-                if curr in self.full_options:
-                    # word_to_add = "Ġ{count}.Ġ"
-
-                    # Encode the word to get the token IDs (this may return more than one token)
-                    # word_ids = self.tokenizer.encode(word_to_add, return_tensors="pt")
-
-                    # Optionally, ensure word_ids is on the same device as generated_sequence:
-                    # word_ids = word_ids.to(generated_sequence.device)
-                    # count = count + 1
-                    curr = ""
-                    toggle = True
+        past_key_calues = None 
+        count = 1
+        curr = ''
         
-        pattern = r'\d+\.\s*([A-Za-z ]+)'
+        while True:
+            outputs = self.model(generated_sequence)
+            next_token_logits = outputs.logits[:, -1, :]
+            special_token_id = self.tokenizer.convert_tokens_to_ids("<recipe_generation>")
+            next_token_logits[:, special_token_id] = -float('inf')
 
-        # Extract all matches.
-        matches = re.findall(pattern, updated_prompt)
+            topk_values, topk_indices = torch.topk(next_token_logits, k=6, dim=-1)
+            topk_tokens = [self.tokenizer.decode(idx.item()) for idx in topk_indices[0]]
+            index = 0
 
-        # Clean up the matches by stripping whitespace and converting to lowercase.
-        array = [match.strip().lower() for match in matches]
+            for topk_token in topk_tokens:
+                if topk_token.strip() in self.options:
+                    selected_token_id = topk_indices[0, index]
+                    selected_token_id = selected_token_id.unsqueeze(0).unsqueeze(0)
 
-        return updated_prompt, array
+                    selected_token_id = selected_token_id.to(generated_sequence.device)
+                    generated_sequence = torch.cat((generated_sequence, selected_token_id), dim=1)
+                    updated_prompt = self.tokenizer.decode(generated_sequence[0], skip_special_tokens=True)
+                    # print(updated_prompt.replace("Ġ", " "))
+                    
+                    if topk_token.strip() == 'Done':
+                        return 
 
-# Example usage:
+                    curr += topk_token.strip()
+                    print(f"curr: {topk_token}")
+                    if curr.strip() in self.full_options:   
+                        count += 1
+                        formatted_str = f"Ġ{count}."
+                        encoded_ids = self.tokenizer.encode(formatted_str, add_special_tokens=False)
+                        token_tensor = torch.tensor(encoded_ids, dtype=torch.long).unsqueeze(0).to(generated_sequence.device)
+                        generated_sequence = torch.cat((generated_sequence, token_tensor), dim=1)
+                        curr = ""
+                        
+                    break
+
+                index = index + 1
+
+            
+            time.sleep(0.25)
+
 if __name__ == "__main__":
     scoring = Scoring()
-    final_prompt = scoring.generate("Can I have Caramel Macchiato?")
+    final_prompt = scoring.generate("I want iced Americano.")
     print("Final updated prompt:")
     print(final_prompt)
