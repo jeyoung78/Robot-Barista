@@ -1,10 +1,23 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
+from peft import PeftModel
+
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
+BASE_MODEL_PATH = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+
+tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL_PATH)
+model = AutoModelForCausalLM.from_pretrained(
+    BASE_MODEL_PATH,
+    device_map=device,        
+)
+
+ADAPTER_PATH = "./tinyllama-finetuned"  # your LoRA/PEFT checkpoint
+model = PeftModel.from_pretrained(model, ADAPTER_PATH)
 
 model_dir = "./tinyllama-finetuned"
 tokenizer = AutoTokenizer.from_pretrained(model_dir)
-model = AutoModelForCausalLM.from_pretrained(model_dir, ignore_mismatched_sizes=True)
-device = "cuda" if torch.cuda.is_available() else "cpu"
+
 model.to(device)
 model.eval()
 

@@ -1,6 +1,6 @@
 import numpy as np
 import torch
-
+from flask import Flask, request, jsonify
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
 model_name = "meta-llama/Llama-2-7b-chat-hf"
@@ -45,3 +45,21 @@ def llm_verification(draft_distribution, draft_token_id, generated):
 
     # print(f"Target: {tokenizer.decode(draft_token_id).strip()}")
     return result_token_id, accepted
+
+app = Flask(__name__)
+
+@app.route('/llm_verification', methods=['POST'])
+def call_llm_verification():
+    data = request.get_json()
+    draft_distribution = data['draft_distribution']
+    draft_token_id = data['draft_token_id']
+    generated_list = data['generated']
+    device = "cuda" if torch.cuda.is_available() else "cpu"
+    # Convert the received list back into a tensor; assuming generated is a list of token ids.
+    generated = torch.tensor([generated_list], device=device)
+    result_token_id, accepted = llm_verification(draft_distribution, draft_token_id, generated)
+    return jsonify({'result_token_id': result_token_id, 'accepted': accepted})
+
+if __name__ == '__main__':
+    print("Starting llm.py server on port 5000...")
+    app.run(host='0.0.0.0', port=5000)
