@@ -64,7 +64,7 @@ def uncertainty_aware_hybrid_inference(prompt: str, max_new_tokens: int = 100, u
 
         chosen_token = torch.tensor([final_token_id], device=device)
         generated = torch.cat([generated, chosen_token.unsqueeze(0)], dim=1)
-        
+        print(detokenize(generated))
         if detokenize(chosen_token).strip() == "Done":
             break
 
