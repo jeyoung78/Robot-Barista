@@ -22,7 +22,9 @@ def llm_verification(draft_distribution, draft_token_id, generated):
     next_token_logits = logits[0, -1, :]
     target_distribution = torch.softmax(next_token_logits, dim=-1)
 
-    draft_distribution = draft_distribution.cpu().numpy()
+    if not isinstance(draft_distribution, np.ndarray):
+        draft_distribution = np.array(draft_distribution)
+
     target_distribution = target_distribution.cpu().numpy()
 
     x_d = draft_distribution[draft_token_id]

@@ -1,7 +1,6 @@
 import torch
-import requests  # Used for making the HTTP request to the server
+import requests  # For making HTTP requests to the server
 from slm import slm_inference
-# Note: The local llm_verification import is now removed because we call it remotely.
 from transformers import AutoTokenizer
 
 model_dir = "./tinyllama-finetuned"
@@ -27,45 +26,53 @@ def uncertainty_aware_hybrid_inference(prompt: str, max_new_tokens: int = 100, u
     initial_length = len(prompt)
 
     for i in range(max_new_tokens):
-        num_inference = i
+        num_inference = i + 1
+        # Get the draft token, its uncertainty, and distribution from SLM inference.
         draft_token_id, uncertainty, draft_distribution = slm_inference(generated=generated)
         
-        # Prepare payload for remote llm_verification.
-        if isinstance(draft_distribution, torch.Tensor):
-            draft_distribution_list = draft_distribution.tolist()
+        # Check uncertainty: if high, use remote llm_verification; otherwise, use the SLM token.
+        if uncertainty > uncertainty_threshold:
+            print(f"High uncertainty ({uncertainty:.2f} > {uncertainty_threshold}); calling remote LLM verification...")
+            # Convert draft_distribution to a list if needed.
+            if isinstance(draft_distribution, torch.Tensor):
+                draft_distribution_list = draft_distribution.tolist()
+            else:
+                draft_distribution_list = draft_distribution
+            
+            payload = {
+                "draft_distribution": draft_distribution_list,
+                "draft_token_id": int(draft_token_id),
+                "generated": generated.squeeze(0).tolist()
+            }
+            
+            # Replace "165.132.40.52" with your server's actual IP address.
+            server_url = "http://165.132.40.52:5000/llm_verification"
+            try:
+                response = requests.post(server_url, json=payload, timeout=10)
+                response.raise_for_status()
+                data = response.json()
+                final_token_id = data['result_token_id']
+                accepted = data['accepted']
+                if not accepted:
+                    resample += 1
+            except Exception as e:
+                print("Error calling remote llm_verification:", e)
+                final_token_id = draft_token_id
         else:
-            draft_distribution_list = draft_distribution
-        
-        payload = {
-            "draft_distribution": draft_distribution_list,
-            "draft_token_id": int(draft_token_id),
-            "generated": generated.squeeze(0).tolist()
-        }
-        
-        # Replace "165.132.40.52" with the actual IP address of your server.
-        server_url = "http://165.132.40.52:5000/llm_verification"
-        try:
-            response = requests.post(server_url, json=payload, timeout=10)
-            response.raise_for_status()
-            data = response.json()
-            final_token_id = data['result_token_id']
-            accepted = data['accepted']
-            if not accepted:
-                resample += 1
-        except Exception as e:
-            print("Error calling remote llm_verification:", e)
+            print(f"Low uncertainty ({uncertainty:.2f} <= {uncertainty_threshold}); using SLM token directly.")
             final_token_id = draft_token_id
 
         chosen_token = torch.tensor([final_token_id], device=device)
         generated = torch.cat([generated, chosen_token.unsqueeze(0)], dim=1)
-        if detokenize(chosen_token) == "Done":
+        
+        if detokenize(chosen_token).strip() == "Done":
             break
 
     tsr = (1 - resample/num_inference) if num_inference > 0 else 1.0
     return detokenize(generated)[initial_length:], tsr
 
 if __name__ == "__main__":
-    prompt_text = "Can I have vanilla latte?"
+    prompt_text = "Can I have gin tonic?"
     generated_text, tsr = uncertainty_aware_hybrid_inference(prompt_text)
     print("Generated text:", generated_text)
     print("True skip ratio:", tsr)
