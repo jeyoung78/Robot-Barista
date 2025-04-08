@@ -1,6 +1,12 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 from peft import PeftModel
+import serial
+import json
+import time
+
+SERIAL_PORT = 'COM3'  # Use the appropriate USB port identifier
+BAUDRATE = 9600
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
@@ -48,4 +54,51 @@ def slm_inference(generated, theta_max: float = 2.0, K: int = 20):
 
     return draft_token_id, uncertainty, draft_distribution
 
+def main():
+    try:
+        ser = serial.Serial(SERIAL_PORT, BAUDRATE, timeout=1)
+    except Exception as e:
+        print("Error opening serial port:", e)
+        return
 
+    print("Listener active and waiting for commands...")
+    
+    while True:
+        try:
+            if ser.in_waiting > 0:
+                command_line = ser.readline().decode().strip()
+                print("Received command:", command_line)
+
+                try:
+                    command = json.loads(command_line)
+                    if command.get("function") == "slm_inference":
+                        params = command.get("params", [])
+                        if len(params) >= 1:
+                            generated_list = params[0]
+                            theta_max = params[1] if len(params) > 1 else 2.0
+                            K = params[2] if len(params) > 2 else 20
+                            
+                            generated_tensor = torch.tensor(generated_list, device=device).unsqueeze(0)
+                            
+                            draft_token_id, uncertainty, draft_distribution = slm_inference(generated_tensor, theta_max, K)
+                            
+                            response = {
+                                "draft_token_id": int(draft_token_id),
+                                "uncertainty": uncertainty,
+                                "draft_distribution": draft_distribution.tolist() if hasattr(draft_distribution, "tolist") else draft_distribution
+                            }
+                        else:
+                            response = {"error": "Insufficient parameters."}
+                    else:
+                        response = {"error": "Unknown function."}
+                except Exception as ex:
+                    response = {"error": str(ex)}
+                
+                response_str = json.dumps(response) + "\n"
+                ser.write(response_str.encode())
+                print("Sent response:", response_str.strip())
+        except Exception as e:
+            print("Communication error:", e)
+
+if __name__ == "__main__":
+    main()
