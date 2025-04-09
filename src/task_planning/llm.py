@@ -8,7 +8,7 @@ tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
 model = AutoModelForCausalLM.from_pretrained(model_name, device_map="auto")
 
 def llm_verification(draft_distribution, draft_token_id, generated):
-    banned_words = ["in", "into"]
+    banned_words = ["in", "into", "In"]
     banned_token_ids = []
     for word in banned_words:
         tokens = tokenizer.encode(word, add_special_tokens=False)

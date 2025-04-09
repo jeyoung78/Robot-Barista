@@ -22,7 +22,7 @@ def uncertainty_aware_hybrid_inference(prompt: str, max_new_tokens: int = 100, u
     num_inference = 0
     num_transmission = 0
     special_token = "<recipe_generation>"
-    prompt = f"{special_token} {prompt} {special_token} "
+    prompt = f"{special_token} {prompt} {special_token} 1. Place Cup"
     inputs = tokenizer(prompt, return_tensors="pt")
     inputs = {k: v.to(device) for k, v in inputs.items()}
     generated = inputs["input_ids"]
