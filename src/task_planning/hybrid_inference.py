@@ -1,4 +1,5 @@
 import torch
+import time
 import requests  # For making HTTP requests to the server
 from slm import slm_inference
 from transformers import AutoTokenizer
@@ -6,6 +7,7 @@ from transformers import AutoTokenizer
 model_dir = "./tinyllama-finetuned"
 tokenizer = AutoTokenizer.from_pretrained(model_dir)
 device = "cuda" if torch.cuda.is_available() else "cpu"
+
 
 def detokenize(token_id):
     if isinstance(token_id, int):
@@ -15,8 +17,10 @@ def detokenize(token_id):
 
 # Returns the final generated prompt and the true skip ratio.
 def uncertainty_aware_hybrid_inference(prompt: str, max_new_tokens: int = 100, uncertainty_threshold: float = 0.5):
+    start = time.time()
     resample = 0
     num_inference = 0
+    num_transmission = 0
     special_token = "<recipe_generation>"
     prompt = f"{special_token} {prompt} {special_token} "
     inputs = tokenizer(prompt, return_tensors="pt")
@@ -32,6 +36,7 @@ def uncertainty_aware_hybrid_inference(prompt: str, max_new_tokens: int = 100, u
         
         # Check uncertainty: if high, use remote llm_verification; otherwise, use the SLM token.
         if uncertainty > uncertainty_threshold:
+            num_transmission = num_transmission + 1
             print(f"High uncertainty ({uncertainty:.2f} > {uncertainty_threshold}); calling remote LLM verification...")
             # Convert draft_distribution to a list if needed.
             if isinstance(draft_distribution, torch.Tensor):
@@ -65,14 +70,18 @@ def uncertainty_aware_hybrid_inference(prompt: str, max_new_tokens: int = 100, u
         chosen_token = torch.tensor([final_token_id], device=device)
         generated = torch.cat([generated, chosen_token.unsqueeze(0)], dim=1)
         print(detokenize(generated))
+
         if detokenize(chosen_token).strip() == "Done":
             break
 
     tsr = (1 - resample/num_inference) if num_inference > 0 else 1.0
-    return detokenize(generated)[initial_length:], tsr
+    tr = (1 - num_transmission/num_inference) if num_inference > 0 else 1.0
+    time_elapsed = time.time() - start
+    return detokenize(generated)[initial_length:], tsr, tr, num_inference, time_elapsed
 
 if __name__ == "__main__":
-    prompt_text = "Can I have gin tonic?"
-    generated_text, tsr = uncertainty_aware_hybrid_inference(prompt_text)
+    prompt_text = "Can I have caramel macchiato??"
+    generated_text, tsr, tr = uncertainty_aware_hybrid_inference(prompt_text, uncertainty_threshold=0.5)
     print("Generated text:", generated_text)
     print("True skip ratio:", tsr)
+    print("Transmission rate:", tsr)

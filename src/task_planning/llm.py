@@ -8,6 +8,13 @@ tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
 model = AutoModelForCausalLM.from_pretrained(model_name, device_map="auto")
 
 def llm_verification(draft_distribution, draft_token_id, generated):
+    banned_words = ["in", "into"]
+    banned_token_ids = []
+    for word in banned_words:
+        tokens = tokenizer.encode(word, add_special_tokens=False)
+        if tokens:
+            banned_token_ids.extend(tokens)
+
     accepted = True
 
     prefix_text = "Generate a unique robot recipe as a numbered list using only these actions: Place, Pour, Serve, and Done. Each step must include one action followed by a single ingredient name—no amounts or extra descriptions. Do not include any additional words like into, in, or extra descriptors. Follow this exact format: 1. Place Cup 2. Pour Water 3. Pour Espresso 4. Serve Beverage 5. Done. Here's actual order: "
@@ -20,13 +27,16 @@ def llm_verification(draft_distribution, draft_token_id, generated):
     
     logits = outputs.logits  
     next_token_logits = logits[0, -1, :]
-    target_distribution = torch.softmax(next_token_logits, dim=-1)
+    for token_id in banned_token_ids:
+        next_token_logits[token_id] = -float('Inf')
 
+    target_distribution = torch.softmax(next_token_logits, dim=-1)
+    
     if not isinstance(draft_distribution, np.ndarray):
         draft_distribution = np.array(draft_distribution)
 
     target_distribution = target_distribution.cpu().numpy()
-
+    
     x_d = draft_distribution[draft_token_id]
     y_d = target_distribution[draft_token_id]
     # print(type(draft_distribution))
