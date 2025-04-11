@@ -1,4 +1,5 @@
 import socket
+import time
 
 class Communicate:
     def __init__(self, robot_ip='192.168.137.100', robot_port=20002):
@@ -31,8 +32,8 @@ class Communicate:
         command = "initial" 
         self.communicate(command)
 
-    def done(self):
-        command = "done"
+    def release(self):
+        command = "release"
         self.communicate(command)
 
     def grab(self):
@@ -41,3 +42,16 @@ class Communicate:
 
 comm = Communicate()
 comm.move_y(True)
+
+def main():
+    time.sleep(3)
+    comm.grab()
+    time.sleep(3)
+    comm.release()
+    time.sleep(3)
+    comm.grab()
+    time.sleep(3)
+    comm.release()
+
+if __name__ == "__main__":
+    main()
