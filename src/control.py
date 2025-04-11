@@ -31,5 +31,13 @@ class Communicate:
         command = "initial" 
         self.communicate(command)
 
+    def done(self):
+        command = "done"
+        self.communicate(command)
+
+    def grab(self):
+        command = "grab"
+        self.communicate(command)
+
 comm = Communicate()
 comm.move_y(True)
