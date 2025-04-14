@@ -7,6 +7,7 @@ from transformers import AutoTokenizer
 model_dir = "./tinyllama-finetuned"
 tokenizer = AutoTokenizer.from_pretrained(model_dir)
 device = "cuda" if torch.cuda.is_available() else "cpu"
+print(device)
 
 # Matcha Frappuccino: 1. Place Cup 2. Pour Milk 3. Add Matcha Powder 4. Add Sugar 5. Add Ice 6. Blend Beverage 7. Add Whipped Cream 8. Serve Beverage 9. Done
 # Cinnamon Dolce Latte: 1. Place Cup 2. Pour Espresso 3. Pour Milk 4. Pour Cinnamon Dolce Syrup 5. Add Whipped Cream 6. Serve Beverage 7. Done
@@ -112,7 +113,7 @@ def uncertainty_aware_hybrid_inference(prompt: str, max_new_tokens: int = 100, u
 
 if __name__ == "__main__":
     prompt_text = "Can I have pumpking spice latte?"
-    generated_text, tsr, tr, num_inference, time_elapsed = uncertainty_aware_hybrid_inference(prompt_text, uncertainty_threshold=0.1)
+    generated_text, tsr, tr, num_inference, time_elapsed = uncertainty_aware_hybrid_inference(prompt_text, uncertainty_threshold=0)
     print("Generated text:", generated_text)
     print("True skip ratio:", tsr)
     print("Transmission rate:", tsr)

@@ -13,28 +13,31 @@ def string_to_array(s):
 
 random.shuffle(beverage_ground_truth_list)
 
+scores = []
 
 # Iterate over each entry in the JSON list
 for entry in beverage_ground_truth_list:
     prompt = entry["prompt"]
     response = entry["response"]
     
-    # Generate the plan using the hybrid inference function
-    generated_text, tsr, tr, num_token, time_elapsed = uncertainty_aware_hybrid_inference(prompt, uncertainty_threshold=0.05)
+    generated_text, tsr, tr, num_token, time_elapsed = uncertainty_aware_hybrid_inference(prompt, uncertainty_threshold=2)
     
-    # Convert both generated text and the ground truth response into arrays of steps
     generated_array = string_to_array(generated_text)
     ground_truth_array = string_to_array(response)
+    length = len(ground_truth_array)
     
     num_correct_subtask = 0
-    for subtask in generated_array:
-        # Here we check if the generated subtask exists in the ground truth response
-        if subtask in response.lower():
-            num_correct_subtask += 1
-    
-    # Calculate the task correct rate; if ground_truth_array is empty, avoid division by zero
-    task_correct_rate = num_correct_subtask / len(ground_truth_array) if ground_truth_array else 0
+   
 
+    for i, subtask in enumerate(generated_array):
+        for idx, gt_step in enumerate(ground_truth_array):
+            if subtask.lower().strip() == gt_step.lower().strip():
+                num_correct_subtask = num_correct_subtask + 1
+                # generated_array.pop(i)
+                ground_truth_array.pop(idx)
+    
+    task_correct_rate = num_correct_subtask / length if ground_truth_array else 0
+    scores.append(task_correct_rate)
 
     print(f"Task Correct Rate: {task_correct_rate}")
     print(f"Prompt: {prompt}")
@@ -42,4 +45,5 @@ for entry in beverage_ground_truth_list:
     print(f"Ground Truth: {response}")
     print(f"True Skip Ratio: {tsr}, Transmission Rate: {tr}")
     print(f"Num Tokens: {num_token}, End-to-End Inference Latency: {time_elapsed}s, Token Throughput: {num_token/time_elapsed}")
-    print("-"*20)
+    print(f"Score Average: {sum(scores)/len(scores)}")
+    print("-"*50)

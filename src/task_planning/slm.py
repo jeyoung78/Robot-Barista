@@ -5,7 +5,6 @@ import json
 import time
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
-
 BASE_MODEL_PATH = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
 
 tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL_PATH)

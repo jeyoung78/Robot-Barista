@@ -9,7 +9,7 @@ from peft import LoraConfig, get_peft_model  # Import LoRA-related functions
 # Set CUDA allocation configuration before any CUDA-related imports
 # os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:24"
 
-dataset = load_dataset("json", data_files="data_collection.json")
+dataset = load_dataset("json", data_files="test.json")
 dataset = dataset["train"].train_test_split(test_size=0.1, seed=42)
 
 model_path = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
@@ -69,7 +69,7 @@ tokenized_dataset = dataset.map(
 
 training_args = TrainingArguments(
     output_dir="./tinyllama-finetuned",
-    num_train_epochs=3,
+    num_train_epochs=1,
     per_device_train_batch_size=1,
     per_device_eval_batch_size=1,
     warmup_steps=100,
