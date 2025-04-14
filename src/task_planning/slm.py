@@ -1,7 +1,6 @@
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
 from peft import PeftModel
-import serial
 import json
 import time
 
@@ -26,21 +25,12 @@ model.eval()
 
 # Receives input prompt, theta max, and K in token, float and int, returns draft token, uncertainty, and vocabulary distribution
 def slm_inference(generated, theta_max: float = 2.0, K: int = 20):
-    banned_words = ["in", "into", "In"]
-    banned_token_ids = []
-    for word in banned_words:
-        tokens = tokenizer.encode(word, add_special_tokens=False)
-        if tokens:
-            banned_token_ids.extend(tokens)
-
     with torch.no_grad():
         outputs = model(generated)
 
     logits = outputs.logits
     next_token_logits = logits[0, -1, :]
 
-    for token_id in banned_token_ids:
-        next_token_logits[token_id] = -float('Inf')
 
     draft_distribution = torch.softmax(next_token_logits, dim=-1)
     draft_token = torch.multinomial(draft_distribution, num_samples=1)
