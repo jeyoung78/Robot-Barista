@@ -14,25 +14,31 @@ model = AutoModelForCausalLM.from_pretrained(
     device_map=device,        
 )
 
-ADAPTER_PATH = "./tinyllama-finetuned"  # your LoRA/PEFT checkpoint
+ADAPTER_PATH = "./tinyllama-recipe"  # your LoRA/PEFT checkpoint
 model = PeftModel.from_pretrained(model, ADAPTER_PATH)
 
-model_dir = "./tinyllama-finetuned"
+model_dir = "./tinyllama-recipe"
 tokenizer = AutoTokenizer.from_pretrained(model_dir)
 
 model.to(device)
 model.eval()
 
 # Receives input prompt, theta max, and K in token, float and int, returns draft token, uncertainty, and vocabulary distribution
-def slm_inference(generated, theta_max: float = 2.0, K: int = 20):
+def slm_inference(generated, allowed_tokens, theta_max: float = 2.0, K: int = 20):
     with torch.no_grad():
         outputs = model(generated)
 
     logits = outputs.logits
     next_token_logits = logits[0, -1, :]
 
+    allowed_mask = torch.zeros_like(next_token_logits, dtype=torch.bool)
+    allowed_token_ids = torch.tensor(allowed_tokens, device=next_token_logits.device)
+    allowed_mask[allowed_token_ids] = True
 
-    draft_distribution = torch.softmax(next_token_logits, dim=-1)
+    disallowed_value = float('-inf')
+    masked_logits = torch.where(allowed_mask, next_token_logits, torch.tensor(disallowed_value, device=next_token_logits.device))
+
+    draft_distribution = torch.softmax(masked_logits, dim=-1)
     draft_token = torch.multinomial(draft_distribution, num_samples=1)
     draft_token_id = draft_token.item()
     # draft_token_text = tokenizer.decode(draft_token_id).strip()

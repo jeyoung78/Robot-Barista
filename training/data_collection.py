@@ -161,16 +161,16 @@ class DataGeneration():
     def generate_java_chip_frappuccino(self, extra_espresso=False, extra_java_chip=False):
         if extra_espresso and extra_java_chip:
             prompt = "You are a customer at a cafe. Produce a user request for a java chip frappuccino order with an extra shot of espresso and extra java chips. Return nothing but the order."
-            label = "1. Place Cup 2. Pour Espresso 3. Pour Espresso 4. Pour Espresso 5. Add Java Chips 6. Add Java Chips 7. Pour Milk 8. Pour Ice 9. Blend Beverage 10. Serve Beverage 11. Done"
+            label = "1. Place Cup 2. Pour Espresso 3. Pour Espresso 4. Pour Espresso 5. Add Java Chips 6. Add Java Chips 7. Pour Milk 8. Add Ice 9. Blend Beverage 10. Serve Beverage 11. Done"
         elif extra_espresso:
             prompt = "You are a customer at a cafe. Produce a user request for a java chip frappuccino order with an extra shot of espresso. Return nothing but the order."
-            label = "1. Place Cup 2. Pour Espresso 3. Pour Espresso 4. Pour Espresso 5. Add Java Chips 6. Pour Milk 7. Pour Ice 8. Blend Beverage 9. Serve Beverage 10. Done"
+            label = "1. Place Cup 2. Pour Espresso 3. Pour Espresso 4. Pour Espresso 5. Add Java Chips 6. Pour Milk 7. Add Ice 8. Blend Beverage 9. Serve Beverage 10. Done"
         elif extra_java_chip:
             prompt = "You are a customer at a cafe. Produce a user request for a java chip frappuccino order with extra java chips. Return nothing but the order."
-            label = "1. Place Cup 2. Pour Espresso 3. Pour Espresso 4. Pour Milk 5. Add Java Chips 6. Add Java Chips 7. Pour Ice 8. Blend Beverage 9. Serve Beverage 10. Done"
+            label = "1. Place Cup 2. Pour Espresso 3. Pour Espresso 4. Pour Milk 5. Add Java Chips 6. Add Java Chips 7. Add Ice 8. Blend Beverage 9. Serve Beverage 10. Done"
         else:
             prompt = "Produce a user request for a java chip frappuccino order in a cafe. Return nothing but the order."
-            label = "1. Place Cup 2. Pour Espresso 3. Pour Espresso 4. Pour Milk 5. Add Java Chips 6. Pour Ice 7. Blend Beverage 8. Serve Beverage 9. Done"
+            label = "1. Place Cup 2. Pour Espresso 3. Pour Espresso 4. Pour Milk 5. Add Java Chips 6. Add Ice 7. Blend Beverage 8. Serve Beverage 9. Done"
         try:
             response = self.client.models.generate_content(model="gemini-2.0-flash-thinking-exp-01-21", contents=[prompt])
         except ClientError as e:

@@ -7,7 +7,7 @@ model_name = "meta-llama/Llama-2-7b-chat-hf"
 tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
 model = AutoModelForCausalLM.from_pretrained(model_name, device_map="auto")
 
-def llm_verification(draft_distribution, draft_token_id, generated):
+def llm_verification(draft_distribution, draft_token_id, generated, allowed_tokens):
     banned_words = ["in", "into", "In"]
     banned_token_ids = []
     for word in banned_words:
@@ -21,7 +21,6 @@ def llm_verification(draft_distribution, draft_token_id, generated):
     prefix_tokens = tokenizer(prefix_text, return_tensors="pt")["input_ids"].to(generated.device)
     generated = torch.cat((prefix_tokens, generated), dim=1)
 
-
     with torch.no_grad():
         outputs = model(generated)
     
@@ -30,7 +29,14 @@ def llm_verification(draft_distribution, draft_token_id, generated):
     for token_id in banned_token_ids:
         next_token_logits[token_id] = -float('Inf')
 
-    target_distribution = torch.softmax(next_token_logits, dim=-1)
+    allowed_mask = torch.zeros_like(next_token_logits, dtype=torch.bool)
+    allowed_token_ids = torch.tensor(allowed_tokens, device=next_token_logits.device)
+    allowed_mask[allowed_token_ids] = True
+
+    disallowed_value = float('-inf')
+    masked_logits = torch.where(allowed_mask, next_token_logits, torch.tensor(disallowed_value, device=next_token_logits.device))
+
+    target_distribution = torch.softmax(masked_logits, dim=-1)
     
     if not isinstance(draft_distribution, np.ndarray):
         draft_distribution = np.array(draft_distribution)
@@ -66,10 +72,11 @@ def call_llm_verification():
     draft_distribution = data['draft_distribution']
     draft_token_id = data['draft_token_id']
     generated_list = data['generated']
+    allowed_tokens = data['allowed_tokens']
     device = "cuda" if torch.cuda.is_available() else "cpu"
     # Convert the received list back into a tensor; assuming generated is a list of token ids.
     generated = torch.tensor([generated_list], device=device)
-    result_token_id, accepted = llm_verification(draft_distribution, draft_token_id, generated)
+    result_token_id, accepted = llm_verification(draft_distribution, draft_token_id, generated, allowed_tokens)
     return jsonify({'result_token_id': result_token_id, 'accepted': accepted})
 
 if __name__ == '__main__':
