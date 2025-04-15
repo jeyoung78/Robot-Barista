@@ -49,33 +49,32 @@ class RAGPromptGenerator:
         prompt = f"""
             You are a coffee robot task planner. You have a recipe for a beverage called '{beverage}'.
 
-            Original Recipe Steps:
-            {original_recipe}
+            Original Recipe Steps: {original_recipe}
 
             User Request: "{user_query}"
 
             Important instructions:
-            1. Use only the following action verbs in the plan: "place", "pour", "serve", and "done".
-            2. All additional ingredient modifications must be added only in syrup form. For example:
-            - If vanilla is requested, output it as "vanilla syrup".
-            - If watermelon is requested, output it as "watermelon syrup".
+            1. Use only the following action verbs in the plan: "place", "pour", "serve", "drizzle", "garnish", "add" and "done".
+            2. Output a step-by-step list of actions, one per line, without any extra commentary.
             3. If the user asks for additions (e.g., "extra shot of espresso"), adjust the recipe by repeating the "pour espresso" step as needed.
             4. Preserve the overall structure of the original recipe as much as possible.
-            5. Output a step-by-step list of actions, one per line, without any extra commentary.
 
             Example:
             If the original recipe steps are:
             "1. place cup
             2. pour espresso
-            3. serve
-            4. done"
+            3. drizzle syrup
+            4. serve beverage
+            5. done"
 
-            And the user request is for an extra shot of espresso, the output should be:
+            And the user request is for an extra shot of espresso and more syrup, the output should be:
             "1. place cup
             2. pour espresso
             3. pour espresso
-            4. serve
-            5. done"
+            4. drizzle syrup
+            5. drizzle syrup
+            6. serve
+            7. done"
 
             Now, generate the final plan.
         """
