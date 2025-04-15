@@ -20,7 +20,7 @@ for entry in beverage_ground_truth_list:
     prompt = entry["prompt"]
     response = entry["response"]
     
-    generated_text, tsr, tr, num_token, time_elapsed = uncertainty_aware_hybrid_inference(prompt, uncertainty_threshold=2)
+    generated_text, tsr, tr, num_token, time_elapsed = uncertainty_aware_hybrid_inference(prompt, uncertainty_threshold=0.5)
     
     generated_array = string_to_array(generated_text)
     ground_truth_array = string_to_array(response)
@@ -33,10 +33,9 @@ for entry in beverage_ground_truth_list:
         for idx, gt_step in enumerate(ground_truth_array):
             if subtask.lower().strip() == gt_step.lower().strip():
                 num_correct_subtask = num_correct_subtask + 1
-                # generated_array.pop(i)
                 ground_truth_array.pop(idx)
     
-    task_correct_rate = num_correct_subtask / length if ground_truth_array else 0
+    task_correct_rate = num_correct_subtask / length 
     scores.append(task_correct_rate)
 
     print(f"Task Correct Rate: {task_correct_rate}")

@@ -95,36 +95,26 @@ import difflib
 
 app = Flask(__name__)
 
-# Load the pre-trained tokenizer and model
 model_name = "meta-llama/Llama-2-7b-chat-hf"
 tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
 model = AutoModelForCausalLM.from_pretrained(model_name, device_map="auto")
 
-# Load cafe recipes from the JSON file (ensure label.json is in the same directory)
-with open('label.json', 'r') as f:
+with open('test.json', 'r') as f:
     cafe_recipes = json.load(f)
 
 def llm_verification(draft_distribution, draft_token_id, generated, allowed_tokens):
-    # --- Perform Recipe Lookup Using Fuzzy Matching ---
-    # Decode the provided generated tokens (a list of token IDs) into text.
-    # We assume the beginning of this text represents the drink name.
     candidate_lookup = tokenizer.decode(generated[0].tolist()).strip().split("\n")[0]
     
     lookup_recipe_text = None
     if candidate_lookup:
-        # Build a list of available drink names
         drink_names = [recipe['prompt'] for recipe in cafe_recipes]
-        # Find the best match (highest similarity) for the candidate lookup text
         matches = difflib.get_close_matches(candidate_lookup, drink_names, n=1, cutoff=0.4)
         if matches:
-            # Retrieve the recipe associated with the best matching drink name
             matching_recipe = next((r for r in cafe_recipes if r['prompt'] == matches[0]), None)
             if matching_recipe:
                 lookup_recipe_text = matching_recipe['response']
     
-    # --- Build the Prefix for Generation ---
     if lookup_recipe_text:
-        # Include the lookup result into the prefix if a match was found.
         prefix_text = (
             f"Based on the recommended recipe for '{candidate_lookup}': {lookup_recipe_text} "
             "Generate a unique robot recipe as a numbered list using only these actions: Place, Pour, Serve, and Done. "
@@ -133,7 +123,6 @@ def llm_verification(draft_distribution, draft_token_id, generated, allowed_toke
             "1. Place Cup 2. Pour Water 3. Pour Espresso 4. Serve Beverage 5. Done. Here's actual order: "
         )
     else:
-        # If no match was found, fall back to a default instruction.
         prefix_text = (
             "Generate a unique robot recipe as a numbered list using only these actions: Place, Pour, Serve, and Done. "
             "Each step must include one action followed by a single ingredient name—no amounts or extra descriptions. "
@@ -141,11 +130,9 @@ def llm_verification(draft_distribution, draft_token_id, generated, allowed_toke
             "1. Place Cup 2. Pour Water 3. Pour Espresso 4. Serve Beverage 5. Done. Here's actual order: "
         )
     
-    # Tokenize the prefix and prepend it to the generated tokens.
     prefix_tokens = tokenizer(prefix_text, return_tensors="pt")["input_ids"].to(generated.device)
     generated = torch.cat((prefix_tokens, generated), dim=1)
     
-    # --- LLM Verification (as before) ---
     banned_words = ["in", "into", "In"]
     banned_token_ids = []
     for word in banned_words:
