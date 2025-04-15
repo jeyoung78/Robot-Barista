@@ -13,10 +13,10 @@ model = AutoModelForCausalLM.from_pretrained(
     device_map=device,        
 )
 
-ADAPTER_PATH = "./tinyllama-recipe"  # your LoRA/PEFT checkpoint
+ADAPTER_PATH = "./tinyllama-finetuned"  # your LoRA/PEFT checkpoint
 model = PeftModel.from_pretrained(model, ADAPTER_PATH)
 
-model_dir = "./tinyllama-recipe"
+model_dir = "./tinyllama-finetuned"
 tokenizer = AutoTokenizer.from_pretrained(model_dir)
 
 model.to(device)

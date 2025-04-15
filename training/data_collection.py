@@ -23,17 +23,17 @@ class DataGeneration():
         if ice:
             if extra_espresso: 
                 prompt = "You are a customer at a cafe. Produce a user request for an iced caramel macchiato order with an extra shot of espresso in a cafe. Return nothing but the order. Do not replace milk with other types like oat milk."
-                label =  "1. Place Cup 2. Pour Vanilla Syrup 3. Pour Milk 4. Add Ice 5. Pour Espresso 6. Pour Espresso 7. Pour Caramel Syrup 8. Serve Beverage 9. Done"
+                label =  "1. Place Cup 2. Drizzle Vanilla Syrup 3. Pour Milk 4. Add Ice 5. Pour Espresso 6. Pour Espresso 7. Drizzle Caramel Syrup 8. Serve Beverage 9. Done"
             else:
                 prompt = "Produce a user request for an iced caramel macchiato order in a cafe. Return nothing but the order. Do not replace milk with other types like oat milk."
-                label = "1. Place Cup 2. Pour Vanilla Syrup 3. Pour Milk 4. Add Ice 5. Pour Espresso 6. Pour Caramel Syrup 7. Serve Beverage 8. Done"
+                label = "1. Place Cup 2. Drizzle Vanilla Syrup 3. Pour Milk 4. Add Ice 5. Pour Espresso 6. Drizzle Caramel Syrup 7. Serve Beverage 8. Done"
         else: 
             if extra_espresso: 
                 prompt = "You are a customer at a cafe. Produce a user request for a caramel macchiato order with an extra shot of espresso in a cafe. Return nothing but the order. Do not replace milk with other types like oat milk."
-                label = "1. Place Cup 2. Pour Vanilla Syrup 3. Pour Milk 4. Pour Espresso 5. Pour Espresso 6. Pour Caramel Syrup 7. Serve Beverage 8. Done"
+                label = "1. Place Cup 2. Drizzle Vanilla Syrup 3. Pour Milk 4. Pour Espresso 5. Pour Espresso 6. Drizzle Caramel Syrup 7. Serve Beverage 8. Done"
             else:
                 prompt = "Produce a user request for a caramel macchiato order in a cafe. Return nothing but the order. Do not replace milk with other types like oat milk."
-                label = "1. Place Cup 2. Pour Vanilla Syrup 3. Pour Milk 4. Pour Espresso 5. Pour Caramel Syrup 6. Serve Beverage 7. Done"
+                label = "1. Place Cup 2. Drizzle Vanilla Syrup 3. Pour Milk 4. Pour Espresso 5. Drizzle Caramel Syrup 6. Serve Beverage 7. Done"
         try:
             response = self.client.models.generate_content(
                 model="gemini-2.0-flash-thinking-exp-01-21",
@@ -91,18 +91,18 @@ class DataGeneration():
             if extra_espresso:
                 prompt = ("You are a customer at a cafe. Produce a user request for an iced cafe mocha order "
                         "with an extra shot of espresso in a cafe. Return nothing but the order. Do not replace milk with other types like oat milk.")
-                label = "1. Place Cup 2. Pour Espresso 3. Pour Espresso 4. Pour Chocolate 5. Pour Milk 6. Add Ice 7. Serve Beverage 8. Done"
+                label = "1. Place Cup 2. Pour Espresso 3. Pour Espresso 4. Drizzle Chocolate Syrup 5. Pour Milk 6. Add Ice 7. Garnish Cocoa powder 8. Serve Beverage 9. Done"
             else:
                 prompt = "Produce a user request for an iced cafe mocha order in a cafe. Return nothing but the order. Do not replace milk with other types like oat milk."
-                label = "1. Place Cup 2. Pour Espresso 3. Pour Chocolate 4. Pour Milk 5. Add Ice 6. Serve Beverage 7. Done"
+                label = "1. Place Cup 2. Pour Espresso 3. Drizzle Chocolate Syrup 4. Pour Milk 5. Add Ice 6. Garnish Cocoa powder 7. Serve Beverage 8. Done"
         else:
             if extra_espresso:
                 prompt = ("You are a customer at a cafe. Produce a user request for a cafe mocha order. Do not replace milk with other types like oat milk."
                         "with an extra shot of espresso in a cafe. Return nothing but the order.")
-                label = "1. Place Cup 2. Pour Espresso 3. Pour Espresso 4. Pour Chocolate 5. Pour Milk 6. Serve Beverage 7. Done"
+                label = "1. Place Cup 2. Pour Espresso 3. Pour Espresso 4. Pour Chocolate 5. Pour Milk 6. Garnish Cocoa powder 7. Serve Beverage 8. Done"
             else:
                 prompt = "Produce a user request for a cafe mocha order in a cafe. Return nothing but the order. Do not replace milk with other types like oat milk."
-                label = "1. Place Cup 2. Pour Espresso 3. Pour Chocolate 4. Pour Milk 5. Serve Beverage 6. Done"
+                label = "1. Place Cup 2. Pour Espresso 3. Pour Chocolate 4. Pour Milk 5. Garnish Cocoa powder 6. Serve Beverage 7. Done"
         try:
             response = self.client.models.generate_content(
                 model="gemini-2.0-flash-thinking-exp-01-21",
@@ -157,7 +157,7 @@ class DataGeneration():
         })
         with open(self.dataset_filename, "w") as f:
             json.dump(self.distillation_data, f, indent=4)
-
+    '''
     def generate_java_chip_frappuccino(self, extra_espresso=False, extra_java_chip=False):
         if extra_espresso and extra_java_chip:
             prompt = "You are a customer at a cafe. Produce a user request for a java chip frappuccino order with an extra shot of espresso and extra java chips. Return nothing but the order."
@@ -237,26 +237,20 @@ class DataGeneration():
         # Save the collected data to a JSON file.
         with open(self.dataset_filename, "w") as f:
             json.dump(self.distillation_data, f, indent=4)
-
+    '''
     def generate(self):
-        recipe_selection = random.randint(1, 7)
+        recipe_selection = random.randint(1, 10)
         ice = random.randint(1,10) > 7
         extra_espresso = random.randint(1,10) > 7
         
-        if recipe_selection == 1:
+        if recipe_selection <= 2:
             self.generate_americano(ice=ice, extra_espresso=extra_espresso)
-        elif recipe_selection == 2:
+        elif recipe_selection <= 4:
             self.generate_cafe_latte(ice=ice, extra_espresso=extra_espresso)
-        elif recipe_selection == 3:
+        elif recipe_selection <= 7:
             self.generate_cafe_mocha(ice=ice, extra_espresso=extra_espresso)
-        elif recipe_selection == 4:
+        elif recipe_selection <= 10:
             self.generate_caramel_macchiato(ice=ice, extra_espresso=extra_espresso)
-        elif recipe_selection == 5:
-            self.generate_java_chip_frappuccino(extra_espresso=extra_espresso, extra_java_chip=ice)
-        elif recipe_selection == 6:
-            self.generate_matcha_frappuccino()   
-        elif recipe_selection == 7:
-            self.generate_blue_lemonade()
         else:
             pass
 

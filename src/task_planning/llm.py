@@ -92,44 +92,22 @@ from flask import Flask, request, jsonify
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import json
 import difflib
+from rag import RAGPromptGenerator
 
 app = Flask(__name__)
 
 model_name = "meta-llama/Llama-2-7b-chat-hf"
 tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
 model = AutoModelForCausalLM.from_pretrained(model_name, device_map="auto")
+rag = RAGPromptGenerator(recipe_file="label.json")
 
 with open('test.json', 'r') as f:
     cafe_recipes = json.load(f)
 
 def llm_verification(draft_distribution, draft_token_id, generated, allowed_tokens):
     candidate_lookup = tokenizer.decode(generated[0].tolist()).strip().split("\n")[0]
-    
-    lookup_recipe_text = None
-    if candidate_lookup:
-        drink_names = [recipe['prompt'] for recipe in cafe_recipes]
-        matches = difflib.get_close_matches(candidate_lookup, drink_names, n=1, cutoff=0.4)
-        if matches:
-            matching_recipe = next((r for r in cafe_recipes if r['prompt'] == matches[0]), None)
-            if matching_recipe:
-                lookup_recipe_text = matching_recipe['response']
-    
-    if lookup_recipe_text:
-        prefix_text = (
-            f"Based on the recommended recipe for '{candidate_lookup}': {lookup_recipe_text} "
-            "Generate a unique robot recipe as a numbered list using only these actions: Place, Pour, Serve, and Done. "
-            "Each step must include one action followed by a single ingredient name—no amounts or extra descriptions. "
-            "Do not include any additional words like into, in, or extra descriptors. Follow this exact format: "
-            "1. Place Cup 2. Pour Water 3. Pour Espresso 4. Serve Beverage 5. Done. Here's actual order: "
-        )
-    else:
-        prefix_text = (
-            "Generate a unique robot recipe as a numbered list using only these actions: Place, Pour, Serve, and Done. "
-            "Each step must include one action followed by a single ingredient name—no amounts or extra descriptions. "
-            "Do not include any additional words like into, in, or extra descriptors. Follow this exact format: "
-            "1. Place Cup 2. Pour Water 3. Pour Espresso 4. Serve Beverage 5. Done. Here's actual order: "
-        )
-    
+    prefix_text = rag.generate_rag_prompt(candidate_lookup)
+
     prefix_tokens = tokenizer(prefix_text, return_tensors="pt")["input_ids"].to(generated.device)
     generated = torch.cat((prefix_tokens, generated), dim=1)
     

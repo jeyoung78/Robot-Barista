@@ -20,7 +20,7 @@ for entry in beverage_ground_truth_list:
     prompt = entry["prompt"]
     response = entry["response"]
     
-    generated_text, tsr, tr, num_token, time_elapsed = uncertainty_aware_hybrid_inference(prompt, uncertainty_threshold=0.5)
+    generated_text, tsr, tr, num_token, time_elapsed = uncertainty_aware_hybrid_inference(prompt, uncertainty_threshold=0.25)
     
     generated_array = string_to_array(generated_text)
     ground_truth_array = string_to_array(response)
