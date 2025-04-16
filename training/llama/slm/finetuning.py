@@ -3,7 +3,7 @@ import os
 import torch
 import numpy as np
 
-from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments, BitsAndBytesConfig
+from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments, BitsAndBytesConfig, DataCollatorForLanguageModeling
 from datasets import load_dataset, Dataset
 from peft import LoraConfig, get_peft_model
 
@@ -26,13 +26,8 @@ combined_data = Dataset.from_dict({
 dataset = combined_data.train_test_split(test_size=0.1, seed=42)
 first_example = dataset['train'][0]
 
-# Print the actual content of the 'prompt' and 'response'
-# print("Prompt:", first_example['prompt'])
-# print("Response:", first_example['response'])
-
 model_path = "meta-llama/Llama-2-7b-chat-hf"
-model_path = "meta-llama/Llama-2-7b-chat-hf"
-tokenizer = AutoTokenizer.from_pretrained(model_path)
+tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=False)
 
 quantization_config = BitsAndBytesConfig(
     load_in_4bit=True,
@@ -44,7 +39,7 @@ quantization_config = BitsAndBytesConfig(
 model = AutoModelForCausalLM.from_pretrained(
     model_path,
     quantization_config=quantization_config,  # Pass the quantization configuration
-    device_map={"": "cuda:2"}
+    device_map="auto"
 )
 
 # Ensure the tokenizer has a padding token
@@ -54,11 +49,13 @@ if tokenizer.pad_token is None:
 
 
 special_token = "<recipe_generation>"
+tokenizer.add_special_tokens({"additional_special_tokens": [special_token]})
+model.resize_token_embeddings(len(tokenizer))
 
 lora_config = LoraConfig(
     r=8,                  
     lora_alpha=32,        
-    target_modules=["q_proj", "v_proj"],  
+    target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj"],  
     lora_dropout=0.05,    
     bias="none",
     task_type="CAUSAL_LM"
@@ -106,18 +103,24 @@ tokenized_dataset = dataset.map(
 
 training_args = TrainingArguments(
     output_dir="./llm-finetuned",
-    num_train_epochs=4,
+    num_train_epochs=8,                               # More epochs for small data
     per_device_train_batch_size=1,
     per_device_eval_batch_size=1,
-    gradient_accumulation_steps=4,
-    warmup_steps=100,
+    gradient_accumulation_steps=4,                    # Effective batch size = 4
+    warmup_steps=30,
+    learning_rate=2e-4,                               # Higher LR for LoRA
+    lr_scheduler_type="cosine",
     evaluation_strategy="steps",
-    eval_steps=500,
-    save_steps=500,
-    logging_steps=100,
-    learning_rate=2e-5,
-    fp16=True, 
+    eval_steps=200,
+    save_steps=200,
+    logging_steps=50,
+    fp16=True,
+    max_grad_norm=0.3,                                # Prevents gradient spikes
+    save_total_limit=2,
+    report_to="none"
 )
+
+data_collator = DataCollatorForLanguageModeling(tokenizer, mlm=False)
 
 trainer = Trainer(
     model=model,
