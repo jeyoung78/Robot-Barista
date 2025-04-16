@@ -1,11 +1,18 @@
 import os
 
+os.environ["TRANSFORMERS_CACHE"] = "D:/hf_cache"
+os.environ["HF_HOME"] = "D:/hf_home"
+os.environ["HF_DATASETS_CACHE"] = "D:/hf_datasets"
+os.environ["TMPDIR"] = "D:/temp"
+
 import torch
 import numpy as np
 
 from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments, BitsAndBytesConfig, DataCollatorForLanguageModeling
 from datasets import load_dataset, Dataset
 from peft import LoraConfig, get_peft_model
+
+token = "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"
 
 # Load both JSON files
 data1 = load_dataset("json", data_files="data_collection.json")["train"]
@@ -27,7 +34,7 @@ dataset = combined_data.train_test_split(test_size=0.1, seed=42)
 first_example = dataset['train'][0]
 
 model_path = "meta-llama/Llama-2-7b-chat-hf"
-tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=False)
+tokenizer = AutoTokenizer.from_pretrained(model_path, token=token, use_fast=False)
 
 quantization_config = BitsAndBytesConfig(
     load_in_4bit=True,
@@ -38,6 +45,7 @@ quantization_config = BitsAndBytesConfig(
 
 model = AutoModelForCausalLM.from_pretrained(
     model_path,
+    token=token,
     quantization_config=quantization_config,  # Pass the quantization configuration
     device_map="auto"
 )
