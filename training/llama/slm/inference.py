@@ -13,7 +13,7 @@ model.to("cuda" if torch.cuda.is_available() else "cpu")
 
 # Define your special token and prepare your prompt.
 special_token = "<recipe_generation>"
-prompt_text = "caramel macchiato with extra shot of espresso."
+prompt_text = "Hi, can I get a Blackberry Ginger Latte please"
 input_text = f"{special_token} {prompt_text} {special_token}"
 
 # Tokenize the input text.

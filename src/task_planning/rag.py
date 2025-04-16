@@ -46,38 +46,26 @@ class RAGPromptGenerator:
         beverage = recipe_entry["beverage"]
         original_recipe = recipe_entry["recipe"]
         
+        print("original" + original_recipe)
+
         prompt = f"""
-            You are a coffee robot task planner. You have a recipe for a beverage called '{beverage}'.
-
-            Original Recipe Steps: {original_recipe}
-
-            User Request: "{user_query}"
-
-            Important instructions:
-            1. Use only the following action verbs in the plan: "place", "pour", "serve", "drizzle", "garnish", "add" and "done".
-            2. Output a step-by-step list of actions, one per line, without any extra commentary.
-            3. If the user asks for additions (e.g., "extra shot of espresso"), adjust the recipe by repeating the "pour espresso" step as needed.
-            4. Preserve the overall structure of the original recipe as much as possible.
-
-            Example:
-            If the original recipe steps are:
-            "1. place cup
-            2. pour espresso
-            3. drizzle syrup
-            4. serve beverage
-            5. done"
-
-            And the user request is for an extra shot of espresso and more syrup, the output should be:
-            "1. place cup
-            2. pour espresso
-            3. pour espresso
-            4. drizzle syrup
-            5. drizzle syrup
-            6. serve
-            7. done"
-
-            Now, generate the final plan.
-        """
+        You are a coffee robot task planner. Your task is to generate a beverage preparation plan strictly following the exact format shown below. Do not deviate:
+        
+        Expected Format: 1. Place Cup 2. Drizzle Vanilla Syrup 3. Pour Milk 4. Add Ice 5. Pour Espresso 6. Drizzle Caramel Syrup 7. Serve Beverage 8. Done
+        
+        Important Instructions:
+        - Use only these action verbs: "place", "pour", "serve", "drizzle", "garnish", "add", and "done".
+        - Do not include any extra commentary or steps.
+        - Maintain the exact numbering and structure: each line should start with a number, a period, and a space, followed by the action.
+        - If modifications are needed (e.g., an extra shot of espresso), adjust by repeating the relevant step exactly within the sequence.
+        - Refer to the original recipe steps for the recipe you need to create.
+        
+        Original Recipe Steps: {original_recipe}
+        
+        User Request: "{user_query}"
+        
+        Now, generate the final plan exactly following the format above.
+    """
         return prompt.strip()
 
     def generate_rag_prompt(self, user_query: str) -> str:

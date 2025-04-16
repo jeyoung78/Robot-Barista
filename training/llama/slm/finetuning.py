@@ -1,20 +1,57 @@
-import torch
 import os
+
+import torch
 import numpy as np
 
-from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments
-from datasets import load_dataset
-from peft import LoraConfig, get_peft_model  # Import LoRA-related functions
+from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments, BitsAndBytesConfig
+from datasets import load_dataset, Dataset
+from peft import LoraConfig, get_peft_model
 
-# Set CUDA allocation configuration before any CUDA-related imports
-# os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:24"
+# Load both JSON files
+data1 = load_dataset("json", data_files="data_collection.json")["train"]
+data2 = load_dataset("json", data_files="test.json")["train"]
 
-dataset = load_dataset("json", data_files="test.json")
-dataset = dataset["train"].train_test_split(test_size=0.1, seed=42)
+# Ensure 1:1 ratio by truncating the longer dataset
+min_len = min(len(data1), len(data2))
+data1 = data1.select(range(min_len))
+data2 = data2.select(range(min_len))
 
-model_path = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+# Interleave the datasets
+combined_data = Dataset.from_dict({
+    "prompt": data1["prompt"] + data2["prompt"],
+    "response": data1["response"] + data2["response"]
+})
+
+# Shuffle and split into train/test
+dataset = combined_data.train_test_split(test_size=0.1, seed=42)
+first_example = dataset['train'][0]
+
+# Print the actual content of the 'prompt' and 'response'
+# print("Prompt:", first_example['prompt'])
+# print("Response:", first_example['response'])
+
+model_path = "meta-llama/Llama-2-7b-chat-hf"
+model_path = "meta-llama/Llama-2-7b-chat-hf"
 tokenizer = AutoTokenizer.from_pretrained(model_path)
-model = AutoModelForCausalLM.from_pretrained(model_path)
+
+quantization_config = BitsAndBytesConfig(
+    load_in_4bit=True,
+    bnb_4bit_compute_dtype=torch.float16,  # or torch.bfloat16 if supported
+    bnb_4bit_quant_type="nf4",               # "nf4" is often used for a better balance
+    bnb_4bit_use_double_quant=True,
+)
+
+model = AutoModelForCausalLM.from_pretrained(
+    model_path,
+    quantization_config=quantization_config,  # Pass the quantization configuration
+    device_map={"": "cuda:2"}
+)
+
+# Ensure the tokenizer has a padding token
+if tokenizer.pad_token is None:
+    # Option 1: Use the EOS token as the pad token.
+    tokenizer.pad_token = tokenizer.eos_token
+
 
 special_token = "<recipe_generation>"
 
@@ -68,10 +105,11 @@ tokenized_dataset = dataset.map(
 )
 
 training_args = TrainingArguments(
-    output_dir="./tinyllama-finetuned",
-    num_train_epochs=1,
+    output_dir="./llm-finetuned",
+    num_train_epochs=4,
     per_device_train_batch_size=1,
     per_device_eval_batch_size=1,
+    gradient_accumulation_steps=4,
     warmup_steps=100,
     evaluation_strategy="steps",
     eval_steps=500,
@@ -90,5 +128,5 @@ trainer = Trainer(
 
 trainer.train()
 
-trainer.save_model("./tinyllama-finetuned")
-tokenizer.save_pretrained("./tinyllama-finetuned")
+trainer.save_model("./llm-finetuned")
+tokenizer.save_pretrained("./llm-finetuned")
