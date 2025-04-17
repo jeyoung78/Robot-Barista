@@ -85,7 +85,7 @@ def uncertainty_aware_hybrid_inference(prompt: str, max_new_tokens: int = 100, u
                 "allowed_tokens": allowed_tokens
             }
             
-            server_url = "http://165.132.40.52:5000/llm_verification"
+            server_url = "http://165.132.40.52:5001/llm_verification"
             try:
                 response = requests.post(server_url, json=payload, timeout=10)
                 response.raise_for_status()
