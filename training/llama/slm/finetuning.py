@@ -1,14 +1,9 @@
 import os
 
-os.environ["TRANSFORMERS_CACHE"] = "D:/hf_cache"
-os.environ["HF_HOME"] = "D:/hf_home"
-os.environ["HF_DATASETS_CACHE"] = "D:/hf_datasets"
-os.environ["TMPDIR"] = "D:/temp"
-
 import torch
 import numpy as np
 
-from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments, BitsAndBytesConfig, DataCollatorForLanguageModeling
+from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments, BitsAndBytesConfig
 from datasets import load_dataset, Dataset
 from peft import LoraConfig, get_peft_model
 
@@ -17,36 +12,40 @@ token = "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"
 # Load both JSON files
 data1 = load_dataset("json", data_files="data_collection.json")["train"]
 data2 = load_dataset("json", data_files="test.json")["train"]
-
+data3 = load_dataset("json", data_files="label.json")["train"]
 # Ensure 1:1 ratio by truncating the longer dataset
-min_len = min(len(data1), len(data2))
+min_len = min(len(data1), len(data2), len(data3))
 data1 = data1.select(range(min_len))
 data2 = data2.select(range(min_len))
+data3 = data3.select(range(min_len))
 
 # Interleave the datasets
 combined_data = Dataset.from_dict({
-    "prompt": data1["prompt"] + data2["prompt"],
-    "response": data1["response"] + data2["response"]
+    "prompt": data1["prompt"] + data2["prompt"] + data3["prompt"],
+    "response": data1["response"] + data2["response"] + data3["response"]
 })
 
 # Shuffle and split into train/test
 dataset = combined_data.train_test_split(test_size=0.1, seed=42)
 first_example = dataset['train'][0]
 
+# Print the actual content of the 'prompt' and 'response'
+# print("Prompt:", first_example['prompt'])
+# print("Response:", first_example['response'])
+
 model_path = "meta-llama/Llama-2-7b-chat-hf"
-tokenizer = AutoTokenizer.from_pretrained(model_path, token=token, use_fast=False)
+tokenizer = AutoTokenizer.from_pretrained(model_path, token=token)
 
 quantization_config = BitsAndBytesConfig(
-    load_in_4bit=True,
-    bnb_4bit_compute_dtype=torch.float16,  # or torch.bfloat16 if supported
-    bnb_4bit_quant_type="nf4",               # "nf4" is often used for a better balance
-    bnb_4bit_use_double_quant=True,
+    load_in_8bit=True,
+    llm_int8_threshold=6.0,  # optional: can fine-tune this
+    llm_int8_has_fp16_weight=False  # optional: relevant for training
 )
 
 model = AutoModelForCausalLM.from_pretrained(
     model_path,
+    quantization_config=quantization_config,
     token=token,
-    quantization_config=quantization_config,  # Pass the quantization configuration
     device_map="auto"
 )
 
@@ -57,13 +56,11 @@ if tokenizer.pad_token is None:
 
 
 special_token = "<recipe_generation>"
-tokenizer.add_special_tokens({"additional_special_tokens": [special_token]})
-model.resize_token_embeddings(len(tokenizer))
 
 lora_config = LoraConfig(
     r=8,                  
     lora_alpha=32,        
-    target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj"],  
+    target_modules=["q_proj", "v_proj"],  
     lora_dropout=0.05,    
     bias="none",
     task_type="CAUSAL_LM"
@@ -110,25 +107,19 @@ tokenized_dataset = dataset.map(
 )
 
 training_args = TrainingArguments(
-    output_dir="./llm-finetuned",
-    num_train_epochs=8,                               # More epochs for small data
+    output_dir="./llm-recipe",
+    num_train_epochs=5,
     per_device_train_batch_size=1,
     per_device_eval_batch_size=1,
-    gradient_accumulation_steps=4,                    # Effective batch size = 4
-    warmup_steps=30,
-    learning_rate=2e-4,                               # Higher LR for LoRA
-    lr_scheduler_type="cosine",
+    gradient_accumulation_steps=4,
+    warmup_steps=20,
     evaluation_strategy="steps",
-    eval_steps=200,
-    save_steps=200,
-    logging_steps=50,
-    fp16=True,
-    max_grad_norm=0.3,                                # Prevents gradient spikes
-    save_total_limit=2,
-    report_to="none"
+    eval_steps=500,
+    save_steps=500,
+    logging_steps=100,
+    learning_rate=1e-4,
+    fp16=True, 
 )
-
-data_collator = DataCollatorForLanguageModeling(tokenizer, mlm=False)
 
 trainer = Trainer(
     model=model,
@@ -139,5 +130,5 @@ trainer = Trainer(
 
 trainer.train()
 
-trainer.save_model("./llm-finetuned")
-tokenizer.save_pretrained("./llm-finetuned")
+trainer.save_model("./llm-recipe")
+tokenizer.save_pretrained("./llm-recipe")

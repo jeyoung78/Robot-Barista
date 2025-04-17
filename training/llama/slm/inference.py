@@ -1,36 +1,49 @@
 import torch
-from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers import AutoTokenizer, AutoModelForCausalLM, BitsAndBytesConfig
+from peft import PeftModel
 
-# Define the directory where your fine-tuned model and tokenizer are saved.
-model_dir = "./tinyllama-finetuned"
+# Paths
+base_model_path = "meta-llama/Llama-2-7b-chat-hf"
+lora_model_path = "./llm-recipe" 
 
-# Load the tokenizer from your fine-tuned directory.
-tokenizer = AutoTokenizer.from_pretrained(model_dir)
+# Load tokenizer
+tokenizer = AutoTokenizer.from_pretrained(base_model_path, use_fast=False)
+tokenizer.pad_token = tokenizer.eos_token
 
-# Load the fine-tuned model with ignore_mismatched_sizes=True to allow for the updated vocabulary size.
-model = AutoModelForCausalLM.from_pretrained(model_dir, ignore_mismatched_sizes=True)
-model.to("cuda" if torch.cuda.is_available() else "cpu")
+# Quantization config for 4-bit inference
+quant_config = BitsAndBytesConfig(
+    load_in_4bit=True,
+    bnb_4bit_compute_dtype=torch.float16,
+    bnb_4bit_use_double_quant=True,
+    bnb_4bit_quant_type="nf4",
+)
 
-# Define your special token and prepare your prompt.
-special_token = "<recipe_generation>"
-prompt_text = "Hi, can I get a Blackberry Ginger Latte please"
-input_text = f"{special_token} {prompt_text} {special_token}"
+# Load base model + LoRA adapter
+model = AutoModelForCausalLM.from_pretrained(
+    base_model_path,
+    quantization_config=quant_config,
+    device_map="auto"
+)
 
-# Tokenize the input text.
-inputs = tokenizer(input_text, return_tensors="pt")
-inputs = {k: v.to(model.device) for k, v in inputs.items()}
+model = PeftModel.from_pretrained(model, lora_model_path)
+model.eval()
 
-# Generate the response with desired generation parameters.
+# Prompt
+prompt = "<recipe_generation> Can I haveHoney Almond Velvet Latte <recipe_generation> 1. Place Cup"
+
+# Tokenize input
+inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
+
+# Generate
 with torch.no_grad():
-    generated_ids = model.generate(
-        inputs["input_ids"],
-        max_length=128,         # Adjust max length as needed.
-        do_sample=True,         # Enable sampling for more varied outputs.
-        temperature=0.7,        # Adjust temperature for randomness.
-        top_p=0.9,              # Use nucleus sampling.
-        pad_token_id=tokenizer.eos_token_id,
+    outputs = model.generate(
+        **inputs,
+        max_new_tokens=128,
+        do_sample=False,
+        num_beams=1,
+        pad_token_id=tokenizer.eos_token_id
     )
 
-# Decode and print the output. skip_special_tokens=True removes special tokens from the output.
-output_text = tokenizer.decode(generated_ids[0], skip_special_tokens=True)
-print("Output:", output_text)
+# Decode and print
+generated_text = tokenizer.decode(outputs[0], skip_special_tokens=True)
+print(generated_text)
