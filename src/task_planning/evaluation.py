@@ -2,6 +2,7 @@ import json
 import re
 from hybrid_inference import uncertainty_aware_hybrid_inference
 import random
+import csv
 
 # Load the JSON file with 500 beverage entries
 with open("test.json", "r") as f:
@@ -14,6 +15,8 @@ def string_to_array(s):
 random.shuffle(beverage_ground_truth_list)
 
 scores = []
+results = []
+count = 0
 
 # Iterate over each entry in the JSON list
 for entry in beverage_ground_truth_list:
@@ -46,3 +49,37 @@ for entry in beverage_ground_truth_list:
     print(f"Num Tokens: {num_token}, End-to-End Inference Latency: {time_elapsed}s, Token Throughput: {num_token/time_elapsed}")
     print(f"Score Average: {sum(scores)/len(scores)}")
     print("-"*50)
+
+    results.append({
+        "prompt":               prompt,
+        "ground_truth":         response,
+        "generated_plan":       generated_text,
+        "task_correct_rate":    task_correct_rate,
+        "true_skip_ratio":      tsr,
+        "transmission_rate":    tr,
+        "num_tokens":           num_token,
+        "latency_s":            time_elapsed,
+        "throughput_tok_per_s": num_token / time_elapsed
+    })
+
+    if count >= 100:
+        break
+
+    count = count + 1
+
+with open("evaluation_data/hybrid_inference.csv", "w", newline="", encoding="utf-8") as csvfile:
+    fieldnames = [
+        "prompt",
+        "task_correct_rate",
+        "true_skip_ratio",
+        "transmission_rate",
+        "num_tokens",
+        "latency_s",
+        "throughput_tok_per_s"
+    ]
+    writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    writer.writeheader()
+    for row in results:
+        writer.writerow(row)
+
+print(f"Saved {len(results)} rows to results.csv.")

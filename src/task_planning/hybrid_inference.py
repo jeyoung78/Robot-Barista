@@ -51,7 +51,7 @@ def detokenize(token_id):
 #     print(detokenize(element))
 
 # Returns the final generated prompt and the true skip ratio.
-def uncertainty_aware_hybrid_inference(prompt: str, max_new_tokens: int = 100, uncertainty_threshold: float = 0.5):
+def uncertainty_aware_hybrid_inference(prompt: str, max_new_tokens: int = 100, uncertainty_threshold: float = 0.5, verbose: bool = True):
     start = time.time()
     resample = 0
     num_inference = 0
@@ -70,7 +70,8 @@ def uncertainty_aware_hybrid_inference(prompt: str, max_new_tokens: int = 100, u
         
         if uncertainty > uncertainty_threshold:
             num_transmission = num_transmission + 1
-            # print(f"High uncertainty ({uncertainty:.2f} > {uncertainty_threshold}); calling remote LLM verification...")
+            if verbose:
+                print(f"High uncertainty ({uncertainty:.2f} > {uncertainty_threshold}); calling remote LLM verification...")
             # Convert draft_distribution to a list if needed.
             if isinstance(draft_distribution, torch.Tensor):
                 draft_distribution_list = draft_distribution.tolist()
@@ -94,15 +95,18 @@ def uncertainty_aware_hybrid_inference(prompt: str, max_new_tokens: int = 100, u
                 if not accepted:
                     resample += 1
             except Exception as e:
-                # print("Error calling remote llm_verification:", e)
+                if verbose:
+                    print("Error calling remote llm_verification:", e)
                 final_token_id = draft_token_id
         else:
-            # print(f"Low uncertainty ({uncertainty:.2f} <= {uncertainty_threshold}); using SLM token directly.")
+            if verbose:
+                print(f"Low uncertainty ({uncertainty:.2f} <= {uncertainty_threshold}); using SLM token directly.")
             final_token_id = draft_token_id
 
         chosen_token = torch.tensor([final_token_id], device=device)
         generated = torch.cat([generated, chosen_token.unsqueeze(0)], dim=1)
-        # print(detokenize(generated))
+        if verbose:
+            print(detokenize(generated))
 
         if detokenize(chosen_token).strip() == "Done":
             break
