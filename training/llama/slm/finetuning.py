@@ -10,9 +10,9 @@ from peft import LoraConfig, get_peft_model
 token = "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"
 
 # Load both JSON files
-data1 = load_dataset("json", data_files="data_collection.json")["train"]
-data2 = load_dataset("json", data_files="test.json")["train"]
-data3 = load_dataset("json", data_files="label.json")["train"]
+data1 = load_dataset("json", data_files="mega_coffee_data/drink_recipe.json")["train"]
+data2 = load_dataset("json", data_files="mega_coffee_data/modified_order_recipe.json")["train"]
+data3 = load_dataset("json", data_files="mega_coffee_data/order_recipe.json")["train"]
 # Ensure 1:1 ratio by truncating the longer dataset
 min_len = min(len(data1), len(data2), len(data3))
 data1 = data1.select(range(min_len))
@@ -33,18 +33,11 @@ first_example = dataset['train'][0]
 # print("Prompt:", first_example['prompt'])
 # print("Response:", first_example['response'])
 
-model_path = "meta-llama/Llama-2-7b-chat-hf"
+model_path = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
 tokenizer = AutoTokenizer.from_pretrained(model_path, token=token)
-
-quantization_config = BitsAndBytesConfig(
-    load_in_8bit=True,
-    llm_int8_threshold=6.0,  # optional: can fine-tune this
-    llm_int8_has_fp16_weight=False  # optional: relevant for training
-)
 
 model = AutoModelForCausalLM.from_pretrained(
     model_path,
-    quantization_config=quantization_config,
     token=token,
     device_map="auto"
 )
@@ -56,6 +49,7 @@ if tokenizer.pad_token is None:
 
 
 special_token = "<recipe_generation>"
+
 
 lora_config = LoraConfig(
     r=8,                  
@@ -107,8 +101,8 @@ tokenized_dataset = dataset.map(
 )
 
 training_args = TrainingArguments(
-    output_dir="./llm-recipe",
-    num_train_epochs=5,
+    output_dir="./tiny-llama-mega",
+    num_train_epochs=8,
     per_device_train_batch_size=1,
     per_device_eval_batch_size=1,
     gradient_accumulation_steps=4,
@@ -130,5 +124,5 @@ trainer = Trainer(
 
 trainer.train()
 
-trainer.save_model("./llm-recipe")
-tokenizer.save_pretrained("./llm-recipe")
+trainer.save_model("./tiny-llama-mega")
+tokenizer.save_pretrained("./tiny-llama-mega")
