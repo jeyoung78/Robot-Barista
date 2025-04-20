@@ -11,17 +11,17 @@ app = Flask(__name__)
 model_name = "./llm-finetuned"
 tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
 model = AutoModelForCausalLM.from_pretrained(model_name, device_map="auto")
-# rag = RAGPromptGenerator(recipe_file="label.json")
+rag = RAGPromptGenerator(recipe_file="label.json")
 
 with open('test.json', 'r') as f:
     cafe_recipes = json.load(f)
 
 def llm_verification(draft_distribution, draft_token_id, generated, allowed_tokens):
-    # candidate_lookup = tokenizer.decode(generated[0].tolist()).strip().split("\n")[0]
-    # prefix_text = rag.generate_rag_prompt(candidate_lookup)
+    candidate_lookup = tokenizer.decode(generated[0].tolist()).strip().split("\n")[0]
+    prefix_text = rag.generate_rag_prompt(candidate_lookup)
 
-    # prefix_tokens = tokenizer(prefix_text, return_tensors="pt")["input_ids"].to(generated.device)
-    # generated = torch.cat((prefix_tokens, generated), dim=1)
+    prefix_tokens = tokenizer(prefix_text, return_tensors="pt")["input_ids"].to(generated.device)
+    generated = torch.cat((prefix_tokens, generated), dim=1)
     
     banned_words = ["in", "into", "In"]
     banned_token_ids = []

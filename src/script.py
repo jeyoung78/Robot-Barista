@@ -25,8 +25,8 @@ def get_unique_tokens(json_file_path):
     return allowed_tokens
 
 # Example usage; ensure that "drinks.json" is the correct file path
-allowed_tokens = get_unique_tokens("test.json")
+allowed_tokens = get_unique_tokens("mega_coffee_data/modified_order_recipe.json")
 print("Unique allowed tokens:", allowed_tokens)
 for token_id in allowed_tokens:
     token_text = tokenizer.decode([token_id])
-    print(f"Token ID: {token_id}  ->  Text: '{token_text}'")
+    # print(f"Token ID: {token_id}  ->  Text: '{token_text}'")

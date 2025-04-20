@@ -5,7 +5,7 @@ import random
 import csv
 
 # Load the JSON file with 500 beverage entries
-with open("test.json", "r") as f:
+with open("mega_coffee_data/order_recipe.json", "r") as f:
     beverage_ground_truth_list = json.load(f)
 
 def string_to_array(s):
@@ -37,7 +37,7 @@ with open("evaluation_data/hybrid_inference_th005.csv", "w", newline="", encodin
         prompt = entry["prompt"]
         response = entry["response"]
         
-        generated_text, tsr, tr, num_token, time_elapsed = uncertainty_aware_hybrid_inference(prompt, uncertainty_threshold=0.05, verbose=False)
+        generated_text, tsr, tr, num_token, time_elapsed = uncertainty_aware_hybrid_inference(prompt, uncertainty_threshold=2, verbose=False)
         
         generated_array = string_to_array(generated_text)
         ground_truth_array = string_to_array(response)
@@ -63,7 +63,7 @@ with open("evaluation_data/hybrid_inference_th005.csv", "w", newline="", encodin
         print(f"Num Tokens: {num_token}, End-to-End Inference Latency: {time_elapsed}s, Token Throughput: {num_token/time_elapsed}")
         print(f"Score Average: {sum(scores)/len(scores)}")
         print("-"*50)
-
+        '''
         writer.writerow({
             "prompt":               prompt,
             "ground_truth":         response,
@@ -75,7 +75,7 @@ with open("evaluation_data/hybrid_inference_th005.csv", "w", newline="", encodin
             "latency_s":            time_elapsed,
             "throughput_tok_per_s": num_token / time_elapsed
         })
-
+        '''
         if count >= 100:
             break
 
