@@ -4,28 +4,41 @@ from peft import PeftModel
 import json
 import time
 
-device = "cuda" if torch.cuda.is_available() else "cpu"
+import torch
+from transformers import AutoTokenizer, AutoModelForCausalLM
+from peft import PeftModel
+
+DEVICE          = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 BASE_MODEL_PATH = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+ADAPTER_PATH    = "./models/tiny-llama-mega"
 
-tokenizer = AutoTokenizer.from_pretrained(BASE_MODEL_PATH)
-model = AutoModelForCausalLM.from_pretrained(
-    BASE_MODEL_PATH,
-    device_map=device,        
-)
+_tokenizer = None
+_model     = None
 
-ADAPTER_PATH = "./models/tiny-llama-mega"  # your LoRA/PEFT checkpoint
-model = PeftModel.from_pretrained(model, ADAPTER_PATH)
+def _init_slm():
+    global _tokenizer, _model
+    if _model is not None:
+        return
 
-model_dir = "./models/tiny-llama-mega"
-tokenizer = AutoTokenizer.from_pretrained(model_dir)
+    _tokenizer = AutoTokenizer.from_pretrained(
+        BASE_MODEL_PATH,
+        use_fast=False
+    )
+    _model = AutoModelForCausalLM.from_pretrained(
+        BASE_MODEL_PATH,
+        low_cpu_mem_usage=True,     # optional
+        torch_dtype=torch.float16   # optional; speeds things up
+    )
+    _model = PeftModel.from_pretrained(_model, ADAPTER_PATH)
 
-model.to(device)
-model.eval()
+    _model.to(DEVICE)
+    _model.eval()
 
-# Receives input prompt, theta max, and K in token, float and int, returns draft token, uncertainty, and vocabulary distribution
 def slm_inference(generated, allowed_tokens, theta_max: float = 2.0, K: int = 20):
+    _init_slm()
+
     with torch.no_grad():
-        outputs = model(generated)
+        outputs = _model(generated)
 
     logits = outputs.logits
     next_token_logits = logits[0, -1, :]
@@ -51,7 +64,7 @@ def slm_inference(generated, allowed_tokens, theta_max: float = 2.0, K: int = 20
         sampled_token = torch.multinomial(perturbed_distribution, num_samples=1)
         token_id = sampled_token.item()
         perturbed_tokens.append(token_id)
-        perturbed_tokens_text.append(tokenizer.decode(token_id).strip())
+        perturbed_tokens_text.append(_tokenizer.decode(token_id).strip())
 
     diff_count = sum(1 for token in perturbed_tokens if token != draft_token_id)
     uncertainty = diff_count / K

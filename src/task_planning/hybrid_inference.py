@@ -9,7 +9,7 @@ model_dir = "./models/tiny-llama-mega"
 tokenizer = AutoTokenizer.from_pretrained(model_dir)
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
-LLM_SERVER_HOST = "165.132.40.49"
+LLM_SERVER_HOST = "165.132.40.52"
 LLM_SERVER_PORT = 5001
 SERVER_URL      = f"http://{LLM_SERVER_HOST}:{LLM_SERVER_PORT}/llm_verification"
 

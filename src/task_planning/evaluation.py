@@ -26,12 +26,9 @@ global_tp = 0
 global_fp = 0
 global_fn = 0
 
-with open("evaluation_data/hybrid_inference_th005.csv", "w", newline="", encoding="utf-8") as csvfile:
+with open("evaluation_data/hybrid_005.csv", "w", newline="", encoding="utf-8") as csvfile:
     fieldnames = [
-        "prompt", "ground_truth", "generated_plan",
-        "precision", "recall", "f1",
-        "true_skip_ratio", "transmission_rate",
-        "num_tokens", "latency_s", "throughput_tok_per_s"
+        "prompt", "ground_truth", "generated_plan", "precision", "recall", "f1", "true_skip_ratio", "transmission_rate", "num_tokens", "latency_s", "throughput_tok_per_s"
     ]
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
@@ -42,7 +39,7 @@ with open("evaluation_data/hybrid_inference_th005.csv", "w", newline="", encodin
 
         # run your U-HLM inference
         gen_text, tsr, tr, num_token, time_elapsed = (
-            *uncertainty_aware_hybrid_inference(prompt, uncertainty_threshold=5, verbose=False),
+            *uncertainty_aware_hybrid_inference(prompt, uncertainty_threshold=0.05, verbose=False),
         )
 
         # tokenize into ordered lists

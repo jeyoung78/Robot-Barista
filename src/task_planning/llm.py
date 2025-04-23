@@ -82,5 +82,4 @@ def call_llm_verification():
     return jsonify({'result_token_id': result_token_id, 'accepted': accepted})
 
 if __name__ == '__main__':
-    print("Starting llm.py server on port 5001...")
-    app.run(host='0.0.0.0', port=5001)
+    app.run(host='165.132.40.52', port=5001)
