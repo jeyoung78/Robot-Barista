@@ -4,81 +4,116 @@ from hybrid_inference import uncertainty_aware_hybrid_inference
 import random
 import csv
 
-# Load the JSON file with 500 beverage entries
-with open("mega_coffee_data/order_recipe.json", "r") as f:
-    beverage_ground_truth_list = json.load(f)
-
+# --- helpers ---------------------------------------------------------
 def string_to_array(s):
-    items = re.split(r'\d+\.\s', s)
-    return [item.rstrip() for item in items if item]
+    # split on “number + dot + optional whitespace”
+    items = re.split(r'\d+\.\s*', s)
+    # strip whitespace/punctuation, drop any empty results
+    return [
+        item.strip().rstrip('.')
+        for item in items
+        if item and item.strip().rstrip('.')
+    ]
+
+# --- load & init ----------------------------------------------------
+with open("mega_coffee_data/test_dataset.json", "r") as f:
+    beverage_ground_truth_list = json.load(f)
 
 random.shuffle(beverage_ground_truth_list)
 
-scores = []
-results = []
-count = 0
+# micro-aggregation counters
+global_tp = 0
+global_fp = 0
+global_fn = 0
 
 with open("evaluation_data/hybrid_inference_th005.csv", "w", newline="", encoding="utf-8") as csvfile:
     fieldnames = [
-        "prompt",
-        "ground_truth",
-        "generated_plan",
-        "task_correct_rate",
-        "true_skip_ratio",
-        "transmission_rate",
-        "num_tokens",
-        "latency_s",
-        "throughput_tok_per_s"
+        "prompt", "ground_truth", "generated_plan",
+        "precision", "recall", "f1",
+        "true_skip_ratio", "transmission_rate",
+        "num_tokens", "latency_s", "throughput_tok_per_s"
     ]
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
-    # Iterate over each entry in the JSON list
-    for entry in beverage_ground_truth_list:
+
+    for count, entry in enumerate(beverage_ground_truth_list, start=1):
         prompt = entry["prompt"]
-        response = entry["response"]
-        
-        generated_text, tsr, tr, num_token, time_elapsed = uncertainty_aware_hybrid_inference(prompt, uncertainty_threshold=2, verbose=False)
-        
-        generated_array = string_to_array(generated_text)
-        ground_truth_array = string_to_array(response)
-        length = len(ground_truth_array)
-        
-        num_correct_subtask = 0
-    
+        gt_text = entry["response"]
 
-        for i, subtask in enumerate(generated_array):
-            for idx, gt_step in enumerate(ground_truth_array):
-                if subtask.lower().strip() == gt_step.lower().strip():
-                    num_correct_subtask = num_correct_subtask + 1
-                    ground_truth_array.pop(idx)
-        
-        task_correct_rate = num_correct_subtask / length 
-        scores.append(task_correct_rate)
+        # run your U-HLM inference
+        gen_text, tsr, tr, num_token, time_elapsed = (
+            *uncertainty_aware_hybrid_inference(prompt, uncertainty_threshold=5, verbose=False),
+        )
 
-        print(f"Task Correct Rate: {task_correct_rate}")
-        print(f"Prompt: {prompt}")
-        print(f"Generated Plan:{generated_text}")
-        print(f"Ground Truth: {response}")
-        print(f"True Skip Ratio: {tsr}, Transmission Rate: {tr}")
-        print(f"Num Tokens: {num_token}, End-to-End Inference Latency: {time_elapsed}s, Token Throughput: {num_token/time_elapsed}")
-        print(f"Score Average: {sum(scores)/len(scores)}")
-        print("-"*50)
-        '''
+        # tokenize into ordered lists
+        gen_steps = string_to_array(gen_text)
+        gt_steps  = string_to_array(gt_text)
+
+        # --- compute TP / FP / FN at step level ------------------------
+        # make a mutable copy of ground truth
+        remaining_gt = gt_steps.copy()
+        tp = 0
+        for step in gen_steps:
+            # find exact match (case-insensitive)
+            match_idx = next(
+                (i for i, g in enumerate(remaining_gt)
+                 if step.lower().strip() == g.lower().strip()),
+                None
+            )
+            if match_idx is not None:
+                tp += 1
+                remaining_gt.pop(match_idx)
+
+        fp = len(gen_steps) - tp
+        fn = len(remaining_gt)
+
+        # avoid division by zero
+        precision = tp / (tp + fp) if tp + fp else 0.0
+        recall    = tp / (tp + fn) if tp + fn else 0.0
+        f1        = (2 * precision * recall / (precision + recall)
+                     if precision + recall else 0.0)
+
+        # accumulate for micro-average
+        global_tp += tp
+        global_fp += fp
+        global_fn += fn
+
+        # --- write one row ------------------------------------------------
         writer.writerow({
-            "prompt":               prompt,
-            "ground_truth":         response,
-            "generated_plan":       generated_text,
-            "task_correct_rate":    task_correct_rate,
-            "true_skip_ratio":      tsr,
-            "transmission_rate":    tr,
-            "num_tokens":           num_token,
-            "latency_s":            time_elapsed,
-            "throughput_tok_per_s": num_token / time_elapsed
+            "prompt":            prompt,
+            "ground_truth":      gt_text,
+            "generated_plan":    gen_text,
+            "precision":         f"{precision:.3f}",
+            "recall":            f"{recall:.3f}",
+            "f1":                f"{f1:.3f}",
+            "true_skip_ratio":   tsr,
+            "transmission_rate": tr,
+            "num_tokens":        num_token,
+            "latency_s":         f"{time_elapsed:.3f}",
+            "throughput_tok_per_s": f"{num_token/time_elapsed:.1f}"
         })
-        '''
+
+        micro_p = global_tp / (global_tp + global_fp) if (global_tp + global_fp) else 0.0
+        micro_r = global_tp / (global_tp + global_fn) if (global_tp + global_fn) else 0.0
+        micro_f1 = (2 * micro_p * micro_r / (micro_p + micro_r) if micro_p + micro_r else 0.0)
+
+        print(f"generated: {gen_text}")
+        print(f"ground truth: {gt_text}")
+        print(f"precision: {precision:.3f}, recall: {recall:.3f}, f1: {f1:.3f}")
+        print(f"avg || precision: {micro_p:.3f}, recall: {micro_r:.3f}, f1: {micro_f1:.3f}")
+        print('-'*50)
+
         if count >= 100:
             break
 
-        count = count + 1
+    # --- after loop: micro-avg -----------------------------------------
+    micro_p = global_tp / (global_tp + global_fp) if (global_tp + global_fp) else 0.0
+    micro_r = global_tp / (global_tp + global_fn) if (global_tp + global_fn) else 0.0
+    micro_f1 = (2 * micro_p * micro_r / (micro_p + micro_r)
+                if micro_p + micro_r else 0.0)
 
-print(f"Saved {len(results)} rows to results.csv.")
+
+    print("MICRO-AVERAGED METRICS over", count, "runs:")
+    print(f"  Precision: {micro_p:.3f}")
+    print(f"  Recall:    {micro_r:.3f}")
+    print(f"  F1-Score:  {micro_f1:.3f}")

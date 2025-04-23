@@ -3,43 +3,23 @@ import time
 import requests  
 from slm import slm_inference
 from transformers import AutoTokenizer
+# from llm import llm_verification
 
-model_dir = "./tiny-llama-mega"
+model_dir = "./models/tiny-llama-mega"
 tokenizer = AutoTokenizer.from_pretrained(model_dir)
 device = "cuda" if torch.cuda.is_available() else "cpu"
-# print(device)
 
-# Matcha Frappuccino: 1. Place Cup 2. Pour Milk 3. Add Matcha Powder 4. Add Sugar 5. Add Ice 6. Blend Beverage 7. Add Whipped Cream 8. Serve Beverage 9. Done
-# Cinnamon Dolce Latte: 1. Place Cup 2. Pour Espresso 3. Pour Milk 4. Pour Cinnamon Dolce Syrup 5. Add Whipped Cream 6. Serve Beverage 7. Done
-# Pumking Spice Latte: 1. Place Cup 2. Pour Espresso 3. Pour Pumpkin Spice Syrup 4. Pour Milk 5. Add Whipped Cream 6. Serve Beverage 7. Done
-# Caramel Frozen Blended Coffee: 1. Place Cup 2. Pour Espresso 4. Pour Milk 5. Pour Salt 6. Pour Whipped Cream 7. Serve Beverage 8. Done
-# Vanilla Latte: 1. Place Cup 2. Pour Milk 3. Pour Vanilla Syrup 4. Serve Beverage 5. Done
-# Mint Chocolate Mocha: 1. Place Cup 2. Pour Chocolate 3. Pour Mint 4. Pour Whipped Cream 5. Serve Beverage 6. Done
-# Caramel Honey Latte: 1. 
-# allowed_text = "1. Place Cup 2. Pour Chocolate 3. Pour Mint 4. Pour Whipped Cream 5. Serve Beverage Done"
-# temp = tokenizer.encode(allowed_text, add_special_tokens=False)
+LLM_SERVER_HOST = "165.132.40.49"
+LLM_SERVER_PORT = 5001
+SERVER_URL      = f"http://{LLM_SERVER_HOST}:{LLM_SERVER_PORT}/llm_verification"
 
-allowed_tokens = [262, 263, 265, 269, 273, 274, 276, 280, 286, 290, 293, 295, 298, 301, 304, 306, 310, 311, 314, 315, 316, 317, 319, 329, 335, 341, 343, 345, 347, 349, 350, 355, 360, 365, 367, 371, 374, 377, 379, 380, 381, 385, 402, 407, 411, 412, 438, 446, 447, 454, 468, 488, 496, 505, 521, 524, 528, 542, 549, 598, 600, 603, 612, 617, 624, 625, 672, 678, 679, 719, 728, 763, 831, 837, 853, 907, 923, 932, 964, 968, 1109, 1113, 1133, 1219, 1236, 1281, 1302, 1398, 1532, 1559, 1581, 1610, 1617, 1633, 1648, 1701, 1704, 1725, 1760, 1763, 1773, 1789, 1815, 1816, 1862, 1878, 1920, 1943, 1999, 2049, 2078, 2139, 2142, 2148, 2163, 2181, 2442, 2610, 2646, 2696, 2753, 2878, 2911, 3104, 3113, 3118, 3164, 3189, 3445, 3462, 3478, 3712, 3826, 3833, 3848, 3905, 3938, 3973, 4003, 4088, 4094, 4116, 4161, 4227, 4326, 4524, 4628, 4764, 4798, 4805, 4989, 4992, 5342, 5391, 5617, 6038, 6054, 6235, 6527, 6556, 6561, 6781, 6803, 6983, 7021, 7053, 7141, 7254, 7347, 7375, 7420, 7537, 7646, 7933, 8142, 8195, 8296, 8533, 8836, 8887, 9216, 9243, 9683, 9878, 9892, 10173, 10293, 10322, 10484, 10492, 10765, 10924, 11179, 11220, 11790, 12113, 12569, 13231, 13749, 14225, 14890, 14954, 15327, 15392, 15484, 15774, 16242, 16344, 16668, 17169, 17278, 17827, 18002, 18254, 19493, 19698, 20447, 20559, 21144, 21353, 22531, 22780, 23167, 23429, 23816, 25529, 25606, 25679, 26163, 26494, 26731, 27274, 27810, 28311, 28684, 29316, 29399, 29871, 29872, 29874, 29877, 29881, 29884, 29888, 29889, 29892, 29893, 29895, 29896, 29899, 29900, 29906, 29907, 29915, 29920, 29924, 29929, 29933, 29940, 29941, 29945, 29946, 29947, 29953, 29955, 29973]
-'''
-for element in temp:
-    if element not in allowed_tokens:
-        allowed_tokens.append(element)
-        print(element)
-'''
+allowed_tokens = [262, 263, 265, 269, 273, 274, 276, 280, 286, 290, 293, 295, 298, 301, 304, 306, 310, 311, 314, 315, 316, 317, 319, 329, 335, 341, 343, 345, 347, 349, 350, 355, 360, 365, 367, 371, 374, 377, 379, 380, 381, 385, 402, 407, 411, 412, 438, 446, 447, 454, 468, 488, 496, 505, 508, 521, 524, 528, 542, 549, 598, 600, 603, 612, 617, 624, 625, 672, 678, 679, 719, 728, 763, 831, 837, 853, 907, 923, 932, 964, 968, 1109, 1113, 1133, 1219, 1236, 1281, 1302, 1398, 1532, 1559, 1581, 1610, 1617, 1633, 1648, 1701, 1704, 1725, 1760, 1763, 1773, 1789, 1797, 1815, 1816, 1862, 1878, 1920, 1943, 1999, 2049, 2078, 2139, 2142, 2148, 2163, 2181, 2326, 2442, 2610, 2646, 2696, 2753, 2878, 2911, 3104, 3113, 3118, 3164, 3189, 3445, 3462, 3478, 3712, 3826, 3833, 3848, 3905, 3938, 3973, 4003, 4088, 4094, 4116, 4161, 4227, 4326, 4524, 4628, 4764, 4798, 4805, 4989, 4992, 5342, 5391, 5617, 5642, 6038, 6054, 6235, 6324, 6527, 6556, 6561, 6781, 6803, 6983, 7021, 7053, 7141, 7254, 7347, 7375, 7420, 7537, 7646, 7933, 8142, 8195, 8296, 8533, 8836, 8887, 9216, 9243, 9683, 9878, 9892, 10173, 10293, 10322, 10484, 10492, 10765, 10924, 11179, 11220, 11790, 12113, 12569, 13231, 13749, 14225, 14890, 14954, 15043, 15327, 15392, 15484, 15774, 16242, 16344, 16668, 17169, 17278, 17827, 18002, 18254, 18345, 19493, 19698, 20447, 20559, 21144, 21353, 22531, 22780, 23167, 23429, 23816, 25529, 25606, 25679, 26163, 26494, 26731, 27274, 27810, 28311, 28684, 29316, 29399, 29871, 29872, 29874, 29877, 29880, 29881, 29884, 29888, 29889, 29892, 29893, 29895, 29896, 29899, 29906, 29907, 29915, 29920, 29924, 29929, 29933, 29940, 29941, 29945, 29946, 29947, 29953, 29955, 29973]
 
 def detokenize(token_id):
     if isinstance(token_id, int):
         return tokenizer.decode(token_id)
     else:
         return tokenizer.decode(token_id[0], skip_special_tokens=True)
-
-
-# allowed_tokens = list(set(allowed_tokens))
-# print(len(allowed_tokens))
-# print(allowed_tokens)
-
-# for element in allowed_tokens:
-#     print(detokenize(element))
 
 # Returns the final generated prompt and the true skip ratio.
 def uncertainty_aware_hybrid_inference(prompt: str, max_new_tokens: int = 100, uncertainty_threshold: float = 0.5, verbose: bool = True):
@@ -76,7 +56,11 @@ def uncertainty_aware_hybrid_inference(prompt: str, max_new_tokens: int = 100, u
                 "allowed_tokens": allowed_tokens
             }
             
-            server_url = "http://165.132.40.52:5001/llm_verification"
+            server_url = SERVER_URL
+            # final_token_id, accepted = llm_verification(draft_distribution_list, draft_token_id, generated, allowed_tokens)
+            # if not accepted:
+            #     resample = resample + 1
+            
             try:
                 response = requests.post(server_url, json=payload, timeout=10)
                 response.raise_for_status()
@@ -89,6 +73,7 @@ def uncertainty_aware_hybrid_inference(prompt: str, max_new_tokens: int = 100, u
                 if verbose:
                     print("Error calling remote llm_verification:", e)
                 final_token_id = draft_token_id
+            
         else:
             if verbose:
                 print(f"Low uncertainty ({uncertainty:.2f} <= {uncertainty_threshold}); using SLM token directly.")

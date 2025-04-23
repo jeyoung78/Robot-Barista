@@ -46,12 +46,10 @@ class RAGPromptGenerator:
         beverage = recipe_entry["beverage"]
         original_recipe = recipe_entry["recipe"]
         
-        print("original" + original_recipe)
+        # print("original " + original_recipe)
 
         prompt = f"""
-        You are a coffee robot task planner. Your task is to generate a beverage preparation plan strictly following the exact format shown below. Do not deviate:
-        
-        Expected Format: 1. Place Cup 2. Drizzle Vanilla Syrup 3. Pour Milk 4. Add Ice 5. Pour Espresso 6. Drizzle Caramel Syrup 7. Serve Beverage 8. Done
+        You are a coffee robot task planner. Your task is to generate a beverage preparation plan strictly following the exact format shown below in the original recipe.
         
         Important Instructions:
         - Use only these action verbs: "place", "pour", "serve", "drizzle", "garnish", "add", and "done".

@@ -3,26 +3,20 @@ import os
 import torch
 import numpy as np
 
-from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments, BitsAndBytesConfig
+from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments, EarlyStoppingCallback
 from datasets import load_dataset, Dataset
 from peft import LoraConfig, get_peft_model
 
 token = "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"
 
-# Load both JSON files
 data1 = load_dataset("json", data_files="mega_coffee_data/drink_recipe.json")["train"]
 data2 = load_dataset("json", data_files="mega_coffee_data/modified_order_recipe.json")["train"]
 data3 = load_dataset("json", data_files="mega_coffee_data/order_recipe.json")["train"]
-# Ensure 1:1 ratio by truncating the longer dataset
-min_len = min(len(data1), len(data2), len(data3))
-data1 = data1.select(range(min_len))
-data2 = data2.select(range(min_len))
-data3 = data3.select(range(min_len))
+# data4 = load_dataset("json", data_files="mega_coffee_data/combined_training_data.json")["train"]
 
-# Interleave the datasets
 combined_data = Dataset.from_dict({
-    "prompt": data1["prompt"] + data2["prompt"] + data3["prompt"],
-    "response": data1["response"] + data2["response"] + data3["response"]
+    "prompt":   data1["prompt"]   + data2["prompt"]  + data3["prompt"],
+    "response": data1["response"] + data2["response"] + data3["response"],
 })
 
 # Shuffle and split into train/test
@@ -101,18 +95,27 @@ tokenized_dataset = dataset.map(
 )
 
 training_args = TrainingArguments(
-    output_dir="./tiny-llama-mega",
-    num_train_epochs=8,
+    output_dir="./models/tiny-llama-mega",
+    # keep at 5 epochs (tweak up to 7–8 if under‑fitting)
+    num_train_epochs=2,
     per_device_train_batch_size=1,
     per_device_eval_batch_size=1,
     gradient_accumulation_steps=4,
     warmup_steps=20,
-    evaluation_strategy="steps",
-    eval_steps=500,
+    eval_strategy="steps",
+    # evaluate every 100 steps to catch over‑fitting early
+    eval_steps=100,
     save_steps=500,
     logging_steps=100,
     learning_rate=1e-4,
-    fp16=True, 
+    fp16=True,
+    # automatically reload best checkpoint
+    load_best_model_at_end=True,
+    metric_for_best_model="eval_loss",
+    greater_is_better=False,
+    # keep only 3 most recent checkpoints
+    save_total_limit=3,
+    overwrite_output_dir=True,
 )
 
 trainer = Trainer(
@@ -120,9 +123,10 @@ trainer = Trainer(
     args=training_args,
     train_dataset=tokenized_dataset["train"],
     eval_dataset=tokenized_dataset["test"],
+    callbacks=[EarlyStoppingCallback(early_stopping_patience=2)],
 )
 
 trainer.train()
 
-trainer.save_model("./tiny-llama-mega")
-tokenizer.save_pretrained("./tiny-llama-mega")
+trainer.save_model("./models/tiny-llama-mega")
+tokenizer.save_pretrained("./models/tiny-llama-mega")

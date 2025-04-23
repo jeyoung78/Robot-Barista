@@ -8,20 +8,17 @@ from rag import RAGPromptGenerator
 
 app = Flask(__name__)
 
-model_name = "./llm-finetuned"
+model_name = "./models/llama2-mega"
 tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
 model = AutoModelForCausalLM.from_pretrained(model_name, device_map="auto")
-rag = RAGPromptGenerator(recipe_file="label.json")
-
-with open('test.json', 'r') as f:
-    cafe_recipes = json.load(f)
+rag = RAGPromptGenerator(recipe_file="mega_coffee_data/drink_recipe.json")
 
 def llm_verification(draft_distribution, draft_token_id, generated, allowed_tokens):
-    candidate_lookup = tokenizer.decode(generated[0].tolist()).strip().split("\n")[0]
-    prefix_text = rag.generate_rag_prompt(candidate_lookup)
+    # candidate_lookup = tokenizer.decode(generated[0].tolist()).strip().split("\n")[0]
+    # prefix_text = rag.generate_rag_prompt(candidate_lookup)
 
-    prefix_tokens = tokenizer(prefix_text, return_tensors="pt")["input_ids"].to(generated.device)
-    generated = torch.cat((prefix_tokens, generated), dim=1)
+    # prefix_tokens = tokenizer(prefix_text, return_tensors="pt")["input_ids"].to(generated.device)
+    # generated = torch.cat((prefix_tokens, generated), dim=1)
     
     banned_words = ["in", "into", "In"]
     banned_token_ids = []
@@ -44,7 +41,7 @@ def llm_verification(draft_distribution, draft_token_id, generated, allowed_toke
     
     disallowed_value = float('-inf')
     masked_logits = torch.where(allowed_mask, next_token_logits,
-                                torch.tensor(disallowed_value, device=next_token_logits.device))
+                                 torch.tensor(disallowed_value, device=next_token_logits.device))
     
     target_distribution = torch.softmax(masked_logits, dim=-1)
     
@@ -85,5 +82,5 @@ def call_llm_verification():
     return jsonify({'result_token_id': result_token_id, 'accepted': accepted})
 
 if __name__ == '__main__':
-    print("Starting llm.py server on port 5000...")
+    print("Starting llm.py server on port 5001...")
     app.run(host='0.0.0.0', port=5001)

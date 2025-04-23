@@ -13,10 +13,10 @@ model = AutoModelForCausalLM.from_pretrained(
     device_map=device,        
 )
 
-ADAPTER_PATH = "./tiny-llama-mega"  # your LoRA/PEFT checkpoint
+ADAPTER_PATH = "./models/tiny-llama-mega"  # your LoRA/PEFT checkpoint
 model = PeftModel.from_pretrained(model, ADAPTER_PATH)
 
-model_dir = "./tiny-llama-mega"
+model_dir = "./models/tiny-llama-mega"
 tokenizer = AutoTokenizer.from_pretrained(model_dir)
 
 model.to(device)
@@ -34,7 +34,7 @@ def slm_inference(generated, allowed_tokens, theta_max: float = 2.0, K: int = 20
     allowed_token_ids = torch.tensor(allowed_tokens, device=next_token_logits.device)
     allowed_mask[allowed_token_ids] = True
 
-    disallowed_value = float('-inf')
+    disallowed_value = 0
     masked_logits = torch.where(allowed_mask, next_token_logits, torch.tensor(disallowed_value, device=next_token_logits.device))
 
     draft_distribution = torch.softmax(masked_logits, dim=-1)
