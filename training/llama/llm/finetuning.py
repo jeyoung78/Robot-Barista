@@ -1,5 +1,3 @@
-# finetuning.py
-
 import os, sys
 import torch
 import numpy as np
@@ -17,15 +15,17 @@ from peft import LoraConfig, get_peft_model
 ROOT = os.path.abspath(os.path.join(__file__, "../../../.."))
 sys.path.append(os.path.join(ROOT, "src", "task_planning"))
 
-from rag import RAGPromptGenerator   # ← import your RAG helper
+# from rag import RAGPromptGenerator   # ← import your RAG helper
 
 # your HuggingFace token (if needed)
 token = "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"
 
 # ─── 1) Build the RAG prompt generator ─────────────────────────────────────────
+'''
 rag_generator = RAGPromptGenerator(
     recipe_file="mega_coffee_data/drink_recipe.json"
 )
+'''
 
 # ─── 2) Load & interleave your three JSON datasets ─────────────────────────────
 data1 = load_dataset("json", data_files="mega_coffee_data/drink_recipe.json")["train"]
@@ -39,7 +39,7 @@ combined_data = Dataset.from_dict({
     "response": data1["response"] + data2["response"] + data3["response"] + data4["response"],
 })
 
-
+'''
 def make_rag_prompt(example):
     return {
         "prompt": rag_generator.generate_rag_prompt(example["prompt"])
@@ -47,7 +47,7 @@ def make_rag_prompt(example):
 
 # map with batched=False since generate_rag_prompt is per-example
 combined_data = combined_data.map(make_rag_prompt, batched=False)
-
+'''
 # ─── 4) Shuffle & split into train / test ───────────────────────────────────────
 dataset = combined_data.train_test_split(test_size=0.1, seed=42)
 
@@ -147,8 +147,8 @@ tokenized_dataset = dataset.map(
 
 # ─── 9) Training setup ─────────────────────────────────────────────────────────
 training_args = TrainingArguments(
-    output_dir="./models/llama2-mega-rag",
-    num_train_epochs=2,
+    output_dir="./models/llama2-mega",
+    num_train_epochs=1,
     per_device_train_batch_size=1,
     per_device_eval_batch_size=1,
     gradient_accumulation_steps=4,
@@ -172,5 +172,5 @@ trainer = Trainer(
 # ─── 10) Launch training ───────────────────────────────────────────────────────
 if __name__ == "__main__":
     trainer.train()
-    trainer.save_model("./models/llama2-mega-rag")
-    tokenizer.save_pretrained("./models/llama2-mega-rag")
+    trainer.save_model("./models/llama2-mega")
+    tokenizer.save_pretrained("./models/llama2-mega")

@@ -97,7 +97,7 @@ tokenized_dataset = dataset.map(
 training_args = TrainingArguments(
     output_dir="./models/tiny-llama-mega",
     # keep at 5 epochs (tweak up to 7–8 if under‑fitting)
-    num_train_epochs=2,
+    num_train_epochs=1,
     per_device_train_batch_size=1,
     per_device_eval_batch_size=1,
     gradient_accumulation_steps=4,
