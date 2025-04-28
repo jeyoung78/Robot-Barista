@@ -41,7 +41,7 @@ for num in range(0, 21):        # 1 through 20
 
             # run your U-HLM inference
             gen_text, tsr, tr, num_token, time_elapsed = (
-                *uncertainty_aware_hybrid_inference(prompt, uncertainty_threshold=5, verbose=False),
+                *uncertainty_aware_hybrid_inference(prompt, uncertainty_threshold=0.15, verbose=False),
             )
 
             # tokenize into ordered lists
