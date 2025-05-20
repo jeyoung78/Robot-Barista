@@ -1,57 +1,80 @@
 import socket
 import time
+from typing import Optional
 
-class Communicate:
-    def __init__(self, robot_ip='192.168.137.100', robot_port=20002):
-        self.robot_ip = robot_ip
-        self.robot_port = robot_port
+class RobotServer:
+    def __init__(self,
+                 host: str = "0.0.0.0",
+                 port: int = 20002,
+                 bufsize: int = 1024):
+        self.host    = host
+        self.port    = port
+        self.bufsize = bufsize
 
-    def communicate(self, command):
-        # Create a new socket for each command
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as client_sock:
-            client_sock.connect((self.robot_ip, self.robot_port))
-            client_sock.sendall(command.encode('utf-8'))
+        self._srv:  Optional[socket.socket] = None
+        self.conn:  Optional[socket.socket] = None
 
-    def move_x(self, pos_dir=True):
-        command = "move_x_positive" if pos_dir else "move_x_negative"
-        self.communicate(command)
+    def start(self) -> None:
+        srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        srv.bind((self.host, self.port))
+        srv.listen(1)
+        conn, addr = srv.accept()
+        self._srv = srv
+        self.conn = conn
 
-    def move_y(self, pos_dir=True):
-        command = "move_y_positive" if pos_dir else "move_y_negative"
-        self.communicate(command)
+    def send(self, msg: str) -> None:
+        if not self.conn:
+            raise RuntimeError("Connection not established. Call start() first.")
+        self.conn.sendall(msg.encode("utf-8"))
 
-    def move_z(self, pos_dir=True):
-        command = "move_z_positive" if pos_dir else "move_z_negative"
-        self.communicate(command)
+    def receive(self) -> Optional[str]:
+        if not self.conn:
+            raise RuntimeError("Connection not established. Call start() first.")
+        data = self.conn.recv(self.bufsize)
+        if not data:
+            return None
+        text = data.decode("utf-8").strip()
+        return text
 
-    def prepare(self, pos_dir=True):
-        command = "prepare"
-        self.communicate(command)
+    def close(self) -> None:
+        if self.conn:
+            self.conn.close()
+        if self._srv:
+            self._srv.close()
 
-    def initial_pos(self):
-        command = "initial" 
-        self.communicate(command)
+    def move_delta(self, cx: int, cy: int):
+        delta_x = str(int(cx*0.3))
+        delta_y = str(int(cy*0.3))
+        
+        self.send("x")
+        time.sleep(0.1)
+        self.send(delta_x)
+        print("move x")
+        self.rbt_wait()
+        self.send("y")
+        time.sleep(0.1)
+        self.send(delta_y)
+        print("move y")
+        self.rbt_wait()
 
-    def release(self):
-        command = "release"
-        self.communicate(command)
-
-    def grab(self):
-        command = "grab"
-        self.communicate(command)
-
-comm = Communicate()
-comm.move_y(True)
-
-def main():
-    time.sleep(3)
-    comm.grab()
-    time.sleep(3)
-    comm.release()
-    time.sleep(3)
-    comm.grab()
-    time.sleep(3)
-    comm.release()
+    def rbt_wait(self):
+        print("wait for finish signal...")
+        while True:
+            robot_msg = self.receive()
+            if robot_msg == 'finish':
+                break
+            elif robot_msg == 'no':
+                print("no action in robot")
+                break
+            else:
+                continue
+        print("start next action.")
+        time.sleep(1)
 
 if __name__ == "__main__":
-    main()
+    server = RobotServer(host="192.168.137.50", port=20002)
+    server.start()
+    server.move_delta(15,15)
+    server.move_delta(15,15)
+    server.move_delta(15,15)
