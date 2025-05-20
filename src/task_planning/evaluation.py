@@ -59,9 +59,8 @@ for num in range(0,4):
             gt_text = entry["response"]
 
             # run your U-HLM inference
-
-            gen_text, tsr, tr, num_token, time_elapsed, slm_time_arr, llm_time_arr, comm_time_arr, token_time_arr, tokens, transmitted, uncertainty, resampled, u_cal_skip_ratio, u_calc_skipped_arr = (
-                *uncertainty_aware_hybrid_inference(prompt, uncertainty_threshold=i, verbose=False, rand=rand),
+            gen_text, tsr, tr, num_token, time_elapsed = (
+                *uncertainty_aware_hybrid_inference(prompt, uncertainty_threshold=0.15, verbose=False),
             )
 
             #print(len(tokens), tokens)
