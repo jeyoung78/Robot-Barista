@@ -130,7 +130,7 @@ def slm_inference(generated, allowed_tokens, theta_max: float = 2.0, K: int = 20
         outputs = _model(generated)
     logits = outputs.logits[0, -1, :]
 
-    print(time.time() - start)
+    # print(time.time() - start)
     start = time.time()
     
         #print("skipped")
@@ -169,31 +169,22 @@ def slm_inference(generated, allowed_tokens, theta_max: float = 2.0, K: int = 20
         us_buf.append(0)
         skip = True
 
-    print(time.time() - start)
+    # print(time.time() - start)
     start = time.time()
 
     diff_count = 0
 
     for _ in range(K):
-        # 1) Draw a single random temperature
         temp = torch.empty((), device=logits.device).uniform_(0.05, theta_max)  # scalar
-
-        # 2) Perturb logits by that temp
         perturbed_logits = masked_logits / temp   # [V]
-
-        # 3) Compute distribution and sample one token
         perturbed_dist = torch.softmax(perturbed_logits, dim=-1)  # [V]
         sampled_id    = torch.multinomial(perturbed_dist, num_samples=1).item()
 
-        # 4) Compare to draft and tally
         if sampled_id != draft_token_id:
             diff_count += 1
 
-    # 5) Estimate uncertainty
     uncertainty = diff_count / K
     us_buf.append(uncertainty)
-    print(time.time() - start)
-    print('-'*50)
     return draft_token_id, uncertainty, draft_distribution, False
 
 if __name__ == "__main__":

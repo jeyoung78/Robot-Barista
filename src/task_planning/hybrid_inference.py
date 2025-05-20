@@ -5,6 +5,7 @@ from slm import slm_inference
 from transformers import AutoTokenizer
 # from llm import llm_verification
 import random
+from flask import Flask, request, jsonify
 
 model_dir = "./models/tiny-llama-mega"
 tokenizer = AutoTokenizer.from_pretrained(model_dir)
@@ -65,6 +66,7 @@ def uncertainty_aware_hybrid_inference(prompt: str, max_new_tokens: int = 100, u
             # print(f"uncertainty: {uncertainty} || {uncertainty <= uncertainty_threshold}")
 
         else:
+            
             u_calc_skipped_arr.append(0)
             if rand:
                 probability = 0.23
@@ -114,6 +116,7 @@ def uncertainty_aware_hybrid_inference(prompt: str, max_new_tokens: int = 100, u
                     final_token_id = draft_token_id
             else:
                 if uncertainty > uncertainty_threshold:
+                    print("Hello")
                     exceeded=True
                     num_transmission = num_transmission + 1
                     if verbose:
@@ -177,16 +180,25 @@ def uncertainty_aware_hybrid_inference(prompt: str, max_new_tokens: int = 100, u
         transmitted.append(exceeded)
         uncertainty_arr.append(uncertainty)
         resampled_arr.append(resampled)
-        # print(slm_time, llm_time, token_time - slm_time - llm_time, token_time)
     tsr = (1 - resample/num_inference) if num_inference > 0 else 1.0
     tr = num_transmission/num_inference if num_inference > 0 else 1.0
     u_cal_skip_ratio = u_calc_skipped/num_inference
     time_elapsed = time.time() - start
     return detokenize(generated)[initial_length:], tsr, tr, num_inference, time_elapsed, slm_time_arr, llm_time_arr, comm_time_arr, token_time_arr, tokens, transmitted, uncertainty_arr, resampled_arr, u_cal_skip_ratio, u_calc_skipped_arr
 
-if __name__ == "__main__":
-    prompt_text = "May I order a salty drink?"
-    generated_text, tsr, tr, num_inference, time_elapsed = uncertainty_aware_hybrid_inference(prompt_text, uncertainty_threshold=0)
-    print("Generated text:", generated_text)
-    print("True skip ratio:", tsr)
-    print("Transmission rate:", tsr)
+app = Flask(__name__)
+
+@app.route('/order', methods=['POST'])
+def order():
+    data = request.get_json()
+    order_text = data.get('order')
+    if not order_text:
+        return jsonify({'error': 'missing order text'}), 400
+
+    # generate_recipe should take the order string and return a list or dict
+    recipe, *rest = uncertainty_aware_hybrid_inference(order_text, uncertainty_threshold=0.15, verbose=True)
+    return jsonify({'recipe': recipe}), 200
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
+
