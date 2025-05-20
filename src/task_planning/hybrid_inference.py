@@ -4,6 +4,7 @@ import requests
 from slm import slm_inference
 from transformers import AutoTokenizer
 # from llm import llm_verification
+import random
 
 model_dir = "./models/tiny-llama-mega"
 tokenizer = AutoTokenizer.from_pretrained(model_dir)
@@ -22,11 +23,12 @@ def detokenize(token_id):
         return tokenizer.decode(token_id[0], skip_special_tokens=True)
 
 # Returns the final generated prompt and the true skip ratio.
-def uncertainty_aware_hybrid_inference(prompt: str, max_new_tokens: int = 100, uncertainty_threshold: float = 0.5, verbose: bool = True):
+def uncertainty_aware_hybrid_inference(prompt: str, max_new_tokens: int = 100, uncertainty_threshold: float = 0.5, verbose: bool = True, rand: bool = False):
     start = time.time()
     resample = 0
     num_inference = 0
     num_transmission = 0
+    u_calc_skipped = 0
     special_token = "<recipe_generation>"
     prompt = f"{special_token} {prompt} {special_token}"
     inputs = tokenizer(prompt, return_tensors="pt")
@@ -35,50 +37,129 @@ def uncertainty_aware_hybrid_inference(prompt: str, max_new_tokens: int = 100, u
 
     initial_length = len(prompt)
 
-    for i in range(max_new_tokens):
-        num_inference = i + 1
-        draft_token_id, uncertainty, draft_distribution = slm_inference(generated=generated, allowed_tokens=allowed_tokens)
-        
-        if uncertainty > uncertainty_threshold:
-            num_transmission = num_transmission + 1
-            if verbose:
-                print(f"High uncertainty ({uncertainty:.2f} > {uncertainty_threshold}); calling remote LLM verification...")
-            # Convert draft_distribution to a list if needed.
-            if isinstance(draft_distribution, torch.Tensor):
-                draft_distribution_list = draft_distribution.tolist()
-            else:
-                draft_distribution_list = draft_distribution
-            
-            payload = {
-                "draft_distribution": draft_distribution_list,
-                "draft_token_id": int(draft_token_id),
-                "generated": generated.squeeze(0).tolist(),
-                "allowed_tokens": allowed_tokens
-            }
-            
-            server_url = SERVER_URL
-            # final_token_id, accepted = llm_verification(draft_distribution_list, draft_token_id, generated, allowed_tokens)
-            # if not accepted:
-            #     resample = resample + 1
-            
-            try:
-                response = requests.post(server_url, json=payload, timeout=10)
-                response.raise_for_status()
-                data = response.json()
-                final_token_id = data['result_token_id']
-                accepted = data['accepted']
-                if not accepted:
-                    resample += 1
-            except Exception as e:
-                if verbose:
-                    print("Error calling remote llm_verification:", e)
-                final_token_id = draft_token_id
-            
-        else:
-            if verbose:
-                print(f"Low uncertainty ({uncertainty:.2f} <= {uncertainty_threshold}); using SLM token directly.")
-            final_token_id = draft_token_id
+    slm_time_arr = []
+    llm_time_arr = []
+    comm_time_arr = []
+    token_time_arr = []
 
+    tokens = [] 
+    transmitted = []
+    uncertainty_arr = []
+    resampled_arr = []
+    u_calc_skipped_arr = []
+    for i in range(max_new_tokens):
+        exceeded = False
+        time_now = time.time()
+        num_inference = i + 1
+        draft_token_id, uncertainty, draft_distribution, skipped = slm_inference(generated=generated, allowed_tokens=allowed_tokens)
+        slm_time = time.time() - time_now
+        resampled = False
+
+
+        if skipped == True:
+            llm_time = 0
+            u_calc_skipped += 1
+            final_token_id = draft_token_id
+            u_calc_skipped_arr.append(1)
+
+            # print(f"uncertainty: {uncertainty} || {uncertainty <= uncertainty_threshold}")
+
+        else:
+            u_calc_skipped_arr.append(0)
+            if rand:
+                probability = 0.23
+                if random.random() < probability:
+                    num_transmission = num_transmission + 1
+                    if verbose:
+                        print(f"High uncertainty ({uncertainty:.2f} > {uncertainty_threshold}); calling remote LLM verification...")
+                    # Convert draft_distribution to a list if needed.
+                    if isinstance(draft_distribution, torch.Tensor):
+                        draft_distribution_list = draft_distribution.tolist()
+                    else:
+                        draft_distribution_list = draft_distribution
+                    
+                    payload = {
+                        "draft_distribution": draft_distribution_list,
+                        "draft_token_id": int(draft_token_id),
+                        "generated": generated.squeeze(0).tolist(),
+                        "allowed_tokens": allowed_tokens
+                    }
+                    
+                    server_url = SERVER_URL
+                    # final_token_id, accepted = llm_verification(draft_distribution_list, draft_token_id, generated, allowed_tokens)
+                    # if not accepted:
+                    #     resample = resample + 1
+                    llm_time = 0
+                    
+                    try:
+                        response = requests.post(server_url, json=payload, timeout=10)
+                        response.raise_for_status()
+                        # print(response)
+                        data = response.json()
+                        final_token_id = data['result_token_id']
+                        accepted = data['accepted']
+                        llm_time = data['llm_time']
+                        # print(llm_time)
+                        if not accepted:
+                            resample += 1
+                    except Exception as e:
+                        llm_time = 0
+                        if verbose:
+                            print(f"Low uncertainty ({uncertainty:.2f} <= {uncertainty_threshold}); using SLM token directly.")
+                        final_token_id = draft_token_id
+                else:
+                    llm_time = 0
+                    if verbose:
+                        print(f"Low uncertainty ({uncertainty:.2f} <= {uncertainty_threshold}); using SLM token directly.")
+                    final_token_id = draft_token_id
+            else:
+                if uncertainty > uncertainty_threshold:
+                    exceeded=True
+                    num_transmission = num_transmission + 1
+                    if verbose:
+                        print(f"High uncertainty ({uncertainty:.2f} > {uncertainty_threshold}); calling remote LLM verification...")
+                    # Convert draft_distribution to a list if needed.
+                    if isinstance(draft_distribution, torch.Tensor):
+                        draft_distribution_list = draft_distribution.tolist()
+                    else:
+                        draft_distribution_list = draft_distribution
+                    
+                    payload = {
+                        "draft_distribution": draft_distribution_list,
+                        "draft_token_id": int(draft_token_id),
+                        "generated": generated.squeeze(0).tolist(),
+                        "allowed_tokens": allowed_tokens
+                    }
+                    
+                    server_url = SERVER_URL
+                    # final_token_id, accepted = llm_verification(draft_distribution_list, draft_token_id, generated, allowed_tokens)
+                    # if not accepted:
+                    #     resample = resample + 1
+                    llm_time = 0
+                    slm_time = time.time() - time_now
+                    try:
+                        response = requests.post(server_url, json=payload, timeout=10)
+                        response.raise_for_status()
+                        # print(response)
+                        data = response.json()
+                        final_token_id = data['result_token_id']
+                        accepted = data['accepted']
+                        llm_time = data['llm_time']
+                        # print(llm_time)
+                        if not accepted:
+                            resample += 1
+                            resampled = True
+                    except Exception as e:
+                        if verbose:
+                            print("Error calling remote llm_verification:", e)
+                        final_token_id = draft_token_id
+                    
+                else:
+                    llm_time = 0
+                    if verbose:
+                        print(f"Low uncertainty ({uncertainty:.2f} <= {uncertainty_threshold}); using SLM token directly.")
+                    final_token_id = draft_token_id
+        token_time = time.time() - time_now
         chosen_token = torch.tensor([final_token_id], device=device)
         generated = torch.cat([generated, chosen_token.unsqueeze(0)], dim=1)
         if verbose:
@@ -87,14 +168,25 @@ def uncertainty_aware_hybrid_inference(prompt: str, max_new_tokens: int = 100, u
         if detokenize(chosen_token).strip() == "Done":
             break
 
+        slm_time_arr.append(slm_time)
+        llm_time_arr.append(llm_time)
+        comm_time_arr.append(token_time - slm_time - llm_time)
+        token_time_arr.append(token_time)
+
+        tokens.append(detokenize(chosen_token))
+        transmitted.append(exceeded)
+        uncertainty_arr.append(uncertainty)
+        resampled_arr.append(resampled)
+        # print(slm_time, llm_time, token_time - slm_time - llm_time, token_time)
     tsr = (1 - resample/num_inference) if num_inference > 0 else 1.0
     tr = num_transmission/num_inference if num_inference > 0 else 1.0
+    u_cal_skip_ratio = u_calc_skipped/num_inference
     time_elapsed = time.time() - start
-    return detokenize(generated)[initial_length:], tsr, tr, num_inference, time_elapsed
+    return detokenize(generated)[initial_length:], tsr, tr, num_inference, time_elapsed, slm_time_arr, llm_time_arr, comm_time_arr, token_time_arr, tokens, transmitted, uncertainty_arr, resampled_arr, u_cal_skip_ratio, u_calc_skipped_arr
 
 if __name__ == "__main__":
-    prompt_text = "May I order a Caramel Ginger Espresso??"
-    generated_text, tsr, tr, num_inference, time_elapsed = uncertainty_aware_hybrid_inference(prompt_text, uncertainty_threshold=2)
+    prompt_text = "May I order a salty drink?"
+    generated_text, tsr, tr, num_inference, time_elapsed = uncertainty_aware_hybrid_inference(prompt_text, uncertainty_threshold=0)
     print("Generated text:", generated_text)
     print("True skip ratio:", tsr)
     print("Transmission rate:", tsr)
