@@ -1,4 +1,6 @@
-title:
-description: ""
-theme: minima
-baseurl: "/Robot-Barista"   # URL 경로
+remote_theme: pmarsceill/just-the-docs
+
+title: "Your Project Title"
+description: "간단한 설명"
+baseurl: "/Robot-Barista"
+include_toc: true
