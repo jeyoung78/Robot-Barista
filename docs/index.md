@@ -59,8 +59,9 @@ In this proof-of-concept study to verify U-HLM’s effectiveness on an actual wi
 </div>
 
 
-<p align="center" style="font-size: 1.1em; color: #555; margin-top: 1.5em;">
-  Experimental Setup
+<p align="center"
+   style="font-size: 1.1em; color: #555; margin-top: 1.5em; font-weight: bold;">
+  <br> Experimental Setup
 </p>
 
 + <div align="justify" style="max-width: 900px; margin: 0 auto;">
