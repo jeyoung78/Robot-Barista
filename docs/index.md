@@ -118,8 +118,8 @@ Results
 </h3>
 
 <p align="center"
-   style="font-size: 1.1em; color: #555; margin-top: 0.6em; font-weight: bold;">
-  <br> Robot Task Full Video(x6 speed)
+   style="font-size: 1.1em; color: #555; margin-top: 0.1em; font-weight: bold;">
+   Robot Task Full Video(x6 speed)
 </p>
 
 <p align="center">
@@ -130,6 +130,11 @@ Results
     allowfullscreen
     style="max-width:100%;"
   ></iframe>
+</p>
+
+<p align="center"
+   style="font-size: 1.1em; color: #555; margin-top: 1em; font-weight: bold;">
+<br><br> 
 </p>
 
 <div style="
