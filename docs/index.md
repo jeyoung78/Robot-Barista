@@ -39,7 +39,7 @@
 Abstract
 </h2>
 
-<img src="Robot_st.png" 
+<img src="Robot_str.png" 
     style="
     display: block;
     margin-top: 0em;
