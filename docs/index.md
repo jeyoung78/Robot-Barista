@@ -134,7 +134,8 @@ Experiment with Robot
 
 <p align="center"
    style="font-size: 1.1em; color: #555; margin-top: 0.1em; font-weight: bold;">
-   Experiment Result
+  <br><br> 
+  Experiment Result
 </p>
 
 <div style="
@@ -149,7 +150,11 @@ Experiment with Robot
   <div style="flex: 0 0 48%; text-align: center; margin-bottom: 1em;">
     <img
       src="figure1.png"
-      style="width: 100%; border-radius: 8px;"
+    style="
+      display: block;
+      height: 400px;    /* 원하는 높이(px) */
+      width: auto;      /* 비율 유지 */
+      margin: 0 auto;   /* 가운데 정렬 */
     />
     <p style="margin-top: 0.5em; font-size: 0.95em; line-height: 1.4;">
       Per-token latency breakdown for four methods 
