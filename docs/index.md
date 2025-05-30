@@ -8,7 +8,33 @@
 <p align="center" style="font-size: 0.9em; color: #555; margin-top: 0.2em;">
   University of Waterloo<sup>1</sup>, Yonsei University<sup>2</sup>, Singapore University of Technology and Design<sup>3</sup>, University of Adelaide<sup>4</sup>
 </p>
-
+<p align="center" style="margin: 1em 0;">
+  <a href="https://arxiv.org/abs/2407.02666"
+     style="
+       display: inline-block;
+       padding: 0.6em 1.2em;
+       background-color: #0366d6;
+       color: #fff;
+       border-radius: 9999px;
+       text-decoration: none;
+       font-weight: bold;
+       margin-right: 0.5em;
+     ">
+    📄 Paper
+  </a>
+  <a href="https://github.com/jeyoung78/Robot-Barista"
+     style="
+       display: inline-block;
+       padding: 0.6em 1.2em;
+       background-color: #24292e;
+       color: #fff;
+       border-radius: 9999px;
+       text-decoration: none;
+       font-weight: bold;
+     ">
+    💻 Code
+  </a>
+</p>
 <h2 style="text-align: center; font-size: 1.5em; margin-top: 2em;">
 Abstract
 </h2>
