@@ -152,9 +152,7 @@ Experiment with Robot
       src="figure1.png"
     style="
       display: block;
-      height: 400px;    /* 원하는 높이(px) */
-      width: auto;      /* 비율 유지 */
-      margin: 0 auto;   /* 가운데 정렬 */
+      style="width: 100%; border-radius: 8px;"
     />
     <p style="margin-top: 0.5em; font-size: 0.95em; line-height: 1.4;">
       Per-token latency breakdown for four methods 
