@@ -9,6 +9,7 @@ title: "Robot-Barista"
 </div>
 
 **Abstract**
+
 The hybrid language model (HLM) is an emerg-
 ing architecture that efficiently distributes com-
 putation between on-device small language mod-
