@@ -1,16 +1,1 @@
-# ────────────────────────────────────────────────────────────────────────────
-# Tell GitHub Pages to use Just the Docs as a **remote theme**:
-remote_theme: pmarsceill/just-the-docs        # :contentReference[oaicite:0]{index=0}
-
-# Site settings:
-title: "Commonsense Reasoning for Legged Robot Adaptation"
-description: "VLM-PC: vision-language models for quadruped autonomy"
-baseurl: "/Robot-Barista"                     # your repo name
-
-# Enable in-page TOC (right sidebar) on every page:
-include_toc: true
-toc_label: "On this page"
-
-# Optional: pick a color scheme ("light" or "dark"):
-color_scheme: light
-# ────────────────────────────────────────────────────────────────────────────
+#
