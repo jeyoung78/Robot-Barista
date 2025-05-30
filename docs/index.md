@@ -119,8 +119,7 @@ Results
 
 <p align="center" style="margin: 1.5em 0;">
   <img
-    src="task_robot.gif"
-    alt="Demo GIF"
+    src="roro.mp4"
     style="
       display: block;
       width: 800px;      /* 원하는 픽셀 값 */
