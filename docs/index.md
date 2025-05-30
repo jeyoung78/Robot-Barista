@@ -6,7 +6,7 @@
 </p>
 
 <p align="center" style="font-size: 0.9em; color: #555; margin-top: 0.2em;">
-  Waterloo Univ<sup>1</sup>, Yonsei Univ<sup>2</sup>, Singapore University of Technology and Design<sup>3</sup>, University of Adelaide<sup>4</sup>
+  University of Waterloo<sup>1</sup>, Yonsei University<sup>2</sup>, Singapore University of Technology and Design<sup>3</sup>, University of Adelaide<sup>4</sup>
 </p>
 
 ## Abstract
