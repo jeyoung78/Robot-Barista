@@ -1,7 +1,7 @@
 
 # 2) 사이트 기본 정보
-title: "Uncertainty-Aware Opportunistic Hybrid Language Model"
-description: "Wireless Robotic Systems 연구 페이지"
+title: ""
+description: "Uncertainty-Aware Opportunistic Hybrid Language Model in Wireless Robotic Systems"
 baseurl: "/Robot-Barista"      # repo 이름
 include_toc: true              # 페이지 우측 목차
 
