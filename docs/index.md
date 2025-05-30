@@ -117,12 +117,16 @@ Robot Pouring ingredient To Cup
 Results
 </h3>
 
-<img src="task_robot.gif" 
+<p align="center" style="margin: 1.5em 0;">
+  <img
+    src="task_robot.gif"
+    alt="Demo GIF"
     style="
-    display: block;
-    margin-top: 0em;
-    margin-bottom: 0em;
-    max-width: 100%;
-    height: auto;
-  "
-/>
+      display: block;
+      width: 800px;      /* 원하는 픽셀 값 */
+      max-width: 100%;   /* 반응형으로 최소한 화면 넘치지 않게 */
+      height: auto;
+      margin: 0 auto;
+    "
+  />
+</p>
