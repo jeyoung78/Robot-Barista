@@ -126,3 +126,36 @@ Results
     style="max-width:100%;"
   ></iframe>
 </p>
+
+<div style="
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  max-width: 800px;
+  margin: 0 auto;
+">
+
+  <!-- 왼쪽 블록 -->
+  <div style="flex: 0 0 48%; text-align: center; margin-bottom: 1em;">
+    <img
+      src="robot1.jpg"
+      style="width: 100%; border-radius: 8px;"
+    />
+    <p style="margin-top: 0.5em; font-size: 0.95em; line-height: 1.4;">
+      Experimental Workspace
+    </p>
+  </div>
+
+  <!-- 오른쪽 블록 -->
+  <div style="flex: 0 0 48%; text-align: center; margin-bottom: 1em;">
+    <img
+      src="robot2.jpg"
+      style="width: 100%; border-radius: 8px;"
+    />
+    <p style="margin-top: 0.5em; font-size: 0.95em; line-height: 1.4;">
+Robot Pouring ingredient To Cup
+    </p>
+  </div>
+
+</div>
+
