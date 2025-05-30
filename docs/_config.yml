@@ -1,4 +1,4 @@
-# title: Robot Barista
-# description: "AI 로봇 바리스타 프로젝트"
+title:
+description: ""
 theme: minima
-# baseurl: "/Robot-Barista"   # URL 경로
+baseurl: "/Robot-Barista"   # URL 경로
