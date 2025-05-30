@@ -1,4 +1,5 @@
-# Uncertainty-Aware Opportunistic Hybrid Language Model in Wireless Robotic Systems
+# Uncertainty-Aware Opportunistic Hybrid Language Model 
+# in Wireless Robotic Systems
 
 Jeyoung Park 1 Yeonsub Lim 2 Seungeun Oh 2 Jihong Park 3 Jinho Choi 4 Seong-Lyun Kim 2
 
