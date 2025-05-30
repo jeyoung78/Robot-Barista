@@ -131,7 +131,7 @@ Results
   <!-- 왼쪽 블록 -->
   <div style="flex: 0 0 48%; text-align: center; margin-bottom: 1em;">
     <img
-      src="/assets/images/crawl-medium.png"
+      src="robot1.jpg"
       alt="Crawl Medium"
       style="width: 100%; border-radius: 8px;"
     />
@@ -143,7 +143,7 @@ aaa
   <!-- 오른쪽 블록 -->
   <div style="flex: 0 0 48%; text-align: center; margin-bottom: 1em;">
     <img
-      src="/assets/images/climb-medium.png"
+      src="robot2.jpg"
       alt="Climb Medium"
       style="width: 100%; border-radius: 8px;"
     />
