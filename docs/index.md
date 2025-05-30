@@ -6,7 +6,6 @@ title: "Robot-Barista"
 
 ## Uncertainty-Aware Opportunistic Hybrid Language Model in Wireless Robotic Systems
 
-</div>
 
 **Abstract**
 
@@ -48,3 +47,5 @@ maintaining a 98.11% F1 score
 - 실험2 요약
 
 [Paper](링크) · [Code](https://github.com/jeyoung78/Robot-Barista)
+
+</div>
