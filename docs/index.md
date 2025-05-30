@@ -13,7 +13,7 @@
      style="
        display: inline-block;
        padding: 0.6em 1.2em;
-       background-color: #0366d6;
+       background-color: #24292e;
        color: #fff;
        border-radius: 9999px;
        text-decoration: none;
