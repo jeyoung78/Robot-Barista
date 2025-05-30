@@ -70,3 +70,12 @@ Hybrid Language Model & Robot Testbed
 <div align="justify" style="max-width: 900px; margin: 0 auto;">
 In this proof-of-concept study to verify U-HLM’s effectiveness on an actual wireless network and as a robotic task planner, we implement a testbed consisting of the following three main components: a laptop (local device), a remote server, a the robot, connected over a wireless network, as shown in Figure. U-HLM deployed on the testbed serves as a task planner, generating sequences of action-object pairs corresponding to given natural language orders to be performed by the robot.
 </div>
+
+<p align="center" style="font-size: 1.1em; color: #555; margin-top: 0.2em;">
+  Experimental Setup
+</p>
+
+<div align="justify" style="max-width: 900px; margin: 0 auto;">
+In this proof-of-concept study to verify U-HLM’s effectiveness on an actual wireless network and as a robotic task planner, we implement a testbed consisting of the following three main components: a laptop (local device), a remote server, a the robot, connected over a wireless network, as shown in Figure. U-HLM deployed on the testbed serves as a task planner, generating sequences of action-object pairs corresponding to given natural language orders to be performed by the robot.
+</div>
+
