@@ -127,6 +127,10 @@ Results
   ></iframe>
 </p>
 
+<div align="justify" style="max-width: 900px; margin: 0 auto;">
+Robot Task Full Video
+</div>
+
 <div style="
   display: flex;
   justify-content: space-between;
@@ -138,7 +142,7 @@ Results
   <!-- 왼쪽 블록 -->
   <div style="flex: 0 0 48%; text-align: center; margin-bottom: 1em;">
     <img
-      src="robot1.jpg"
+      src="figure1.png"
       style="width: 100%; border-radius: 8px;"
     />
     <p style="margin-top: 0.5em; font-size: 0.95em; line-height: 1.4;">
