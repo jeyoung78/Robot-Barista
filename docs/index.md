@@ -117,15 +117,12 @@ Robot Pouring ingredient To Cup
 Results
 </h3>
 
-<p align="center" style="margin: 1.5em 0;">
-  <img
-    src="roro.mp4"
-    style="
-      display: block;
-      width: 800px;      /* 원하는 픽셀 값 */
-      max-width: 100%;   /* 반응형으로 최소한 화면 넘치지 않게 */
-      height: auto;
-      margin: 0 auto;
-    "
-  />
+<p align="center">
+  <iframe
+    width="800" height="450"
+    src="https://www.youtube.com/embed/Yp4QAQ76CIc"
+    frameborder="0"
+    allowfullscreen
+    style="max-width:100%;"
+  ></iframe>
 </p>
