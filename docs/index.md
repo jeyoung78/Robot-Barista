@@ -41,7 +41,7 @@ The hybrid language model (HLM) is an emerging architecture that efficiently dis
 </div>
 
 <h2 style="text-align: center; font-size: 1.5em; margin-top: 2em;">
-Hybrid Language Model & Robot Testbed
+Testbed Implementation for U-HLM
 </h2>
 
 <img src="Robot_env.png" 
