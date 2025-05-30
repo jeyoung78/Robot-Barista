@@ -94,7 +94,7 @@ Robot : Doosan A0912s with robot arm(GEP2016IO-00-A gripper), connected same Wi-
       style="width: 100%; border-radius: 8px;"
     />
     <p style="margin-top: 0.5em; font-size: 0.95em; line-height: 1.4;">
-Robot Pouring ingredient to cup
+      Experimental Workspace
     </p>
   </div>
 
@@ -105,7 +105,7 @@ Robot Pouring ingredient to cup
       style="width: 100%; border-radius: 8px;"
     />
     <p style="margin-top: 0.5em; font-size: 0.95em; line-height: 1.4;">
-experimental workspace
+Robot Pouring ingredient To Cup
     </p>
   </div>
 
