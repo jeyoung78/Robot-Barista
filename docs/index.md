@@ -9,19 +9,6 @@
   University of Waterloo<sup>1</sup>, Yonsei University<sup>2</sup>, Singapore University of Technology and Design<sup>3</sup>, University of Adelaide<sup>4</sup>
 </p>
 <p align="center" style="margin: 1em 0;">
-  <a href="https://arxiv.org/abs/2407.02666"
-     style="
-       display: inline-block;
-       padding: 0.6em 1.2em;
-       background-color: #24292e;
-       color: #fff;
-       border-radius: 9999px;
-       text-decoration: none;
-       font-weight: bold;
-       margin-right: 0.5em;
-     ">
-    📄 Paper
-  </a>
   <a href="https://github.com/jeyoung78/Robot-Barista"
      style="
        display: inline-block;
@@ -71,7 +58,8 @@ Hybrid Language Model & Robot Testbed
 In this proof-of-concept study to verify U-HLM’s effectiveness on an actual wireless network and as a robotic task planner, we implement a testbed consisting of the following three main components: a laptop (local device), a remote server, a the robot, connected over a wireless network, as shown in Figure. U-HLM deployed on the testbed serves as a task planner, generating sequences of action-object pairs corresponding to given natural language orders to be performed by the robot.
 </div>
 
-<p align="center" style="font-size: 1.1em; color: #555; margin-top: 0.2em;">
+
+<p align="center" style="font-size: 1.1em; color: #555; margin-top: 1.5em;">
   Experimental Setup
 </p>
 
@@ -81,8 +69,6 @@ Local SLM : Tiny-Llama 1.1B on a laptop(6-core Intel Core i7-10750H CPU, 8 GB of
 LLM : Llama 27B on a Linux server(8-core Intel Xeon Silver 4215R CPU, 64 GB of DDR4 RAM, and three NVIDIA GeForce RTX 3090 GPUs, connected to Ethernet)
 + <div align="justify" style="max-width: 900px; margin: 0 auto;">
 Robot : Doosan A0912s with robot arm(GEP2016IO-00-A gripper), connected same Wi-Fi with a laptop.
-</div>
-
 
 <div style="
   display: flex;
