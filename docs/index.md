@@ -114,7 +114,7 @@ Robot Pouring ingredient To Cup
 
 
 <h3 style="text-align: center; font-size: 1.5em; margin-top: 2em;">
-Results
+Experiment with Robot
 </h3>
 
 <p align="center"
@@ -133,8 +133,8 @@ Results
 </p>
 
 <p align="center"
-   style="font-size: 1.1em; color: #555; margin-top: 1em; font-weight: bold;">
-<br><br> 
+   style="font-size: 1.1em; color: #555; margin-top: 0.1em; font-weight: bold;">
+   Experiment Result
 </p>
 
 <div style="
