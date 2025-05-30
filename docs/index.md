@@ -117,6 +117,11 @@ Robot Pouring ingredient To Cup
 Results
 </h3>
 
+<p align="center"
+   style="font-size: 1.1em; color: #555; margin-top: 0.6em; font-weight: bold;">
+  <br> Robot Task Full Video(x6 speed)
+</p>
+
 <p align="center">
   <iframe
     width="800" height="450"
@@ -126,10 +131,6 @@ Results
     style="max-width:100%;"
   ></iframe>
 </p>
-
-<div align="justify" style="max-width: 900px; margin: 0 auto;">
-Robot Task Full Video
-</div>
 
 <div style="
   display: flex;
