@@ -53,6 +53,27 @@ Abstract
 The hybrid language model (HLM) is an emerging architecture that efficiently distributes computation between on-device small language models (SLMs) and remotel arge language models(LLMs). In HLM, an SLM drafts tokens and its paired LLM validates and refines them, thereby achieving higher token throughput than LLMs and higher inference accuracy than SLMs. Recently, the uncertainty-aware opportunistic HLM has been proposed to improve communication and computation efficiency by skipping LLM verification when the SLM’s uncertainty is low. However, this approach has only been evaluated on simple text prediction tasks under a statistical channel model for theoretical analysis. To validate the practical feasibility of U-HLM, in this paper, we implement U-HLM on a real-world robot testbed, where an industrial-grade robotic manipulator (high-precision robot arm with gripper) runs an SLM and communicates with a remote LLM over Wi-Fi. In this experimental setup, we observe that computing uncertainty itself incurs non-negligible latency. To mitigate this, we propose a conditional uncertainty calculation omission method, which skips the uncertainty calculation when a lightweight logistic regression model predicts the uncertainty to be sufficiently low. Experimental results show that, compared to HLM, the proposed U-HLM improves token throughput by 24.9% and 41.8% under strong and weak Wi-Fi coverage conditions, respectively, while maintaining a 98.11% F1 score.
 </div>
 
+<div style="max-width: 800px; margin: 0 auto;">
+
+<!-- Abstract -->
+<h2 style="text-align: center; font-size: 1.5em; margin-top: 2em;">
+  Abstract
+</h2>
+<p style="text-align: center; font-size: 1.1em; line-height: 1.6;">
+  We present the first method capable of photorealistically…
+</p>
+
+<!-- HLM -->
+<h2 style="text-align: center; font-size: 1.5em; margin-top: 2em;">
+  Hybrid Language Model (HLM)
+</h2>
+<p style="text-align: center; font-size: 1.1em; line-height: 1.6;">
+  The hybrid language model (HLM) is an emerging architecture…
+</p>
+
+</div>
+
+
 ## Hardware Setup
 
 1. Print the mount listed as `frontmount v9.stl` using a 3D printer of your choice (PLA should be fine). Mount your camera into the protected space on the front of the mount, and then mount the assembly through the neck holes of the robot, such that the camera mount hangs over the robot's head.
