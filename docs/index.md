@@ -2,9 +2,11 @@
 layout: default
 title: "Robot-Barista"
 ---
+<div align="center">
 # Uncertainty-Aware Opportunistic Hybrid Language Model in Wireless Robotic Systems
+</div>
 
-**Abstract**  
+**Abstract**
 이곳에 프로젝트 개요를 간략히…
 
 ## Experiments
