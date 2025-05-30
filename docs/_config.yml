@@ -1,1 +1,13 @@
-title : "Uncertainty-Aware Opportunistic Hybrid Language Model in Wireless Robotic Systems"
+# ────────────────────────────────────────────────────────────────────────────
+# 1) Just the Docs 원격 테마 사용
+remote_theme: pmarsceill/just-the-docs
+
+# 2) 사이트 기본 정보
+title: "Uncertainty-Aware Opportunistic Hybrid Language Model"
+description: "Wireless Robotic Systems 연구 페이지"
+baseurl: "/Robot-Barista"      # repo 이름
+include_toc: true              # 페이지 우측 목차
+
+# 3) (옵션) 색상 스킴 지정
+color_scheme: light            # light 또는 dark
+# ────────────────────────────────────────────────────────────────────────────
