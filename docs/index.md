@@ -152,18 +152,19 @@ Results
       style="width: 100%; border-radius: 8px;"
     />
     <p style="margin-top: 0.5em; font-size: 0.95em; line-height: 1.4;">
-      Experimental Workspace
+      Per-token latency breakdown for four methods 
+      <br> under the strong coverage and the weak coverage.
     </p>
   </div>
 
   <!-- 오른쪽 블록 -->
   <div style="flex: 0 0 48%; text-align: center; margin-bottom: 1em;">
     <img
-      src="robot2.jpg"
+      src="table1.png"
       style="width: 100%; border-radius: 8px;"
     />
     <p style="margin-top: 0.5em; font-size: 0.95em; line-height: 1.4;">
-Robot Pouring ingredient To Cup
+Model Accuracy (Precision, Recall, F1)
     </p>
   </div>
 
