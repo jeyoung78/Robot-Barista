@@ -1,0 +1,14 @@
+---
+---
+
+/* 1. 사이트 헤더 가운데 정렬 */
+.site-header {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+/* 2. 페이지 제목 가운데 정렬 */
+.page-header {
+  text-align: center !important;
+}
