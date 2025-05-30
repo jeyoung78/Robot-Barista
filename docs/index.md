@@ -16,8 +16,8 @@ Abstract
 <img src="Robot_env.png" 
     style="
     display: block;
-    margin-top: 0.1em;
-    margin-bottom: 0.1em;
+    margin-top: 0em;
+    margin-bottom: 0em;
     max-width: 100%;
     height: auto;
   "
