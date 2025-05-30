@@ -90,24 +90,22 @@ Robot : Doosan A0912s with robot arm(GEP2016IO-00-A gripper), connected same Wi-
   <!-- 왼쪽 블록 -->
   <div style="flex: 0 0 48%; text-align: center; margin-bottom: 1em;">
     <img
-      src="/assets/images/crawl-medium.png"
-      alt="Crawl Medium"
+      src="robot1.jpg"
       style="width: 100%; border-radius: 8px;"
     />
     <p style="margin-top: 0.5em; font-size: 0.95em; line-height: 1.4;">
-aaa
+Robot Pouring ingredient to cup
     </p>
   </div>
 
   <!-- 오른쪽 블록 -->
   <div style="flex: 0 0 48%; text-align: center; margin-bottom: 1em;">
     <img
-      src="/assets/images/climb-medium.png"
-      alt="Climb Medium"
+      src="robot2.jpg"
       style="width: 100%; border-radius: 8px;"
     />
     <p style="margin-top: 0.5em; font-size: 0.95em; line-height: 1.4;">
-nnn
+experimental workspace
     </p>
   </div>
 
@@ -131,7 +129,7 @@ Results
   <!-- 왼쪽 블록 -->
   <div style="flex: 0 0 48%; text-align: center; margin-bottom: 1em;">
     <img
-      src="robot1.jpg"
+      src="rob.jpg"
       alt="Crawl Medium"
       style="width: 100%; border-radius: 8px;"
     />
@@ -143,7 +141,7 @@ aaa
   <!-- 오른쪽 블록 -->
   <div style="flex: 0 0 48%; text-align: center; margin-bottom: 1em;">
     <img
-      src="robot2.jpg"
+      src="rob.jpg"
       alt="Climb Medium"
       style="width: 100%; border-radius: 8px;"
     />
