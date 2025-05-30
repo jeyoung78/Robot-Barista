@@ -1,4 +1,5 @@
-<h1 style="text-align: center;">Uncertainty-Aware Opportunistic Hybrid Language Model in Wireless Robotic Systems</h1>
+<h1 style="text-align: center;">Uncertainty-Aware Opportunistic Hybrid Language Model 
+  in Wireless Robotic Systems</h1>
 
 <p align="center" style="font-size: 0.9em; color: #555; margin-top: 0.2em;">
   Jeyoung Park<sup>1</sup>, Yeonsub Lim<sup>2</sup>, Seungeun Oh<sup>2</sup>,
