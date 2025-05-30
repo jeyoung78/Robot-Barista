@@ -117,6 +117,15 @@ Robot Pouring ingredient To Cup
 Results
 </h3>
 
+<img src="task_robot.gif" 
+    style="
+    display: block;
+    margin-top: 0em;
+    margin-bottom: 0em;
+    max-width: 100%;
+    height: auto;
+  "
+/>
 
 <div style="
   display: flex;
