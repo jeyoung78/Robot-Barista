@@ -1,3 +1,10 @@
+---
+layout: default
+title: ""
+nav_order: 1
+nav_exclude: true
+---
+
 <h1 style="text-align: center;">Uncertainty-Aware Opportunistic Hybrid Language Model <br> in Wireless Robotic Systems</h1>
 
 <p align="center" style="font-size: 0.9em; color: #555; margin-top: 0.2em;">
