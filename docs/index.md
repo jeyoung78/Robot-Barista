@@ -13,7 +13,7 @@
 Abstract
 </h2>
 
-<img src="/docs/Robot_env.png" 
+<img src="Robot_env.png" 
      alt="그림 설명" 
      style="max-width: 100%; height: auto; margin: 1em 0;">
      
