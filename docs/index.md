@@ -75,7 +75,42 @@ In this proof-of-concept study to verify U-HLM’s effectiveness on an actual wi
   Experimental Setup
 </p>
 
-<div align="justify" style="max-width: 900px; margin: 0 auto;">
-In this proof-of-concept study to verify U-HLM’s effectiveness on an actual wireless network and as a robotic task planner, we implement a testbed consisting of the following three main components: a laptop (local device), a remote server, a the robot, connected over a wireless network, as shown in Figure. U-HLM deployed on the testbed serves as a task planner, generating sequences of action-object pairs corresponding to given natural language orders to be performed by the robot.
+<div style="
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  max-width: 800px;
+  margin: 0 auto;
+">
+
+  <!-- 왼쪽 블록 -->
+  <div style="flex: 0 0 48%; text-align: center; margin-bottom: 1em;">
+    <img
+      src="/assets/images/crawl-medium.png"
+      alt="Crawl Medium"
+      style="width: 100%; border-radius: 8px;"
+    />
+    <p style="margin-top: 0.5em; font-size: 0.95em; line-height: 1.4;">
+      In the Blocked Couch setting, sometimes the robot has difficulty navigating
+      out of the corner due to lack of precise actions, as in our method we only
+      provide actions at three common‐language magnitudes (small, medium, large) 
+      rather than specific degree measurements or intended distances.
+    </p>
+  </div>
+
+  <!-- 오른쪽 블록 -->
+  <div style="flex: 0 0 48%; text-align: center; margin-bottom: 1em;">
+    <img
+      src="/assets/images/climb-medium.png"
+      alt="Climb Medium"
+      style="width: 100%; border-radius: 8px;"
+    />
+    <p style="margin-top: 0.5em; font-size: 0.95em; line-height: 1.4;">
+      In the Unstable Step setting, the inherent instability of the step may
+      result in a robot fall. Without any fall recovery skills, this leads to
+      immediate failure on the overall task.
+    </p>
+  </div>
+
 </div>
 
