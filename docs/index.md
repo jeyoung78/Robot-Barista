@@ -46,9 +46,9 @@ Testbed Implementation for U-HLM
 
 <div align="justify" style="max-width: 900px; margin: 0 auto;">
 The Uncertainty-Aware Opportunistic Hybrid Language Model (U-HLM) has been proposed as a practical framework that not only reduces the computational overhead of LLMs by leveraging both an on-device small language model (SLM) and a remote LLM, but also improves token throughput—by enhancing overall communication and computation efficiency.
-<br>
+<br><br>
 U-HLM leverages uncertainty—the model’s self-assessed confidence in its outputs—to decide whether uplink communication is necessary, enabling the system to skip transmitting the full vocabulary distribution and avoid remote LLM computation for verification and resampling when uncertainty is low.
-<br>
+<br><br>
 These characteristics make U-HLM a feasible way to improve latency and reduce computational load in LLM-integrated robotic systems.
 </div>
 
