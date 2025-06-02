@@ -262,8 +262,7 @@ Uplink Traffic & Latency Savings
 
   + <p align="left"
    style="font-size: 1.2em; color: #555; margin-top: 0.1em;font-weight: bold;">
-Accuracy Impact
-  </p>
+Accuracy Impact</p>
 
 <p align="justify"
    style="font-size: 1.0em; color: #555; margin-top: 0.1em;">
