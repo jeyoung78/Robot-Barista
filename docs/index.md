@@ -192,3 +192,59 @@ Latency
     &nbsp;&nbsp;&nbsp;&nbsp;- HLM’s latency increases by 23.7%, U-HLM’s by 8.9%, while Rand-HLM’s remains essentially unchanged. (Strong to Weak)
   </p>
 
+
+<div style="
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  max-width: 800px;
+  margin: 0 auto;
+">
+
+  <!-- 왼쪽 블록 -->
+  <div style="flex: 0 0 48%; text-align: center; margin-bottom: 1em;">
+    <img
+      src="figure2.png"
+        style="
+    display: block;        /* 블록 레벨로 만들어서 margin:auto가 먹히도록 */
+    height: 250px;         /* 원하는 고정 높이(px) */
+    width: auto;           /* 비율을 유지하면서 너비 자동 계산 */
+    margin: 0 auto;        /* 좌우 중앙 정렬 */
+  "
+    />
+    <p style="margin-top: 1.5em; font-size: 1em; line-height: 1.4;">
+      Per-token latency breakdown for four methods 
+      <br> under the strong coverage and the weak coverage
+    </p>
+  </div>
+
+  <!-- 오른쪽 블록 -->
+  <div style="flex: 0 0 48%; text-align: center; margin-bottom: 1em;">
+    <img
+      src="table2.png"
+        style="
+    display: block;        /* 블록 레벨로 만들어서 margin:auto가 먹히도록 */
+    height: 250px;         /* 원하는 고정 높이(px) */
+    width: auto;           /* 비율을 유지하면서 너비 자동 계산 */
+    margin: 0 auto;        /* 좌우 중앙 정렬 */
+  "
+    />
+    <p style="margin-top: 1.5em; font-size: 1em; line-height: 1.4;">
+Model Accuracy (Precision, Recall, F1)
+    </p>
+  </div>
+</div>
+
++ <p align="left"
+   style="font-size: 1.2em; color: #555; margin-top: 0.1em;font-weight: bold;">
+Latency
+  </p>
+
+<p align="justify"
+   style="font-size: 1.1em; color: #555; margin-top: 0.1em;">
+    &nbsp;&nbsp;&nbsp;&nbsp;- U-HLM’s per-token latency is about 20 % faster than HLM’s and nearly identical to Rand-HLM’s. (Strong coverage)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;- U-HLM maintains per token — 29 % faster than HLM’s and still comparable to Rand-HLM’s. (Weak coverage)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;- HLM’s latency increases by 23.7%, U-HLM’s by 8.9%, while Rand-HLM’s remains essentially unchanged. (Strong to Weak)
+  </p>
+
+
