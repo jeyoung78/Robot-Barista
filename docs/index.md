@@ -118,7 +118,7 @@ Experiment with Robot
 </h3>
 
 <p align="center"
-   style="font-size: 1.3em; color: #555; margin-top: 0.1em;">
+   style="font-size: 1.3em; color: #555; margin-top: 0.1em;font-weight: bold;">
 Robot Task Full Video (x6 speed)
 </p>
 
@@ -157,7 +157,7 @@ Robot Task Full Video (x6 speed)
     margin: 0 auto;        /* 좌우 중앙 정렬 */
   "
     />
-    <p style="margin-top: 1.5em; font-size: 0.95em; line-height: 1.4;">
+    <p style="margin-top: 1.5em; font-size: 1.1em; line-height: 1.4;">
       Per-token latency breakdown for four methods 
       <br> under the strong coverage and the weak coverage
     </p>
@@ -174,14 +174,14 @@ Robot Task Full Video (x6 speed)
     margin: 0 auto;        /* 좌우 중앙 정렬 */
   "
     />
-    <p style="margin-top: 1.5em; font-size: 0.95em; line-height: 1.4;">
+    <p style="margin-top: 1.5em; font-size: 1.1em; line-height: 1.4;">
 Model Accuracy (Precision, Recall, F1)
     </p>
   </div>
 </div>
 
 + <p align="left"
-   style="font-size: 1.1em; color: #555; margin-top: 0.1em;">
+   style="font-size: 1.2em; color: #555; margin-top: 0.1em;font-weight: bold;">
 Latency
   </p>
 
