@@ -77,7 +77,7 @@ Local SLM : Tiny-Llama 1.1B on a laptop (6-core Intel Core i7-10750H CPU, 8 GB o
 + <div align="justify" style="font-size: 1.1em;max-width: 900px; margin: 0 auto;">
 LLM : Llama 27B on a Linux server (8-core Intel Xeon Silver 4215R CPU, 64 GB of DDR4 RAM, and three NVIDIA GeForce RTX 3090 GPUs, connected to Ethernet)
 + <div align="justify" style="font-size: 1.1em;max-width: 900px; margin: 0 auto;">
-Robot : Doosan A0912s with robot arm (GEP2016IO-00-A gripper), connected same Wi-Fi with a laptop.
+Robot : Doosan A0912s with robot arm (GEP2016IO-00-A gripper), connected same Wi-Fi with a laptop.<br>
 
 <div style="
   display: flex;
@@ -113,7 +113,7 @@ Robot Pouring ingredient To Cup
 
 
 
-<h3 style="text-align: center; font-size: 1.5em; margin-top: 2em;">
+<h3 style="text-align: center; font-size: 1.5em; margin-top: 1em;">
 Experiment with Robot
 </h3>
 
