@@ -250,14 +250,14 @@ True Skip Rate and Transmission Rate
 
 + <p align="left"
    style="font-size: 1.2em; color: #555; margin-top: 0.1em;font-weight: bold;">
-Latency
+Uplink Traffic & Latency Savings
   </p>
 
 <p align="justify"
-   style="font-size: 1.1em; color: #555; margin-top: 0.1em;">
-    &nbsp;&nbsp;&nbsp;&nbsp;- U-HLM’s per-token latency is about 20 % faster than HLM’s and nearly identical to Rand-HLM’s. (Strong coverage)<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;- U-HLM maintains per token — 29 % faster than HLM’s and still comparable to Rand-HLM’s. (Weak coverage)<br>
-    &nbsp;&nbsp;&nbsp;&nbsp;- HLM’s latency increases by 23.7%, U-HLM’s by 8.9%, while Rand-HLM’s remains essentially unchanged. (Strong to Weak)
+   style="font-size: 1.0em; color: #555; margin-top: 0.1em;">
+    &nbsp;&nbsp;&nbsp;&nbsp;- U-HLM cuts the transmission rate by 66% and reduces inference latency. (Easy tasks)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;- U-HLM halves the transmission rate and speeds up planning by ~10%, lowering latency. (Medium tasks)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;- U-HLM reduces the transmission rate and cuts latency. (Hard tasks)
   </p>
 
 
