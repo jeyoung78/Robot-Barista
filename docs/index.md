@@ -187,8 +187,8 @@ Latency
 
 <p align="justify"
    style="font-size: 1.1em; color: #555; margin-top: 0.1em;">
-    &nbsp;- Under strong coverage, U-HLM’s per-token latency is about 20 % faster than HLM’s and nearly identical to Rand-HLM’s.<br>
-    &nbsp;- Under weak coverage, U-HLM maintains per token — 29 % faster than HLM’s and still comparable to Rand-HLM’s.<br>
-    &nbsp;- Switching from strong to weak coverage, HLM’s latency increases by 23.7%, U-HLM’s by 8.9%, while Rand-HLM’s remains essentially unchanged.
+    &nbsp;&nbsp;&nbsp;&nbsp;- Under strong coverage, U-HLM’s per-token latency is about 20 % faster than HLM’s and nearly identical to Rand-HLM’s.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;- Under weak coverage, U-HLM maintains per token — 29 % faster than HLM’s and still comparable to Rand-HLM’s.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;- Switching from strong to weak coverage, HLM’s latency increases by 23.7%, U-HLM’s by 8.9%, while Rand-HLM’s remains essentially unchanged.
   </p>
 
