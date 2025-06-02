@@ -270,4 +270,15 @@ Accuracy Impact</p>
     &nbsp;&nbsp;&nbsp;&nbsp;- In contrast, Rand-HLM’s success rate stays below 0.15 across all difficulties.<br>
   </p>
 
+<p align="center"
+   style="font-size: 1.3em; color: #555; margin-top: 0.1em; font-weight: bold;">
+  <br><br> 
+  Conclusions
+</p>
+
+<p align="justify"
+   style="font-size: 1.0em; color: #555; margin-top: 0.1em;">
+    &nbsp;&nbsp;&nbsp;&nbsp;- On medium tasks, planning success drops slightly, while performance on easy and hard tasks remains unchanged.<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;- In contrast, Rand-HLM’s success rate stays below 0.15 across all difficulties.<br>
+  </p>
 
