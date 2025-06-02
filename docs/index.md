@@ -119,7 +119,7 @@ Experiment with Robot
 
 <p align="center"
    style="font-size: 1.1em; color: #555; margin-top: 0.1em; font-weight: bold;">
-   Robot Task Full Video(x6 speed)
+Robot Task Full Video(x6 speed)
 </p>
 
 <p align="center">
@@ -178,6 +178,10 @@ Experiment with Robot
 Model Accuracy (Precision, Recall, F1)
     </p>
   </div>
-
 </div>
+
++ <p align="left"
+   style="font-size: 1.1em; color: #555; margin-top: 0.1em;">
+Latency
+</p>
 
