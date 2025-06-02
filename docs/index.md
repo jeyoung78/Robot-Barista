@@ -213,8 +213,7 @@ Latency
   "
     />
     <p style="margin-top: 1.5em; font-size: 1em; line-height: 1.4;">
-      Per-token latency breakdown for four methods 
-      <br> under the strong coverage and the weak coverage
+F1 vs. Token Throughput
     </p>
   </div>
 
@@ -230,7 +229,9 @@ Latency
   "
     />
     <p style="margin-top: 1.5em; font-size: 1em; line-height: 1.4;">
-Model Accuracy (Precision, Recall, F1)
+Comparison of U-HLM, SLM, Rand-HLM and HLM <br>
+on Planning Success Rate (PSR), Inference latency (in seconds),<br>
+True Skip Rate (TSR) and Transmission Rate (TR)
     </p>
   </div>
 </div>
