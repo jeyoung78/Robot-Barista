@@ -192,6 +192,18 @@ Latency
     &nbsp;&nbsp;&nbsp;&nbsp;- HLM’s latency increases by 23.7%, U-HLM’s by 8.9%, while Rand-HLM’s remains essentially unchanged. (Strong to Weak)
   </p>
 
++ <p align="left"
+   style="font-size: 1.2em; color: #555; margin-top: 0.1em;font-weight: bold;">
+Accuracy
+  </p>
+
+<p align="justify"
+   style="font-size: 1.1em; color: #555; margin-top: 0.1em;">
+    &nbsp;&nbsp;&nbsp;&nbsp;- U-HLM achieves a high F1 that is just under HLM’s performance and notably higher than Rand-HLM’s. (In-distribution tasks)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;- U-HLM’s F1 is very close to HLM’s and still considerably above Rand-HLM’s. (Out-of-distribution tasks)<br>
+  </p>
+
+
 
 <div style="
   display: flex;
