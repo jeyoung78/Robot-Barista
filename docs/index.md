@@ -207,7 +207,7 @@ Latency
       src="figure2.png"
         style="
     display: block;        /* 블록 레벨로 만들어서 margin:auto가 먹히도록 */
-    height: 250px;         /* 원하는 고정 높이(px) */
+    height: 200px;         /* 원하는 고정 높이(px) */
     width: auto;           /* 비율을 유지하면서 너비 자동 계산 */
     margin: 0 auto;        /* 좌우 중앙 정렬 */
   "
@@ -223,15 +223,15 @@ F1 vs. Token Throughput
       src="table2.png"
         style="
     display: block;        /* 블록 레벨로 만들어서 margin:auto가 먹히도록 */
-    height: 250px;         /* 원하는 고정 높이(px) */
+    height: 200px;         /* 원하는 고정 높이(px) */
     width: auto;           /* 비율을 유지하면서 너비 자동 계산 */
     margin: 0 auto;        /* 좌우 중앙 정렬 */
   "
     />
     <p style="margin-top: 1.5em; font-size: 1em; line-height: 1.4;">
 Comparison of U-HLM, SLM, Rand-HLM and HLM <br>
-on Planning Success Rate (PSR), Inference latency (in seconds),<br>
-True Skip Rate (TSR) and Transmission Rate (TR)
+on Planning Success Rate, Inference latency,<br>
+True Skip Rate and Transmission Rate
     </p>
   </div>
 </div>
