@@ -72,11 +72,11 @@ In this proof-of-concept study to verify U-HLM’s effectiveness on an actual wi
   <br> Experimental Setup
 </p>
 
-+ <div align="justify" style="font-size: 1.3em;max-width: 900px; margin: 0 auto;">
++ <div align="justify" style="font-size: 1.1em;max-width: 900px; margin: 0 auto;">
 Local SLM : Tiny-Llama 1.1B on a laptop (6-core Intel Core i7-10750H CPU, 8 GB of DDR4 RAM, and an NVIDIA GeForce GTX 1650 Ti GPU connected to IEEE 802.11ac Wi-Fi on a 5 GHz band)
-+ <div align="justify" style="font-size: 1.3em;max-width: 900px; margin: 0 auto;">
++ <div align="justify" style="font-size: 1.1em;max-width: 900px; margin: 0 auto;">
 LLM : Llama 27B on a Linux server (8-core Intel Xeon Silver 4215R CPU, 64 GB of DDR4 RAM, and three NVIDIA GeForce RTX 3090 GPUs, connected to Ethernet)
-+ <div align="justify" style="font-size: 1.3em;max-width: 900px; margin: 0 auto;">
++ <div align="justify" style="font-size: 1.1em;max-width: 900px; margin: 0 auto;">
 Robot : Doosan A0912s with robot arm (GEP2016IO-00-A gripper), connected same Wi-Fi with a laptop.
 
 <div style="
@@ -93,7 +93,7 @@ Robot : Doosan A0912s with robot arm (GEP2016IO-00-A gripper), connected same Wi
       src="robot1.jpg"
       style="width: 100%; border-radius: 8px;"
     />
-    <p style="margin-top: 0.5em; font-size: 1.1em; line-height: 1.4;">
+    <p style="margin-top: 0.5em; font-size: 1em; line-height: 1.4;">
       Experimental Workspace
     </p>
   </div>
@@ -104,7 +104,7 @@ Robot : Doosan A0912s with robot arm (GEP2016IO-00-A gripper), connected same Wi
       src="robot2.jpg"
       style="width: 100%; border-radius: 8px;"
     />
-    <p style="margin-top: 0.5em; font-size: 1.1em; line-height: 1.4;">
+    <p style="margin-top: 0.5em; font-size: 1em; line-height: 1.4;">
 Robot Pouring ingredient To Cup
     </p>
   </div>
@@ -157,7 +157,7 @@ Robot Task Full Video (x6 speed)
     margin: 0 auto;        /* 좌우 중앙 정렬 */
   "
     />
-    <p style="margin-top: 1.5em; font-size: 1.1em; line-height: 1.4;">
+    <p style="margin-top: 1.5em; font-size: 1em; line-height: 1.4;">
       Per-token latency breakdown for four methods 
       <br> under the strong coverage and the weak coverage
     </p>
@@ -174,7 +174,7 @@ Robot Task Full Video (x6 speed)
     margin: 0 auto;        /* 좌우 중앙 정렬 */
   "
     />
-    <p style="margin-top: 1.5em; font-size: 1.1em; line-height: 1.4;">
+    <p style="margin-top: 1.5em; font-size: 1em; line-height: 1.4;">
 Model Accuracy (Precision, Recall, F1)
     </p>
   </div>
