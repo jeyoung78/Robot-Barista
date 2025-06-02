@@ -152,12 +152,12 @@ Experiment with Robot
       src="figure1.png"
         style="
     display: block;        /* 블록 레벨로 만들어서 margin:auto가 먹히도록 */
-    height: 300px;         /* 원하는 고정 높이(px) */
+    height: 250px;         /* 원하는 고정 높이(px) */
     width: auto;           /* 비율을 유지하면서 너비 자동 계산 */
     margin: 0 auto;        /* 좌우 중앙 정렬 */
   "
     />
-    <p style="margin-top: 0.5em; font-size: 0.95em; line-height: 1.4;">
+    <p style="margin-top: 1.5em; font-size: 0.95em; line-height: 1.4;">
       Per-token latency breakdown for four methods 
       <br> under the strong coverage and the weak coverage.
     </p>
@@ -169,12 +169,12 @@ Experiment with Robot
       src="table1.png"
         style="
     display: block;        /* 블록 레벨로 만들어서 margin:auto가 먹히도록 */
-    height: 300px;         /* 원하는 고정 높이(px) */
+    height: 250px;         /* 원하는 고정 높이(px) */
     width: auto;           /* 비율을 유지하면서 너비 자동 계산 */
     margin: 0 auto;        /* 좌우 중앙 정렬 */
   "
     />
-    <p style="margin-top: 0.5em; font-size: 0.95em; line-height: 1.4;">
+    <p style="margin-top: 1.5em; font-size: 0.95em; line-height: 1.4;">
 Model Accuracy (Precision, Recall, F1)
     </p>
   </div>
