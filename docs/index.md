@@ -159,7 +159,7 @@ Experiment with Robot
     />
     <p style="margin-top: 1.5em; font-size: 0.95em; line-height: 1.4;">
       Per-token latency breakdown for four methods 
-      <br> under the strong coverage and the weak coverage.
+      <br> under the strong coverage and the weak coverage
     </p>
   </div>
 
