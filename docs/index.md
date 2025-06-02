@@ -150,7 +150,12 @@ Experiment with Robot
   <div style="flex: 0 0 48%; text-align: center; margin-bottom: 1em;">
     <img
       src="figure1.png"
-      style="width: 100%; border-radius: 8px;"
+        style="
+    display: block;        /* 블록 레벨로 만들어서 margin:auto가 먹히도록 */
+    height: 300px;         /* 원하는 고정 높이(px) */
+    width: auto;           /* 비율을 유지하면서 너비 자동 계산 */
+    margin: 0 auto;        /* 좌우 중앙 정렬 */
+  "
     />
     <p style="margin-top: 0.5em; font-size: 0.95em; line-height: 1.4;">
       Per-token latency breakdown for four methods 
