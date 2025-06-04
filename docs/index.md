@@ -1,3 +1,19 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+  rel="stylesheet"
+/>
+
+<!-- ② 간단한 CSS를 적용할 수 있는 <style> 태그 -->
+<style>
+  /* 본문 전체에 Roboto를 우선 적용 */
+  body, .docs-content, .page-header, .site-header .site-title a, .site-header .site-description {
+    font-family: 'Roboto', sans-serif !important;
+  }
+</style>
+
+
 <h1 style="text-align: center;">Uncertainty-Aware Opportunistic Hybrid Language Model <br> in Wireless Robotic Systems</h1>
 
 <p align="center" style="font-size: 0.9em; color: #555; margin-top: 0.2em;">
