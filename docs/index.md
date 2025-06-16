@@ -1,3 +1,18 @@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+  href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+  rel="stylesheet"
+/>
+
+<!-- ② 간단한 CSS를 적용할 수 있는 <style> 태그 -->
+<style>
+  /* 본문 전체에 Roboto를 우선 적용 */
+  body, .docs-content, .page-header, .site-header .site-title a, .site-header .site-description {
+    font-family: 'Roboto', sans-serif !important;
+  }
+</style>
+
 <h1 style="text-align: center;">Uncertainty-Aware Opportunistic Hybrid Language Model <br> in Wireless Robotic Systems</h1>
 
 <p align="center" style="font-size: 0.9em; color: #555; margin-top: 0.2em;">
@@ -112,15 +127,75 @@ Robot Pouring ingredient To Cup
 </div>
 
 
-
 <h3 style="text-align: center; font-size: 1.5em; margin-top: 1em;">
-Experiment with Robot
+Robot Work
 </h3>
+<img src="workflow.png" 
+    style="
+    display: block;
+    margin-top: 0em;
+    margin-bottom: 0em;
+    max-width: 100%;
+    height: auto;
+  "
+/>
+
+<p style="margin-top: 0.5em; font-size: 1em; line-height: 1.4;">
+<br><br>
+    </p>
 
 <p align="center"
    style="font-size: 1.3em; color: #555; margin-top: 0.1em;font-weight: bold;">
-Robot Task Full Video (x6 speed)
+Success/Fail case
 </p>
+
+<p align="center">
+  <iframe
+    width="800" height="450"
+    src="https://www.youtube.com/embed/QDpbhphWOZo"
+    frameborder="0"
+    allowfullscreen
+    style="max-width:100%;"
+  ></iframe>
+</p>
+<p align="center"
+   style="font-size: 1.1em; color: #555; margin-top: 0.1em;font-weight: bold;">
+Success case - Pour<br><br><br>
+</p>
+
+<p align="center">
+  <iframe
+    width="800" height="450"
+    src="https://www.youtube.com/embed/G0jwl1BaSDI"
+    frameborder="0"
+    allowfullscreen
+    style="max-width:100%;"
+  ></iframe>
+</p>
+<p align="center"
+   style="font-size: 1.1em; color: #555; margin-top: 0.1em;font-weight: bold;">
+Fail case - When we don't have ingredient<br><br><br>
+</p>
+
+
+<p align="center">
+  <iframe
+    width="800" height="450"
+    src="https://www.youtube.com/embed/QBKoYIm9qIA"
+    frameborder="0"
+    allowfullscreen
+    style="max-width:100%;"
+  ></iframe>
+</p>
+<p align="center"
+   style="font-size: 1.1em; color: #555; margin-top: 0.1em;font-weight: bold;">
+Fail case - No action in robot<br><br><br>
+</p>
+
+
+<h4 style="text-align: center; font-size: 1.5em; margin-top: 1em;">
+<br><br>Experiment with Robot
+</h4>
 
 <p align="center">
   <iframe
@@ -130,6 +205,11 @@ Robot Task Full Video (x6 speed)
     allowfullscreen
     style="max-width:100%;"
   ></iframe>
+</p>
+
+<p align="center"
+   style="font-size: 1.3em; color: #555; margin-top: 0.1em;font-weight: bold;">
+Robot Task Full Video (x6 speed)
 </p>
 
 <p align="center"
